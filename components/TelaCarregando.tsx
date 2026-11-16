@@ -10,7 +10,7 @@ const LINHAS_BIOS = [
   "Processador: Diva Pentium IV  2.4 GHz",
   "Memoria: 512 MB ............................ OK",
   "Detectando glitter ......................... OK",
-  "Carregando oncinha.sys ..................... OK",
+  "Carregando borboletas.sys .................. OK",
   "Carregando divas_do_pop.dll ................ OK",
   "Iniciando o QG da Alana...",
 ];

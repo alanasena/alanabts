@@ -1092,3 +1092,12 @@ body:has(.inicio) .fundo { display: none; }
 @media (max-width: 640px) { .coluna-foto .adesivo-flip { top: 300px; } }
 .j-noticias-dir { margin-top: 8px; }
 .j-noticias-dir .resumo-noticias a { font-size: 12.5px; }
+
+/* abertura no visual clarinho: "alana" 3D rosa, sem oncinha */
+html[data-visual="foto"] .boot-alana {
+  font-family: var(--fonte-bolha); font-weight: 900; letter-spacing: -3px;
+  background: linear-gradient(180deg, #ffe3f1 0%, #ff8fc4 45%, #f2569b 55%, #ffb8da 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  -webkit-text-stroke: 2.5px #fff; filter: drop-shadow(4px 4px 0 #ff8fc4);
+}
+html[data-visual="foto"] .boot-xp i { color: #ff8fc4; }
+html[data-visual="foto"] .boot-blocos i { background: linear-gradient(180deg, #e3ecff, #8fa6ec); }

@@ -1845,3 +1845,116 @@ body:has(.pagina-blog) .fundo { display: none; }
 .pear-humor { font-size: 3.3cqw; padding: .7cqw 1.6cqw 1cqw; }
 .pear-foto { left: 15cqw; top: 22cqw; width: 15cqw; }
 .pear-foto img { height: 12cqw; }
+/* =========================================================
+   ÁLBUM — câmera digital rosa dos anos 2000
+   ========================================================= */
+html[data-visual] body:has(.pagina-album) {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255,255,255,.9) 0 2px, transparent 3px) 0 0 / 90px 90px,
+    radial-gradient(circle at 60% 70%, rgba(255,255,255,.7) 0 1.5px, transparent 2.5px) 0 0 / 60px 60px,
+    linear-gradient(135deg, #ffb3dc, #d9b8ff 45%, #9fe3ff);
+}
+html[data-visual][data-tema="noite"] body:has(.pagina-album) { background: radial-gradient(circle at 15% 20%, rgba(255,255,255,.6) 0 1.5px, transparent 2.5px) 0 0 / 70px 70px, linear-gradient(135deg, #3a1236, #24163f 50%, #0f2a3f); }
+body:has(.pagina-album) .fundo { display: none; }
+.album-cam { max-width: 1060px; margin: 0 auto; padding: 4px 10px 40px; font-family: "DM Sans", sans-serif; }
+.cam-titulo { text-align: center; margin-bottom: 18px; }
+.cam-titulo h1 { margin: 0; font: 900 italic 64px/1 "Rubik", sans-serif; color: #fff; letter-spacing: -2px; -webkit-text-stroke: 3px #e0167a; paint-order: stroke fill; text-shadow: 4px 4px 0 #e0167a, 0 0 24px rgba(255,255,255,.8); }
+.cam-titulo h1 span { font: 400 46px/1 "VT323", monospace; color: #ff2d95; -webkit-text-stroke: 0; text-shadow: 0 0 10px #fff; margin-left: 6px; letter-spacing: 2px; }
+.cam-titulo p { max-width: 640px; margin: 8px auto 0; padding: 6px 14px; background: rgba(255,255,255,.75); border-radius: 14px; font-size: 13.5px; color: #5a1a48; }
+
+.cam-palco { display: grid; grid-template-columns: minmax(280px, 430px) 1fr; gap: 30px; align-items: start; }
+
+/* câmera: a foto real da câmera com a tela furada */
+.camera { position: relative; width: 100%; aspect-ratio: 555 / 825; filter: drop-shadow(0 18px 28px rgba(120,20,90,.35)); }
+.cam-corpo { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; user-select: none; }
+.cam-tela { position: absolute; z-index: 1; left: 9.5%; top: 18%; width: 58%; height: 52.6%; background: #050608; overflow: hidden; color: #fff; }
+.cam-foto { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .25s; }
+.osd { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 6px 8px; pointer-events: none; font: 400 19px/1.05 "VT323", monospace; text-shadow: 1px 1px 0 #000, 0 0 3px #000; }
+.osd-topo { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 0; font: 400 19px/1 "VT323", monospace; }
+.osd-topo span { display: inline-flex; align-items: center; gap: 4px; }
+.osd-topo span:nth-child(2) { color: #ffd23d; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.osd-baixo { display: grid; gap: 2px; }
+.osd-legenda { margin: 0; font-size: 20px; color: #fff; }
+.osd-info { display: flex; justify-content: space-between; gap: 8px; margin: 0; color: #ffb13d; }
+.osd-centro { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; margin: 0; padding: 10px; font: 400 26px/1.1 "VT323", monospace; color: #9fe3ff; }
+.osd-centro small { font-size: 17px; color: #fff; }
+.osd-zoom { position: absolute; right: 8px; top: 30px; font: 400 20px/1 "VT323", monospace; color: #ffd23d; text-shadow: 1px 1px 0 #000; }
+.osd-menu { position: absolute; inset: 0; display: grid; align-content: start; gap: 4px; padding: 8px; background: linear-gradient(#1a0f2e, #0a0612); overflow-y: auto; font-family: "VT323", monospace; }
+.osd-menu .osd-topo { color: #ff7ac0; margin-bottom: 4px; }
+.osd-menu button { display: flex; justify-content: space-between; border: 1px solid #5b3f8f; background: #20163a; color: #fff; padding: 5px 8px; font: 400 19px/1 "VT323", monospace; cursor: pointer; text-align: left; }
+.osd-menu button.ativo, .osd-menu button:hover { background: #ff2d95; border-color: #fff; }
+.osd-galeria { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 33%; gap: 3px; padding: 3px; overflow-y: auto; background: #000; }
+.osd-galeria button { border: 2px solid transparent; padding: 0; background: #222; cursor: pointer; }
+.osd-galeria button.ativo { border-color: #ffd23d; }
+.osd-galeria img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* botões de verdade em cima da foto da câmera */
+.cam-btn { position: absolute; z-index: 3; border: 0; background: transparent; border-radius: 50%; cursor: pointer; }
+.cam-btn:hover { background: rgba(255,255,255,.35); box-shadow: 0 0 10px rgba(255,255,255,.8); }
+.cam-btn:active { background: rgba(255,45,149,.35); }
+.b-ant { left: 9.5%; top: 85%; width: 9%; height: 8%; }
+.b-prox { left: 25.5%; top: 85%; width: 9%; height: 8%; }
+.b-meio { left: 18.5%; top: 86.5%; width: 7.5%; height: 5%; }
+.b-menu { left: 34%; top: 80.8%; width: 7%; height: 4.8%; }
+.b-home { left: 34%; top: 92.2%; width: 7%; height: 4.8%; }
+.b-w { left: 74%; top: 82%; width: 8%; height: 6%; border-radius: 30%; }
+.b-t { left: 74%; top: 89.5%; width: 8%; height: 6%; border-radius: 30%; }
+
+/* lado */
+.cam-lado { display: grid; gap: 16px; }
+.cam-albuns { display: flex; flex-wrap: wrap; gap: 8px; }
+.cam-albuns button { border: 2px solid #fff; border-radius: 20px; padding: 6px 14px; background: rgba(255,255,255,.55); color: #6a1a58; font: 700 14px/1 "DM Sans", sans-serif; cursor: pointer; box-shadow: 0 2px 6px rgba(120,20,90,.15); }
+.cam-albuns button.ativo { background: #ff2d95; color: #fff; }
+.cam-detalhe { background: #fff; border-radius: 18px; padding: 14px 18px; box-shadow: 0 6px 18px rgba(120,20,90,.15); border: 3px solid #ffc4e3; }
+.cd-legenda { margin: 0; font: 700 19px/1.3 "DM Sans", sans-serif; color: #3a0f30; }
+.cd-legenda.vazio { color: #b48aa8; font-weight: 400; font-style: italic; }
+.cd-info { margin: 6px 0 0; font: 400 18px/1 "VT323", monospace; color: #e0167a; }
+.cam-detalhe button { margin-top: 10px; border: 0; border-radius: 14px; padding: 6px 12px; background: #ffe0f0; color: #a0105c; font-weight: 700; display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.cam-rolo { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px; max-height: 360px; overflow-y: auto; padding: 10px; background: #1a1020; border-radius: 12px; border: 4px solid #fff; box-shadow: inset 0 0 0 2px #000; }
+.cam-rolo button { aspect-ratio: 1; padding: 0; border: 3px solid #333; background: #333; cursor: pointer; }
+.cam-rolo button.ativo { border-color: #ff2d95; }
+.cam-rolo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cam-rolo:empty { display: none; }
+.cam-subir { display: grid; gap: 10px; background: rgba(255,255,255,.85); border-radius: 18px; padding: 14px 16px; border: 2px dashed #ff2d95; }
+.cam-subir > p { margin: 0; display: flex; gap: 6px; align-items: center; font-weight: 800; color: #a0105c; }
+.cam-subir label { display: grid; gap: 4px; font-size: 13px; font-weight: 700; color: #3a0f30; }
+.cam-subir input:not([type=file]) { font: inherit; font-weight: 400; padding: 8px 10px; border: 2px solid #ffc4e3; border-radius: 10px; }
+.cam-arquivo { position: relative; place-items: center; padding: 14px; border-radius: 14px; background: #ff2d95; color: #fff !important; cursor: pointer; text-align: center; }
+.cam-arquivo input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.cam-subir small { color: #7a4a6c; }
+.cam-editor > img { max-height: 220px; width: auto; justify-self: center; border-radius: 8px; }
+
+@media (max-width: 760px) {
+  .cam-palco { grid-template-columns: 1fr; }
+  .camera { max-width: 380px; margin: 0 auto; }
+  .cam-titulo h1 { font-size: 46px; }
+  .osd, .osd-topo, .osd-menu button { font-size: 16px; }
+  .osd-legenda { font-size: 17px; }
+}
+.cam-tela { left: 9.2%; top: 17.8%; width: 58.6%; height: 53.4%; }
+.cam-palco { grid-template-columns: minmax(280px, 400px) 1fr; }
+@media (max-width: 760px) { .cam-palco { grid-template-columns: minmax(0, 1fr); } }
+/* câmera gira quando a foto é deitada */
+.camera-caixa { position: relative; width: 100%; aspect-ratio: 555 / 825; transition: aspect-ratio .5s ease; }
+.camera-caixa.deitada { aspect-ratio: 825 / 555; }
+.camera-caixa .camera { position: absolute; left: 50%; top: 50%; width: 100%; transform: translate(-50%, -50%); transition: transform .5s ease, width .5s ease; }
+.camera-caixa.deitada .camera { width: 67.27%; transform: translate(-50%, -50%) rotate(-90deg); }
+.tela-conteudo { position: absolute; left: 50%; top: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); transition: transform .5s ease, width .5s, height .5s; }
+.camera-caixa.deitada .tela-conteudo { width: 135.4%; height: 73.9%; transform: translate(-50%, -50%) rotate(90deg); }
+@media (max-width: 760px) { .camera-caixa { max-width: 380px; margin: 0 auto; } .camera-caixa .camera { max-width: none; margin: 0; } }
+.cam-palco { grid-template-columns: auto minmax(0, 1fr); }
+.camera-caixa { width: min(100%, 400px); transition: aspect-ratio .5s ease, width .5s ease; }
+.camera-caixa.deitada { width: min(100%, 580px); }
+@media (max-width: 760px) { .cam-palco { grid-template-columns: minmax(0, 1fr); } .camera-caixa { width: 100%; } .camera-caixa.deitada { width: 100%; } }
+.camera-caixa { width: 400px; max-width: 100%; }
+.camera-caixa.deitada { width: 580px; }
+@media (max-width: 1100px) { .camera-caixa { width: 340px; } .camera-caixa.deitada { width: 480px; } }
+@media (max-width: 760px) { .camera-caixa, .camera-caixa.deitada { width: 100%; } }
+/* fundo: a mesa rosa desfocada, como se a câmera estivesse na sua mão na frente dela */
+html[data-visual] body:has(.pagina-album), html[data-visual][data-tema="noite"] body:has(.pagina-album) { background: #3a2230; }
+.pagina-album::before {
+  content: ""; position: fixed; inset: -20px; z-index: -1;
+  background: url("/album/mesa.webp") center 40% / cover no-repeat;
+}
+html[data-tema="noite"] .pagina-album::before { filter: brightness(.6); }
+.cam-albuns button { background: rgba(255,255,255,.85); }

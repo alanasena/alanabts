@@ -1831,3 +1831,17 @@ body:has(.pagina-blog) .fundo { display: none; }
   .spill-slogan { font-size: 12px; }
 }
 @media (max-width: 760px) { .spill-redemoinho { display: none; } }
+/* ajustes: editor do blog cabe na janela + caixinha da pera menor */
+.spill-editor { min-width: 0; width: 100%; }
+.spill-editor input:not([type=file]), .spill-editor textarea, .spill-editor select { width: 100%; box-sizing: border-box; min-width: 0; }
+.spill-editor label, .ed-linha > * { min-width: 0; }
+.modal-caixa:has(.spill-editor) { overflow-x: hidden; }
+.pear-msg { left: 31.5cqw; top: 16cqw; width: 46cqw; height: 24.5cqw; }
+.pear-nome { font-size: 2.9cqw; padding: 1.2cqw 1.6cqw 0; }
+.pear-texto { font-size: 2.6cqw; padding: 0 1.6cqw; -webkit-line-clamp: 3; }
+.pear-feeling { font-size: 2.2cqw; padding: 0 1.6cqw; }
+.pear-feeling .humor-bola { width: 3.8cqw; height: 3.8cqw; }
+.pear-feeling .humor-bola svg { width: 2.3cqw; height: 2.3cqw; }
+.pear-humor { font-size: 3.3cqw; padding: .7cqw 1.6cqw 1cqw; }
+.pear-foto { left: 15cqw; top: 22cqw; width: 15cqw; }
+.pear-foto img { height: 12cqw; }

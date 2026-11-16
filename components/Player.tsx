@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronDown, ListMusic, Pause, Play, SkipBack, SkipForward, Tv } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { PLAYLISTS_SPOTIFY, PLAYLISTS_YOUTUBE, PODCASTS, type Fonte } from "@/config/midia";
 
 // MP3 no canto da tela. Toca Spotify ou YouTube e continua tocando entre as abas.
@@ -65,11 +65,10 @@ export default function Player() {
   const [ativado, setAtivado] = useState(false);
   const [tocando, setTocando] = useState(false);
   const [titulo, setTitulo] = useState("");
-  const [menu, setMenu] = useState(false);
+  const [telaIpod, setTelaIpod] = useState<"menu" | "lista" | "tocando">("menu");
+  const [sel, setSel] = useState(0);
   const [tela, setTela] = useState(false);
   const [minimizado, setMinimizado] = useState(false);
-  const [link, setLink] = useState("");
-  const [erro, setErro] = useState("");
 
   const caixaSpotify = useRef<HTMLDivElement>(null);
   const caixaYT = useRef<HTMLDivElement>(null);
@@ -170,21 +169,6 @@ export default function Player() {
     tocarFonte(lista[novo]);
   };
 
-  const adicionar = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!lerOrigem(link)) return setErro("Esse link não é do Spotify nem do YouTube");
-    const nova = { nome: `minha playlist ${minhas.length + 1}`, url: link.trim() };
-    const l = [...minhas, nova];
-    setMinhas(l);
-    try {
-      localStorage.setItem(CHAVE, JSON.stringify(l));
-    } catch {}
-    setLink("");
-    setErro("");
-    setModo("musica");
-    setIdx(listaMusica.length);
-    tocarFonte(nova);
-  };
 
   // avisa a janelinha "tocando agora" e obedece os botões dela
   useEffect(() => {
@@ -204,84 +188,108 @@ export default function Player() {
     return () => window.removeEventListener("bts:mp3", ouvir);
   });
 
+  // ---------- navegação da telinha (estilo iPod) ----------
+  const opcoesMenu = ["músicas", "podcasts", "tocando agora", tela ? "esconder vídeo" : "ver vídeo", "+ colar link"];
+  const itensTela =
+    telaIpod === "menu" ? opcoesMenu : telaIpod === "lista" ? (lista.length ? lista.map((f) => f.nome) : ["nada aqui ainda"]) : [];
+  const mover = (dir: 1 | -1) => setSel((x) => (itensTela.length ? (x + dir + itensTela.length) % itensTela.length : 0));
+
+  const escolher = (n: number) => {
+    if (telaIpod === "menu") {
+      const op = opcoesMenu[n];
+      if (op === "músicas" || op === "podcasts") {
+        setModo(op === "músicas" ? "musica" : "podcast");
+        setTelaIpod("lista");
+        setSel(0);
+      } else if (op === "tocando agora") setTelaIpod("tocando");
+      else if (op === "+ colar link") {
+        const url = window.prompt("Cola o link de uma playlist, música ou podcast do Spotify ou YouTube:");
+        if (!url) return;
+        if (!lerOrigem(url)) return window.alert("Esse link não é do Spotify nem do YouTube");
+        const nova = { nome: `minha playlist ${minhas.length + 1}`, url: url.trim() };
+        const l = [...minhas, nova];
+        setMinhas(l);
+        try { localStorage.setItem(CHAVE, JSON.stringify(l)); } catch {}
+        setModo("musica");
+        setIdx(listaMusica.length);
+        tocarFonte(nova);
+        setTelaIpod("tocando");
+      } else setTela((t) => !t);
+      return;
+    }
+    if (telaIpod === "lista" && lista[n]) {
+      setIdx(n);
+      tocarFonte(lista[n]);
+      setTelaIpod("tocando");
+    }
+  };
+
+  const botaoMenu = () => {
+    setTelaIpod((t) => (t === "lista" ? "menu" : t === "tocando" ? "menu" : "tocando"));
+    setSel(0);
+  };
+  const botaoCentro = () => (telaIpod === "tocando" ? playPause() : escolher(sel));
+  const botaoLado = (dir: 1 | -1) => (telaIpod === "tocando" ? pular(dir) : mover(dir));
+
   if (minimizado) {
     return (
       <button className="mp3-mini" onClick={() => setMinimizado(false)} aria-label="Abrir o MP3">
-        <span className={`mp3-mini-disco ${tocando ? "girando" : ""}`} />
+        <img src="/ipod.webp" alt="" />
       </button>
     );
   }
 
+  const nomeTocando = titulo || fonte?.nome || "monta sua playlist ✦";
+
   return (
-    <div className={`mp3 ${menu ? "com-menu" : ""}`}>
+    <div className="ipod">
       {/* vídeo/embed: fica sempre montado pra música não parar */}
       <div className={`mp3-video ${tela ? "visivel" : ""}`}>
         <div ref={caixaSpotify} className={origemAtual.current?.tipo === "spotify" ? "" : "oculto"} />
         <div ref={caixaYT} className={origemAtual.current?.tipo === "youtube" ? "" : "oculto"} />
       </div>
 
-      {menu && (
-        <div className="mp3-menu">
-          <div className="mp3-abas">
-            <button className={modo === "musica" ? "ativo" : ""} onClick={() => { setModo("musica"); setIdx(0); }}>músicas</button>
-            <button className={modo === "podcast" ? "ativo" : ""} onClick={() => { setModo("podcast"); setIdx(0); }}>podcasts</button>
+      <button className="ipod-fechar" onClick={() => setMinimizado(true)} aria-label="Minimizar">
+        <ChevronDown size={14} />
+      </button>
+      <img className="ipod-foto" src="/ipod.webp" alt="MP3 da Alana" draggable={false} />
+      <span className="ipod-nome" aria-hidden>alana</span>
+
+      <div className="ipod-tela">
+        <div className="ipod-barra">
+          <span>{tocando ? "▶" : "❚❚"}</span>
+          <b>{telaIpod === "menu" ? "alana bts" : telaIpod === "lista" ? (modo === "musica" ? "músicas" : "podcasts") : "tocando agora"}</b>
+          <span className="ipod-bateria"><i /></span>
+        </div>
+
+        {telaIpod === "tocando" ? (
+          <div className="ipod-tocando">
+            <p className="ipod-num">{lista.length ? `${idx + 1} de ${lista.length}` : "–"}</p>
+            <p className="ipod-musica"><span className={nomeTocando.length > 16 ? "rolando" : ""}>{nomeTocando}</span></p>
+            <p className="ipod-artista">{modo === "musica" ? "playlist da alana" : "podcast"}</p>
+            <div className={`ipod-eq ${tocando ? "ativo" : ""}`} aria-hidden>
+              {Array.from({ length: 14 }, (_, i) => <i key={i} style={{ animationDelay: `${(i * 137) % 600}ms` }} />)}
+            </div>
+            {!ativado && <p className="ipod-dica">aperta ▶❚❚ pra tocar</p>}
           </div>
-          <ul className="mp3-lista">
-            {lista.length === 0 && <li className="vazio">nada aqui ainda</li>}
-            {lista.map((f, i) => (
-              <li key={f.url + i}>
-                <button
-                  className={i === idx && ativado ? "atual" : ""}
-                  onClick={() => {
-                    setIdx(i);
-                    tocarFonte(f);
-                  }}
-                >
-                  <span className="num">{String(i + 1).padStart(2, "0")}</span> {f.nome}
+        ) : (
+          <ul className="ipod-lista">
+            {itensTela.map((t, i) => (
+              <li key={t + i}>
+                <button className={i === sel ? "sel" : ""} onClick={() => { setSel(i); escolher(i); }}>
+                  <span>{t}</span><span>›</span>
                 </button>
               </li>
             ))}
           </ul>
-          <form className="mp3-link" onSubmit={adicionar}>
-            <input value={link} onChange={(e) => setLink(e.target.value)} placeholder="cola um link do Spotify ou YouTube" />
-            <button>+</button>
-          </form>
-          {erro && <p className="erro">{erro}</p>}
-        </div>
-      )}
-
-      <div className="mp3-corpo">
-        <button className="mp3-fechar" onClick={() => setMinimizado(true)} aria-label="Minimizar">
-          <ChevronDown size={14} />
-        </button>
-        <div className="mp3-tela">
-          <div className="mp3-tela-topo">
-            <span>{modo === "musica" ? "♪ música" : "podcast"}</span>
-            <span className="bateria" aria-hidden><i /></span>
-          </div>
-          <div className="mp3-titulo">
-            <span className={(titulo || fonte?.nome || "").length > 18 ? "rolando" : ""}>
-              {titulo || fonte?.nome || "monta sua playlist ✦"}
-            </span>
-          </div>
-          <div className={`mp3-eq ${tocando ? "tocando" : ""}`} aria-hidden>
-            {Array.from({ length: 12 }, (_, i) => <i key={i} style={{ animationDelay: `${(i * 137) % 600}ms` }} />)}
-          </div>
-          {!ativado && <p className="mp3-dica">aperta o play ▶</p>}
-        </div>
-
-        <div className="mp3-roda">
-          <button className="r-cima" onClick={() => setMenu((m) => !m)} aria-label="Lista de músicas"><ListMusic size={15} /></button>
-          <button className="r-esq" onClick={() => pular(-1)} aria-label="Voltar"><SkipBack size={15} /></button>
-          <button className="r-dir" onClick={() => pular(1)} aria-label="Passar"><SkipForward size={15} /></button>
-          <button className="r-baixo" onClick={playPause} aria-label={tocando ? "Pausar" : "Tocar"}>
-            {tocando ? <Pause size={15} /> : <Play size={15} />}
-          </button>
-          <button className="r-centro" onClick={() => setTela((t) => !t)} aria-label="Mostrar a tela do player">
-            <Tv size={14} />
-          </button>
-        </div>
+        )}
       </div>
+
+      <button className="ipod-btn b-menu" onClick={botaoMenu} aria-label="Menu" />
+      <button className="ipod-btn b-voltar" onClick={() => botaoLado(-1)} aria-label="Voltar" />
+      <button className="ipod-btn b-passar" onClick={() => botaoLado(1)} aria-label="Passar" />
+      <button className="ipod-btn b-play" onClick={playPause} aria-label={tocando ? "Pausar" : "Tocar"} />
+      <button className="ipod-btn b-centro" onClick={botaoCentro} aria-label="Selecionar" />
     </div>
   );
 }

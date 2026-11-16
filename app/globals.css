@@ -1394,3 +1394,56 @@ html[data-tema="noite"] .tm-leitura, html[data-tema="noite"] .tm-linha.aberta { 
   .tm-cab.tm-4 span:last-child { display: none; }
   .tm-aspecto { grid-template-columns: 1fr; gap: 2px; } .tm-tipo { text-align: left; } .tm-aspecto .tm-planeta:last-child { justify-content: flex-start; }
 }
+
+/* =========================================================
+   MP3 (iPod rosa de verdade) — a tela e os botões funcionam
+   ========================================================= */
+.mp3, .mp3-mini-disco { display: none; }
+.ipod { position: fixed; right: 16px; bottom: 50px; z-index: 65; width: 168px; aspect-ratio: 460 / 810; filter: drop-shadow(0 10px 18px rgba(60,10,40,.35)); }
+.ipod-foto { position: absolute; inset: 0; width: 100%; height: 100%; user-select: none; pointer-events: none; }
+.ipod-tela {
+  position: absolute; left: 15.2%; top: 7.6%; width: 70.4%; height: 33.8%; overflow: hidden; border-radius: 3px;
+  background: linear-gradient(180deg, #e3eefb, #c9daf2); color: #1d2c6b; font-family: var(--fonte-pixel); font-size: 13px; line-height: 1.1;
+  display: flex; flex-direction: column;
+}
+.ipod-barra { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px; border-bottom: 1px solid #1d2c6b; font-size: 11px; }
+.ipod-barra b { font-weight: 400; font-size: 13px; }
+.ipod-bateria { width: 13px; height: 6px; border: 1px solid #1d2c6b; padding: 1px; }
+.ipod-bateria i { display: block; width: 70%; height: 100%; background: #1d2c6b; }
+.ipod-lista { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1; scrollbar-width: none; }
+.ipod-lista::-webkit-scrollbar { display: none; }
+.ipod-lista button { width: 100%; display: flex; justify-content: space-between; gap: 4px; padding: 1px 4px; border: 0; background: none; color: #1d2c6b; font-family: var(--fonte-pixel); font-size: 13.5px; text-align: left; }
+.ipod-lista button span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ipod-lista button.sel { background: #1f3a8a; color: #fff; }
+.ipod-tocando { padding: 3px 5px; text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.ipod-tocando p { margin: 0; }
+.ipod-num { font-size: 11px; opacity: .75; }
+.ipod-musica { font-size: 15px; white-space: nowrap; overflow: hidden; }
+.ipod-musica .rolando { display: inline-block; padding-left: 100%; animation: rolar-titulo 8s linear infinite; }
+.ipod-artista { font-size: 11.5px; opacity: .8; }
+.ipod-eq { display: flex; gap: 1px; align-items: end; height: 14px; margin: 4px 0 2px; }
+.ipod-eq i { flex: 1; height: 2px; background: #1d2c6b; }
+.ipod-eq.ativo i { animation: eq .6s ease-in-out infinite alternate; }
+.ipod-dica { font-size: 11px; animation: piscar 1s steps(2) infinite; }
+.ipod-btn { position: absolute; border: 0; background: transparent; border-radius: 50%; padding: 0; }
+.ipod-btn:active { background: rgba(242,106,166,.18); }
+.b-menu { left: 38%; top: 58%; width: 24%; height: 8%; }
+.b-play { left: 38%; top: 82%; width: 24%; height: 8%; }
+.b-voltar { left: 17%; top: 67.5%; width: 17%; height: 10%; }
+.b-passar { left: 65%; top: 67.5%; width: 17%; height: 10%; }
+.b-centro { left: 37.5%; top: 66.5%; width: 23.5%; height: 13%; }
+.ipod-fechar { position: absolute; top: -6px; right: -6px; z-index: 2; width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #fff; background: #f26aa6; color: #fff; display: grid; place-items: center; padding: 0; }
+.ipod .mp3-video.visivel { right: 0; bottom: calc(100% + 10px); }
+.mp3-mini { width: 46px; height: 80px; border: 0; border-radius: 8px; background: none; padding: 0; box-shadow: none; }
+.mp3-mini img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(60,10,40,.35)); }
+@media (max-width: 640px) { .ipod { width: 140px; right: 10px; } }
+.ipod-nome {
+  position: absolute; left: 0; right: 0; top: 43.5%; text-align: center; pointer-events: none;
+  font-family: var(--fonte-capa); font-style: italic; font-weight: 800; font-size: 40px; line-height: 1; letter-spacing: -1px;
+  color: transparent;
+  background-image: radial-gradient(circle, #fff 0 1.1px, rgba(255,255,255,.55) 1.5px, transparent 2px), linear-gradient(180deg, #f4f4f8, #c9c6d6);
+  background-size: 4px 4px, 100% 100%; -webkit-background-clip: text; background-clip: text;
+  filter: drop-shadow(0 1px 0 rgba(120,40,80,.35)) drop-shadow(0 0 2px rgba(255,255,255,.7));
+  rotate: -6deg;
+}
+@media (max-width: 640px) { .ipod-nome { font-size: 33px; } }

@@ -1,7 +1,7 @@
-// Blog "theSpill" (inspirado no site da série Brilhante Victória). Edite à vontade.
+// Blog "theBackstage" (inspirado no site da série Brilhante Victória). Edite à vontade.
 
 export const BLOG = {
-  nome: "Spill",
+  nome: "Backstage",
   slogan: ["What's", "HOT", "@ alana bts"],
 };
 

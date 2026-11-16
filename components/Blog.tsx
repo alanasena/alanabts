@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
-  Brain, ChevronLeft, ChevronRight, Coffee, Flame, Frown, Heart, ImagePlus, Laugh, Moon, Music, Pencil, Pizza, Smile, Sparkles, Trash2, Tv, Zap,
+  Brain, Camera, ChevronLeft, ChevronRight, House, Mail, Users, Flame, Frown, Heart, ImagePlus, Laugh, Moon, Music, Pencil, Pizza, Smile, Sparkles, Trash2, Tv, Zap,
   type LucideIcon,
 } from "lucide-react";
 import { supabase, subirFoto } from "@/lib/supabase";
@@ -146,7 +146,9 @@ export default function Blog() {
       {/* ---------- topo ---------- */}
       <header className="spill-topo">
         <button className="spill-logo" onClick={() => ir({})} aria-label="início do blog">
-          <span className="spill-estouro"><Coffee size={42} strokeWidth={2.6} /></span>
+          <span className="spill-estouro" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="spill-simbolo" src="/revista/adesivos/celular-flip.webp" alt="" />
           <span className="spill-the">the</span>
           <span className="spill-nome">{BLOG.nome}</span>
           <span className="spill-slogan">{BLOG.slogan[0]} <b>{BLOG.slogan[1]}</b> {BLOG.slogan[2]}</span>
@@ -155,12 +157,11 @@ export default function Blog() {
           <nav className="spill-menu">
             <button className={!cat && !postId && !tag && !q ? "ativo" : ""} onClick={() => ir({})}>HOME</button>
             {CATEGORIAS.map((c) => (
-              <button key={c.id} className={cat === c.id ? "ativo" : ""} onClick={() => ir({ cat: c.id })}>{c.id === "dia-a-dia" ? "DIA A DIA" : c.nome.split(" ")[0].toUpperCase()}</button>
+              <button key={c.id} className={cat === c.id ? "ativo" : ""} onClick={() => ir({ cat: c.id })}>{c.id === "dia-a-dia" ? "DIA A DIA" : c.id === "faculdade" ? "FACUL" : c.nome.split(" ")[0].toUpperCase()}</button>
             ))}
           </nav>
           <form className="spill-busca" onSubmit={(e) => { e.preventDefault(); ir(busca.trim() ? { q: busca.trim() } : {}); }}>
-            <span>SEARCH</span>
-            <input value={busca} onChange={(e) => setBusca(e.target.value)} placeholder="digita aqui" />
+            <input value={busca} onChange={(e) => setBusca(e.target.value)} placeholder="buscar" />
             <button>GO</button>
           </form>
         </div>
@@ -301,7 +302,56 @@ export default function Blog() {
         <section className="spill-feed">
           <Aba>{cat ? nomeCat(cat).toUpperCase() : tag ? `#${tag.toUpperCase()}` : q ? `BUSCA: ${q.toUpperCase()}` : "NEWEST UPDATES"}</Aba>
           {!carregando && filtrados.length === 0 && <p className="spill-aviso">Nada por aqui.</p>}
-          {filtrados.map((p) => (
+          {filtrados.map((p) => p.tipo === "update" ? (
+            <div key={p.id} className="pear-fundo">
+              <div className="pear">
+                <svg className="pear-corpo" viewBox="0 0 1000 560" aria-hidden>
+                  <defs>
+                    <linearGradient id="pearAzul" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stopColor="#7cc8ff" /><stop offset=".35" stopColor="#2f86dc" /><stop offset="1" stopColor="#14509e" />
+                    </linearGradient>
+                    <radialGradient id="pearTela" cx=".28" cy=".35" r=".7">
+                      <stop offset="0" stopColor="#2c5d55" /><stop offset=".45" stopColor="#15202a" /><stop offset="1" stopColor="#07080d" />
+                    </radialGradient>
+                    <radialGradient id="pearBotao" cx=".35" cy=".3" r=".8">
+                      <stop offset="0" stopColor="#b5ecff" /><stop offset=".5" stopColor="#2a95e6" /><stop offset="1" stopColor="#0c4a95" />
+                    </radialGradient>
+                  </defs>
+                  <path d="M40 300C20 180 120 150 260 130C420 105 600 20 800 20C940 20 1000 140 995 290C990 450 900 545 760 545C620 545 560 470 420 455C300 445 160 460 90 430C45 410 35 360 40 300Z" fill="url(#pearAzul)" stroke="#0b3d82" strokeWidth="6" />
+                  <path d="M70 250C80 190 150 168 270 150C430 126 600 40 790 36C900 34 960 110 975 200" fill="none" stroke="rgba(255,255,255,.55)" strokeWidth="6" strokeLinecap="round" />
+                  <path d="M68 300C55 205 140 178 270 160C430 138 600 52 780 50C850 50 875 120 875 290C875 450 840 515 760 515C630 515 570 450 425 430C300 418 170 432 100 410C70 395 64 350 68 300Z" fill="url(#pearTela)" stroke="#06244f" strokeWidth="5" />
+                  <path d="M540 150C600 95 660 70 860 70M540 410C600 470 680 500 860 500" fill="none" stroke="#c2185b" strokeWidth="4" />
+                  <circle cx="937" cy="300" r="40" fill="url(#pearBotao)" stroke="#0b3d82" strokeWidth="4" />
+                  <path d="M925 296c0-12 10-18 18-14 6 3 8 10 14 12-4 10-14 16-24 14-6-1-8-6-8-12z" fill="#7ad8ff" />
+                </svg>
+                <span className="pear-tab t1"><Camera />Photos</span>
+                <span className="pear-tab t2"><Mail />Mail</span>
+                <span className="pear-tab t3"><House />Home</span>
+                <span className="pear-tab t4"><Users />Friends</span>
+                <span className="pear-marca">the{BLOG.nome}<small>MOBILE</small></span>
+                <div className="pear-foto">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={SITE.foto} alt="" />
+                  <b>UPDATE</b>
+                </div>
+                <div className="pear-msg">
+                  <p className="pear-nome">ALANA: {!p.publicado && <i className="selo-rascunho">rascunho</i>}</p>
+                  <p className="pear-texto">{p.conteudo}</p>
+                  <div className="pear-rodape">
+                    <p className="pear-feeling">FEELING:<IconeHumor humor={p.humor} /></p>
+                    <p className="pear-humor">{p.humor}</p>
+                  </div>
+                </div>
+                <span className="pear-data">{quando(p.criado_em)}</span>
+              </div>
+              {usuaria && (
+                <p className="pear-acoes">
+                  <button onClick={() => setEditando({ ...p })}><Pencil size={13} /> editar</button>
+                  <button onClick={() => apagar(p.id)}><Trash2 size={13} /> apagar</button>
+                </p>
+              )}
+            </div>
+          ) : (
             <div key={p.id} className={`status ${p.tipo}`}>
               <div className="status-foto">
                 {/* eslint-disable-next-line @next/next/no-img-element */}

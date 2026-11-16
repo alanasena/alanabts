@@ -1776,3 +1776,58 @@ body:has(.pagina-blog) .fundo { display: none; }
   .spill-the { margin-left: 4px; }
   .rn-texto { min-height: 50px; }
 }
+/* update rápido = celular PearPhone (igual ao da série) */
+.pear-fundo {
+  position: relative; padding: 22px 10px; border-radius: 10px; overflow: hidden;
+  background:
+    radial-gradient(ellipse at 10% 20%, #e8237a 0 14%, transparent 15%), radial-gradient(ellipse at 30% 95%, #e8237a 0 16%, transparent 17%),
+    radial-gradient(ellipse at 92% 70%, #e8237a 0 15%, transparent 16%), radial-gradient(ellipse at 65% 5%, #c4126a 0 10%, transparent 11%),
+    radial-gradient(ellipse at 80% 30%, #d6ff2e 0 3%, transparent 3.5%), radial-gradient(ellipse at 18% 60%, #d6ff2e 0 2.5%, transparent 3%),
+    radial-gradient(ellipse at 50% 90%, #d6ff2e 0 2.5%, transparent 3%), radial-gradient(ellipse at 95% 15%, #ffe02e 0 3%, transparent 3.5%),
+    repeating-linear-gradient(28deg, transparent 0 34px, rgba(255,255,255,.12) 34px 37px, transparent 37px 80px),
+    repeating-linear-gradient(-62deg, transparent 0 52px, rgba(214,255,46,.25) 52px 55px, transparent 55px 120px),
+    #0c0814;
+}
+.pear { position: relative; container-type: inline-size; width: 100%; max-width: 680px; margin: 0 auto; aspect-ratio: 1000 / 560; filter: drop-shadow(0 12px 18px rgba(0,0,0,.6)); }
+.pear-corpo { position: absolute; inset: 0; width: 100%; height: 100%; }
+.pear-tab { position: absolute; display: grid; justify-items: center; align-content: center; gap: .4cqw; width: 11cqw; height: 10cqw; color: #fff; font: 600 1.7cqw/1 Arial, sans-serif; text-shadow: 0 1px 2px #000; border: .4cqw solid #c2185b; border-radius: 1.4cqw; background: rgba(5,5,10,.85); }
+.pear-tab svg { width: 3.8cqw; height: 3.8cqw; }
+.pear-tab.t1 { left: 63cqw; top: 3.5cqw; } .pear-tab.t2 { left: 74.5cqw; top: 3.5cqw; }
+.pear-tab.t3 { left: 63cqw; bottom: 3.5cqw; } .pear-tab.t4 { left: 74.5cqw; bottom: 3.5cqw; }
+.pear-tab.t3 svg { color: #45d6ff; }
+.pear-marca { position: absolute; left: 11.5cqw; top: 50%; transform: translate(-50%, -50%) rotate(-90deg); display: grid; justify-items: center; white-space: nowrap; font: 900 italic 2.6cqw/1 "Rubik", sans-serif; color: #fff; -webkit-text-stroke: .6cqw var(--lar); paint-order: stroke fill; }
+.pear-marca small { font-size: 1.3cqw; letter-spacing: .4cqw; -webkit-text-stroke: 0; color: #fff; font-style: italic; }
+.pear-foto { position: absolute; left: 14.5cqw; top: 22.5cqw; width: 16cqw; }
+.pear-foto img { display: block; width: 100%; height: 13cqw; object-fit: cover; border: .5cqw solid var(--pink); border-bottom: 0; }
+.pear-foto b { display: block; text-align: center; padding: .9cqw 0; background: var(--pink); color: var(--ama); font: 800 2.2cqw/1 "Rubik", sans-serif; letter-spacing: .3cqw; border-radius: 0 0 .8cqw .8cqw; }
+.pear-msg { position: absolute; left: 30.5cqw; top: 13.5cqw; width: 52cqw; height: 29cqw; display: flex; flex-direction: column; border: .45cqw solid var(--pink); border-radius: 1cqw; background: linear-gradient(#fff 40%, #c9ecfc); color: #111; overflow: hidden; }
+.pear-nome { margin: 0; padding: 1.4cqw 1.8cqw 0; font: 800 3.4cqw/1 "Rubik", sans-serif; letter-spacing: .4cqw; color: #3324b8; }
+.pear-texto { flex: 1; margin: .8cqw 0 0; padding: 0 1.8cqw; font: 700 3.1cqw/1.25 Arial, "DM Sans", sans-serif; white-space: pre-wrap; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }
+.pear-rodape { flex: none; }
+.pear-feeling { display: flex; justify-content: space-between; align-items: center; margin: 0; padding: 0 1.8cqw; font: 800 2.6cqw/1 "Rubik", sans-serif; letter-spacing: .3cqw; color: #e2401c; }
+.pear-feeling .humor-bola { width: 4.6cqw; height: 4.6cqw; margin-bottom: -1cqw; }
+.pear-feeling .humor-bola svg { width: 2.8cqw; height: 2.8cqw; }
+.pear-humor { margin: .6cqw 0 0; padding: .9cqw 1.8cqw 1.2cqw; background: linear-gradient(#c7ebfc, #a6daf7); font: 800 4cqw/1 "Rubik", sans-serif; text-transform: uppercase; color: #9a2fd6; }
+.pear-data { position: absolute; left: 15cqw; top: 45cqw; font: 600 1.5cqw/1 Arial, sans-serif; color: #9fb4dc; white-space: pre; }
+.pear-acoes { display: flex; justify-content: center; gap: 8px; margin: 10px 0 0; }
+.pear-acoes button { border: 0; border-radius: 12px; padding: 4px 10px; background: rgba(255,255,255,.9); color: var(--mar); font-weight: 700; font-size: 12px; display: inline-flex; gap: 4px; align-items: center; }
+
+/* logo novo: celular flip no estouro */
+.spill-simbolo { position: absolute; left: 22px; top: -10px; width: 52px; height: auto; transform: rotate(-12deg); filter: drop-shadow(2px 3px 2px rgba(0,0,0,.35)); z-index: 1; }
+.spill-nome { font-size: 60px; }
+@media (max-width: 760px) {
+  .spill-nome { font-size: 42px; }
+  .spill-simbolo { left: 16px; width: 42px; }
+  .pear-fundo { padding: 14px 4px; }
+}
+.spill-nome { font-size: 52px; letter-spacing: -1.5px; }
+.spill-menu button { padding: 8px 7px; }
+.spill-busca { min-width: 120px; }
+.spill-busca input::placeholder { color: #8a93a8; }
+@media (max-width: 760px) {
+  .spill-menu { flex-wrap: wrap; }
+  .spill-nome { font-size: 36px; }
+  .spill-the { font-size: 17px; }
+  .spill-slogan { font-size: 12px; }
+}
+@media (max-width: 760px) { .spill-redemoinho { display: none; } }

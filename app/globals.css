@@ -1110,3 +1110,68 @@ html[data-visual="foto"] .boot-blocos i { background: linear-gradient(180deg, #e
 .banner-ceu { min-height: 300px; }
 .coluna-foto .adesivo-flip { right: -18px; top: 300px; }
 @media (min-width: 1600px) { .conteudo { max-width: 1440px; } .inicio-topo { grid-template-columns: 230px minmax(0, 1fr) 290px 260px; } }
+
+/* =========================================================
+   QUADRO DE IDEIAS no visual clarinho: colunas viram janelinhas
+   ========================================================= */
+html[data-visual="foto"] .coluna {
+  padding: 0; border: var(--borda); border-radius: 6px; background: #fff; box-shadow: var(--sombra); min-height: 340px; overflow: hidden;
+}
+html[data-visual="foto"][data-tema="noite"] .coluna { background: var(--creme); }
+html[data-visual="foto"] .coluna.sobre { background: #fff0f7; border-style: dashed; }
+html[data-visual="foto"] .coluna-titulo {
+  margin: 0; padding: 5px 6px 5px 10px; border: 0; border-bottom: var(--borda); border-radius: 0;
+  font-family: "DM Sans", sans-serif; font-style: normal; font-weight: 700; font-size: 13px; letter-spacing: 0; text-transform: lowercase;
+  color: #2e2a4f; text-shadow: none; background: linear-gradient(180deg, #ffd6ea 0%, #ffaed3 100%);
+}
+html[data-visual="foto"] .coluna-titulo > span:first-child::before { content: "♡ "; }
+html[data-visual="foto"] .coluna-roteiro .coluna-titulo { background: linear-gradient(180deg, #efe6ff 0%, #c9b3f5 100%); }
+html[data-visual="foto"] .coluna-gravando .coluna-titulo { background: linear-gradient(180deg, #e3ecff 0%, #b8cff7 100%); color: #2e2a4f; }
+html[data-visual="foto"] .coluna-editando .coluna-titulo { background: linear-gradient(180deg, #e1f8fb 0%, #a8e3ec 100%); }
+html[data-visual="foto"] .coluna-postado .coluna-titulo { background: linear-gradient(180deg, #fff6c9 0%, #ffe48a 100%); color: #2e2a4f; }
+html[data-visual="foto"] .contagem { font-family: var(--fonte); font-size: 11px; background: #fff; color: #2e2a4f; border: 1.2px solid #2e2a4f; border-radius: 3px; padding: 0 6px; }
+html[data-visual="foto"] .coluna-cartoes { padding: 10px; }
+html[data-visual="foto"] .coluna-vazia { font-family: var(--fonte); font-size: 12px; margin: 24px 0; }
+html[data-visual="foto"] .cartao { background: #fff; border: var(--borda); border-radius: 4px; box-shadow: 2px 2px 0 rgba(46,42,79,.15); }
+html[data-visual="foto"][data-tema="noite"] .cartao { background: var(--creme-escuro); }
+html[data-visual="foto"] .cartao strong { font-size: 13px; }
+html[data-visual="foto"] .tag { background: #efe6ff; color: #2e2a4f; border-radius: 3px; }
+html[data-visual="foto"] .tag-formato { background: #ffd6ea; color: #2e2a4f; }
+html[data-visual="foto"] .cartao-setas button { background: #e3ecff; color: #2e2a4f; border-radius: 3px; }
+
+/* barra de cima do quadro */
+html[data-visual="foto"] .barra-ferramentas input, html[data-visual="foto"] .barra-ferramentas select,
+html[data-visual="foto"] .form-grade input, html[data-visual="foto"] .form-grade select, html[data-visual="foto"] .form-grade textarea,
+html[data-visual="foto"] .adicionar-linha input, html[data-visual="foto"] .adicionar-linha select, html[data-visual="foto"] .diario, html[data-visual="foto"] .form-entrar input {
+  border: var(--borda); border-radius: 3px; font-family: var(--fonte); font-size: 13px; background: #fff; color: #2e2a4f;
+}
+html[data-visual="foto"] .botao-preto {
+  border: var(--borda); border-radius: 2px; color: #2e2a4f; font-family: var(--fonte); font-size: 13px;
+  background: linear-gradient(180deg, #eef3ff, #c9d9fb); box-shadow: 2px 2px 0 var(--tinta);
+}
+html[data-visual="foto"] .botao-perigo { border-radius: 2px; border: var(--borda); box-shadow: 2px 2px 0 var(--tinta); font-family: var(--fonte); font-size: 13px; }
+html[data-visual="foto"] .selo-privado { background: #c9b3f5; color: #2e2a4f; }
+
+/* calendário e metas no mesmo clima */
+html[data-visual="foto"] .cal-titulo { font-family: var(--fonte-bolha); font-style: italic; border: var(--borda); background: #fff; color: #2e2a4f; }
+html[data-visual="foto"] .cal-cabeca { background: #e3ecff; color: #2e2a4f; border-radius: 3px; }
+html[data-visual="foto"] .cal-dia { background: #fff; border: var(--borda); border-radius: 4px; box-shadow: 2px 2px 0 rgba(46,42,79,.12); }
+html[data-visual="foto"][data-tema="noite"] .cal-dia { background: var(--creme); }
+html[data-visual="foto"] .cal-dia.hoje { box-shadow: 0 0 0 3px #ff8fc0; border-color: #2e2a4f; }
+html[data-visual="foto"] .cal-dia-nome { color: #6a7fd1; }
+html[data-visual="foto"] .cal-evento { background: #ffc2de; color: #2e2a4f; border-radius: 3px; }
+html[data-visual="foto"] .cal-evento.tipo-compromisso { background: #c9b3f5; color: #2e2a4f; }
+html[data-visual="foto"] .cal-evento.tipo-evento { background: #b8cff7; color: #2e2a4f; text-shadow: none; }
+html[data-visual="foto"] .contador { background: #fff; color: #2e2a4f; border: var(--borda); border-radius: 4px; box-shadow: 2px 2px 0 var(--tinta); }
+html[data-visual="foto"] .contador-num { color: var(--chiclete-escuro); }
+html[data-visual="foto"] .alternar { border: var(--borda); border-radius: 3px; }
+html[data-visual="foto"] .alternar button { background: #fff; color: #2e2a4f; font-family: var(--fonte); }
+html[data-visual="foto"] .alternar button.ativo { background: #ffc2de; }
+html[data-visual="foto"] .tipos button { border: var(--borda); border-radius: 3px; color: #2e2a4f; font-family: var(--fonte); }
+html[data-visual="foto"] .tipos button.ativo { background: #ffc2de; color: #2e2a4f; box-shadow: 2px 2px 0 var(--tinta); }
+html[data-visual="foto"] .checkbox-glitter { background: #efe6ff; color: #2e2a4f; border: var(--borda); border-radius: 3px; }
+html[data-visual="foto"] .lista-check li { background: #f6f3fb; }
+html[data-visual="foto"] .progresso-barra { border: var(--borda); }
+html[data-visual="foto"] .progresso-barra span { background: repeating-linear-gradient(-45deg, #ff8fc0 0 8px, #ffc2de 8px 16px); }
+html[data-visual="foto"] .grupo-area h3 { color: #6a7fd1; }
+html[data-visual="foto"] .carregando-dados { background: #fff; color: #2e2a4f; border: var(--borda); }

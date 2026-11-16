@@ -1,20 +1,15 @@
 import type { Metadata } from "next";
-import EmBreve from "@/components/EmBreve";
+import { Suspense } from "react";
+import Blog from "@/components/Blog";
 
 export const metadata: Metadata = { title: "Blog" };
 
 export default function Pagina() {
   return (
-    <EmBreve
-      titulo="Blog"
-      icone=""
-      vibe="revista"
-      etapa="próxima etapa"
-      cor="rosa"
-      vaiTer={[
-        "Você escreve e publica na hora, direto pelo site",
-        "Cara de coluna de revista dos anos 2000",
-      ]}
-    />
+    <div className="pagina pagina-blog">
+      <Suspense fallback={<p className="spill-aviso">carregando...</p>}>
+        <Blog />
+      </Suspense>
+    </div>
   );
 }

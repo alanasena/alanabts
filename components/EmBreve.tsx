@@ -1,4 +1,4 @@
-import Janela from "./Janela";
+import Janela, { type CorJanela } from "./Janela";
 
 type Props = {
   titulo: string;
@@ -7,7 +7,7 @@ type Props = {
   etapa: string;
   vaiTer: string[];
   privada?: boolean;
-  cor?: "azul" | "rosa" | "verde" | "lilas" | "oncinha";
+  cor?: CorJanela;
 };
 
 // Página provisória das abas que ainda vão ser feitas
@@ -15,7 +15,7 @@ export default function EmBreve({ titulo, icone, vibe, etapa, vaiTer, privada, c
   return (
     <div className={`pagina vibe-${vibe}`}>
       <h1 className="titulo-pagina">
-        <span aria-hidden>{icone}</span> {titulo}
+        <span className="emoji" aria-hidden>{icone}</span> {titulo}
         {privada && <span className="selo-privado">🔒 só a Alana</span>}
       </h1>
       <Janela titulo={`${titulo.toLowerCase().replace(/\s/g, "_")}.exe`} icone={icone} cor={cor}>

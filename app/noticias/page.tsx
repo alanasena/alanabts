@@ -5,7 +5,7 @@ import { buscarNoticias, haQuanto } from "@/lib/news";
 export const revalidate = 1800;
 export const metadata: Metadata = { title: "Notícias do dia" };
 
-const CORES = ["azul", "verde", "lilas", "rosa", "azul"] as const;
+const CORES = ["rosa", "preto", "oncinha", "zebra", "prata"] as const;
 
 export default async function Noticias() {
   const blocos = await buscarNoticias();

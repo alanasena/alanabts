@@ -1,22 +1,16 @@
 import type { Metadata } from "next";
-import EmBreve from "@/components/EmBreve";
+import { Trancado } from "@/components/Sessao";
+import QuadroIdeias from "@/components/QuadroIdeias";
 
 export const metadata: Metadata = { title: "Ideias de conteúdo" };
 
 export default function Pagina() {
   return (
-    <EmBreve
-      titulo="Ideias de conteúdo"
-      icone="💡"
-      vibe="winx"
-      etapa="etapa 2"
-      cor="lilas"
-      privada
-      vaiTer={[
-        "Quadro estilo ClickUp: Ideia → Roteiro → Gravando → Editando → Postado",
-        "Cartões com título, descrição, formato, tema, link de referência e imagens",
-        "Arrastar a ideia pro calendário",
-      ]}
-    />
+    <div className="pagina vibe-winx pagina-larga">
+      <h1 className="titulo-pagina"><span className="emoji" aria-hidden>💡</span> Ideias de conteúdo <span className="selo-privado">🔒 só a Alana</span></h1>
+      <Trancado>
+        <QuadroIdeias />
+      </Trancado>
+    </div>
   );
 }

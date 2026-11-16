@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Efeitos from "@/components/Efeitos";
+import Sessao from "@/components/Sessao";
 import TelaCarregando from "@/components/TelaCarregando";
 import Nav from "@/components/Nav";
 import Player from "@/components/Player";
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#59c8ff",
+  themeColor: "#ff4fb8",
   width: "device-width",
   initialScale: 1,
 };
@@ -31,11 +32,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Pacifico&family=VT323&family=Playfair+Display:ital,wght@0,700;1,600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Pacifico&family=VT323&family=Playfair+Display:ital,wght@0,700;1,600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,800;1,6..96,700&family=Anton&display=swap"
         />
       </head>
       <body>
         <Efeitos>
+          <Sessao>
           <TelaCarregando />
           <FundoDecorado />
           <Nav />
@@ -44,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             feito com 💖, glitter e internet discada ✦ {SITE.curto} © {new Date().getFullYear()}
           </footer>
           <Player />
+          </Sessao>
         </Efeitos>
       </body>
     </html>

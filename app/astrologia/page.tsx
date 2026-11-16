@@ -10,7 +10,7 @@ export default function Pagina() {
       icone="🔮"
       vibe="h2o"
       etapa="etapa da astrologia"
-      cor="verde"
+      cor="azul"
       vaiTer={[
         "Horóscopo do dia de Escorpião, completinho mas rápido de ler",
         "Seu mapa astral inteiro, com a roda desenhada e o que cada planeta significa",

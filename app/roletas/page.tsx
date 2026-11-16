@@ -10,7 +10,7 @@ export default function Pagina() {
       icone="🎡"
       vibe="tv"
       etapa="etapa das roletas"
-      cor="azul"
+      cor="prata"
       vaiTer={[
         "Roleta de temas do repertório cultural: 10 min pra pesquisar, 1 min pra explicar",
         "Histórico dos temas que já caíram, com suas anotações",

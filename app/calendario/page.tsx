@@ -1,22 +1,16 @@
 import type { Metadata } from "next";
-import EmBreve from "@/components/EmBreve";
+import { Trancado } from "@/components/Sessao";
+import Calendario from "@/components/Calendario";
 
 export const metadata: Metadata = { title: "Calendário de posts" };
 
 export default function Pagina() {
   return (
-    <EmBreve
-      titulo="Calendário de posts"
-      icone="📅"
-      vibe="winx"
-      etapa="etapa 2"
-      cor="rosa"
-      privada
-      vaiTer={[
-        "Visão por semana (e por mês, se quiser)",
-        "O que postar em cada dia",
-        "Botão de ativar contador de dias até um evento",
-      ]}
-    />
+    <div className="pagina vibe-winx pagina-larga">
+      <h1 className="titulo-pagina"><span className="emoji" aria-hidden>📅</span> Calendário <span className="selo-privado">🔒 só a Alana</span></h1>
+      <Trancado>
+        <Calendario />
+      </Trancado>
+    </div>
   );
 }

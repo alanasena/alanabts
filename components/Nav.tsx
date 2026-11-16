@@ -4,10 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ABAS } from "@/config/site";
 import { useEfeitos } from "./Efeitos";
+import { useSessao } from "./Sessao";
 
 export default function Nav() {
   const rota = usePathname();
   const { noite, alternarNoite, sons, alternarSons } = useEfeitos();
+  const { usuaria, sair } = useSessao();
 
   return (
     <header className="topo">
@@ -18,6 +20,11 @@ export default function Nav() {
           <span className="logo-brilho">✦</span>
         </Link>
         <div className="topo-botoes">
+          {usuaria ? (
+            <button className="bolinha" onClick={sair} title="Sair da conta">🚪</button>
+          ) : (
+            <Link href="/entrar" className="bolinha" title="Entrar (só a Alana)">🔑</Link>
+          )}
           <button className="bolinha" onClick={alternarSons} title={sons ? "Desligar sons de clique" : "Ligar sons de clique"}>
             {sons ? "🔔" : "🔕"}
           </button>

@@ -1,22 +1,16 @@
 import type { Metadata } from "next";
-import EmBreve from "@/components/EmBreve";
+import { Trancado } from "@/components/Sessao";
+import PainelMetas from "@/components/PainelMetas";
 
 export const metadata: Metadata = { title: "Metas" };
 
 export default function Pagina() {
   return (
-    <EmBreve
-      titulo="Metas"
-      icone="⭐"
-      vibe="winx"
-      etapa="etapa 2"
-      cor="verde"
-      privada
-      vaiTer={[
-        "Metas do mês e do ano, separadas por área",
-        "Tarefas e compromissos do dia a dia",
-        "Resumo no fim do mês: cumpri 7 de 10 ✨",
-      ]}
-    />
+    <div className="pagina vibe-winx pagina-larga">
+      <h1 className="titulo-pagina"><span className="emoji" aria-hidden>⭐</span> Metas <span className="selo-privado">🔒 só a Alana</span></h1>
+      <Trancado>
+        <PainelMetas />
+      </Trancado>
+    </div>
   );
 }

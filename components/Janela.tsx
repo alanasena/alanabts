@@ -1,15 +1,19 @@
-// Janelinha estilo Windows XP
+// Janelinha estilo Windows XP, versão 2000s rosa (com fitinha colando no mural)
+export type CorJanela = "rosa" | "preto" | "oncinha" | "zebra" | "prata" | "azul" | "verde" | "lilas";
+
 type Props = {
   titulo: string;
   icone?: string;
-  cor?: "azul" | "rosa" | "verde" | "lilas" | "oncinha";
+  cor?: CorJanela;
+  fita?: boolean;
   className?: string;
   children: React.ReactNode;
 };
 
-export default function Janela({ titulo, icone = "✨", cor = "azul", className = "", children }: Props) {
+export default function Janela({ titulo, icone = "✨", cor = "rosa", fita = false, className = "", children }: Props) {
   return (
     <section className={`janela janela-${cor} ${className}`}>
+      {fita && <span className="fita" aria-hidden />}
       <div className="janela-titulo">
         <span className="janela-nome">
           <span aria-hidden>{icone}</span> {titulo}

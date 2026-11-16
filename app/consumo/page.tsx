@@ -10,7 +10,7 @@ export default function Pagina() {
       icone="🎧"
       vibe="y2k"
       etapa="próxima etapa"
-      cor="azul"
+      cor="prata"
       vaiTer={[
         "Músicas e playlist do momento",
         "O que você tá assistindo e lendo agora (séries, filmes, Corrida das Blogueiras...)",

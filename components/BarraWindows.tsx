@@ -65,6 +65,7 @@ export default function BarraWindows() {
           {atual.nome.toLowerCase().replace(/\s/g, "_")}.html
         </span>
       )}
+      <Link href="/" className="taskbar-aba msg">✉ nova mensagem (1)</Link>
       <span className="taskbar-bandeja">
         <button className="trocar-visual" onClick={trocarVisual} title="Trocar o visual do site">
           <Palette size={14} /> {visual === "oncinha" ? "visual oncinha" : "visual clarinho"}

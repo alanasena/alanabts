@@ -203,3 +203,62 @@ export function Cursor({ tamanho = 34 }: { tamanho?: number }) {
     </svg>
   );
 }
+
+export function Bolsa({ tamanho = 90 }: { tamanho?: number }) {
+  return (
+    <svg width={tamanho} height={tamanho} viewBox="0 0 100 100" aria-hidden>
+      <path d="M30 40 C30 18 70 18 70 40" fill="none" stroke="#c93a77" strokeWidth="6" />
+      <path d="M14 40 H86 L80 88 H20 Z" fill="#ff7cb6" stroke="#2e2a4f" strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M20 46 H80" stroke="#fff" strokeWidth="3" opacity=".6" />
+      <path d="M50 54 l4 9 10 1 -7 7 2 10 -9-5 -9 5 2-10 -7-7 10-1z" fill="#eef0f6" stroke="#2e2a4f" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+export function Colar({ tamanho = 90 }: { tamanho?: number }) {
+  return (
+    <svg width={tamanho} height={tamanho} viewBox="0 0 100 100" aria-hidden>
+      <path d="M14 10 C14 50 36 64 50 66 C64 64 86 50 86 10" fill="none" stroke="#a9aec2" strokeWidth="4" strokeDasharray="5 3" />
+      <path d="M50 58 l6 12 13 2 -10 9 3 13 -12-7 -12 7 3-13 -10-9 13-2z" fill="#e8eaf2" stroke="#2e2a4f" strokeWidth="2" />
+      <path d="M46 72 l3 -6" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function Bota({ tamanho = 90 }: { tamanho?: number }) {
+  return (
+    <svg width={tamanho} height={tamanho} viewBox="0 0 100 100" aria-hidden>
+      <path d="M34 8 H58 V60 L84 66 C92 68 92 80 84 80 H34 Z" fill="#ffc2de" stroke="#2e2a4f" strokeWidth="2.5" strokeLinejoin="round" />
+      <rect x="30" y="80" width="58" height="14" rx="4" fill="#fff" stroke="#2e2a4f" strokeWidth="2.5" />
+      {[18, 30, 42].map((y) => <path key={y} d={`M38 ${y} H54`} stroke="#c93a77" strokeWidth="2.5" strokeLinecap="round" />)}
+    </svg>
+  );
+}
+
+export function Notebook({ tamanho = 90 }: { tamanho?: number }) {
+  return (
+    <svg width={tamanho} height={tamanho * 0.8} viewBox="0 0 100 80" aria-hidden>
+      <rect x="16" y="6" width="68" height="48" rx="5" fill="#ff9fca" stroke="#2e2a4f" strokeWidth="2.5" />
+      <rect x="23" y="12" width="54" height="36" rx="2" fill="#fff3a6" stroke="#2e2a4f" strokeWidth="2" />
+      <circle cx="50" cy="30" r="11" fill="#ffd84f" stroke="#2e2a4f" strokeWidth="2" />
+      <circle cx="46" cy="27" r="1.6" fill="#2e2a4f" /><circle cx="54" cy="27" r="1.6" fill="#2e2a4f" />
+      <path d="M44 33 C47 37 53 37 56 33" stroke="#2e2a4f" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M6 58 H94 L86 74 H14 Z" fill="#ffc2de" stroke="#2e2a4f" strokeWidth="2.5" strokeLinejoin="round" />
+      {[0, 1, 2].map((l) => <path key={l} d={`M${22 + l * 3} ${62 + l * 4} H${78 - l * 3}`} stroke="#2e2a4f" strokeWidth="1.2" strokeDasharray="3 2" />)}
+    </svg>
+  );
+}
+
+export function Envelope({ tamanho = 60 }: { tamanho?: number }) {
+  return (
+    <svg width={tamanho} height={tamanho * 0.75} viewBox="0 0 80 60" aria-hidden>
+      <rect x="4" y="8" width="72" height="46" rx="4" fill="#fff" stroke="#2e2a4f" strokeWidth="2.5" />
+      <path d="M4 12 L40 36 L76 12" fill="none" stroke="#2e2a4f" strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M40 30 C34 24 30 22 30 18 C30 15 33 13 36 14 C38 15 39 16 40 18 C41 16 42 15 44 14 C47 13 50 15 50 18 C50 22 46 24 40 30Z" fill="#f26aa6" stroke="#2e2a4f" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+export function EstrelaLilas({ tamanho = 56 }: { tamanho?: number }) {
+  return <EstrelaBrilhante tamanho={tamanho} cor="#a77bf0" />;
+}

@@ -9,7 +9,7 @@ export const SITE = {
   // Dá pra trocar no botãozinho da barra lá embaixo.
   visual: "foto" as "foto" | "oncinha",
   // sua foto da janela principal: coloque o arquivo em public/ e escreva o nome aqui, ex: "/alana.jpg"
-  foto: "",
+  foto: "/alana.jpg",
 };
 
 export type Aba = {

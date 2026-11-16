@@ -8,6 +8,7 @@ import { useEfeitos } from "./Efeitos";
 import { useSessao } from "./Sessao";
 import Icone from "./Icone";
 import Faixa from "./Faixa";
+import Busca from "./Busca";
 
 export default function Nav() {
   const rota = usePathname();
@@ -38,6 +39,7 @@ export default function Nav() {
           })}
         </nav>
 
+        <Busca />
         <div className="topo-botoes">
           {usuaria ? (
             <button className="bolinha" onClick={sair} title="Sair da conta"><LogOut size={16} /></button>

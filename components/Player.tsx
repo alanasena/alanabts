@@ -81,7 +81,7 @@ export default function Player() {
     try {
       setMinhas(JSON.parse(localStorage.getItem(CHAVE) ?? "[]"));
     } catch {}
-    if (window.innerWidth < 640) setMinimizado(true);
+    if (window.innerWidth < 640 || window.location.pathname === "/") setMinimizado(true);
   }, []);
 
   const listaMusica: Fonte[] = [...PLAYLISTS_SPOTIFY, ...PLAYLISTS_YOUTUBE, ...minhas];
@@ -185,6 +185,24 @@ export default function Player() {
     setIdx(listaMusica.length);
     tocarFonte(nova);
   };
+
+  // avisa a janelinha "tocando agora" e obedece os botões dela
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("bts:mp3-estado", { detail: { titulo: titulo || fonte?.nome, tocando } }));
+  }, [titulo, tocando, fonte]);
+  const acoes = useRef({ playPause, pular });
+  acoes.current = { playPause, pular };
+  useEffect(() => {
+    const ouvir = (e: Event) => {
+      const a = (e as CustomEvent<string>).detail;
+      if (a === "play") acoes.current.playPause();
+      if (a === "passar") acoes.current.pular(1);
+      if (a === "voltar") acoes.current.pular(-1);
+      if (a === "estado") window.dispatchEvent(new CustomEvent("bts:mp3-estado", { detail: { titulo: titulo || fonte?.nome, tocando } }));
+    };
+    window.addEventListener("bts:mp3", ouvir);
+    return () => window.removeEventListener("bts:mp3", ouvir);
+  });
 
   if (minimizado) {
     return (

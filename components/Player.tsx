@@ -80,7 +80,6 @@ export default function Player() {
     try {
       setMinhas(JSON.parse(localStorage.getItem(CHAVE) ?? "[]"));
     } catch {}
-    if (window.innerWidth < 640 || window.location.pathname === "/") setMinimizado(true);
   }, []);
 
   const listaMusica: Fonte[] = [...PLAYLISTS_SPOTIFY, ...PLAYLISTS_YOUTUBE, ...minhas];
@@ -231,18 +230,16 @@ export default function Player() {
   const botaoCentro = () => (telaIpod === "tocando" ? playPause() : escolher(sel));
   const botaoLado = (dir: 1 | -1) => (telaIpod === "tocando" ? pular(dir) : mover(dir));
 
-  if (minimizado) {
-    return (
-      <button className="mp3-mini" onClick={() => setMinimizado(false)} aria-label="Abrir o MP3">
-        <img src="/ipod.webp" alt="" />
-      </button>
-    );
-  }
 
   const nomeTocando = titulo || fonte?.nome || "monta sua playlist ✦";
 
   return (
-    <div className="ipod">
+    <div className={`ipod ${minimizado ? "minimizado" : ""}`}>
+      {/* minimizado: só o iPod pequenininho, mas a música continua tocando */}
+      <button className="mp3-mini" onClick={() => setMinimizado(false)} aria-label="Abrir o MP3">
+        <img src="/ipod.webp" alt="" />
+        {tocando && <span className="mini-tocando">♪</span>}
+      </button>
       {/* vídeo/embed: fica sempre montado pra música não parar */}
       <div className={`mp3-video ${tela ? "visivel" : ""}`}>
         <div ref={caixaSpotify} className={origemAtual.current?.tipo === "spotify" ? "" : "oculto"} />
@@ -253,7 +250,6 @@ export default function Player() {
         <ChevronDown size={14} />
       </button>
       <img className="ipod-foto" src="/ipod.webp" alt="MP3 da Alana" draggable={false} />
-      <span className="ipod-nome" aria-hidden>alana</span>
 
       <div className="ipod-tela">
         <div className="ipod-barra">

@@ -8,12 +8,12 @@ export type Fonte = {
 };
 
 export const PLAYLISTS_SPOTIFY: Fonte[] = [
-  // 👇 troque pelo link da sua playlist favorita
+  // troque pelo link da sua playlist favorita
   { nome: "Today's Top Hits", url: "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M" },
 ];
 
 export const PLAYLISTS_YOUTUBE: Fonte[] = [
-  // 👇 cole aqui o link de uma playlist do YouTube, ex:
+  // cole aqui o link de uma playlist do YouTube, ex:
   // { nome: "Minha playlist", url: "https://www.youtube.com/playlist?list=XXXX" },
 ];
 

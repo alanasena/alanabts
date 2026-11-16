@@ -7,7 +7,7 @@ export default function Pagina() {
   return (
     <EmBreve
       titulo="Álbum"
-      icone="📸"
+      icone=""
       vibe="y2k"
       etapa="próxima etapa"
       cor="lilas"

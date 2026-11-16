@@ -10,13 +10,13 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default function Janela({ titulo, icone = "✨", cor = "rosa", fita = false, className = "", children }: Props) {
+export default function Janela({ titulo, icone = "", cor = "rosa", fita = false, className = "", children }: Props) {
   return (
     <section className={`janela janela-${cor} ${className}`}>
       {fita && <span className="fita" aria-hidden />}
       <div className="janela-titulo">
         <span className="janela-nome">
-          <span aria-hidden>{icone}</span> {titulo}
+          {icone.trim() && <span aria-hidden>{icone} </span>}{titulo}
         </span>
         <span className="janela-botoes" aria-hidden>
           <i className="min">_</i>

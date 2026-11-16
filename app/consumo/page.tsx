@@ -7,7 +7,7 @@ export default function Pagina() {
   return (
     <EmBreve
       titulo="Tô ouvindo & vendo"
-      icone="🎧"
+      icone=""
       vibe="y2k"
       etapa="próxima etapa"
       cor="prata"

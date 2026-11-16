@@ -33,7 +33,7 @@ export function diasAte(iso: string): number {
 
 export function textoFaltam(iso: string): string {
   const n = diasAte(iso);
-  if (n === 0) return "é HOJE! 🎉";
+  if (n === 0) return "é HOJE!";
   if (n === 1) return "falta 1 dia";
   if (n > 1) return `faltam ${n} dias`;
   return n === -1 ? "foi ontem" : `foi há ${-n} dias`;

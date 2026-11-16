@@ -7,7 +7,7 @@ export default function Pagina() {
   return (
     <EmBreve
       titulo="Bonequinha"
-      icone="👗"
+      icone=""
       vibe="stardoll"
       etapa="etapa da bonequinha"
       cor="rosa"

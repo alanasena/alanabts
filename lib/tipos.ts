@@ -41,11 +41,11 @@ export type Tarefa = {
 };
 
 export const COLUNAS = [
-  { id: "ideia", nome: "Ideia", icone: "💡" },
-  { id: "roteiro", nome: "Roteiro", icone: "📝" },
-  { id: "gravando", nome: "Gravando", icone: "🎬" },
-  { id: "editando", nome: "Editando", icone: "✂️" },
-  { id: "postado", nome: "Postado", icone: "✅" },
+  { id: "ideia", nome: "Ideia", icone: "" },
+  { id: "roteiro", nome: "Roteiro", icone: "" },
+  { id: "gravando", nome: "Gravando", icone: "" },
+  { id: "editando", nome: "Editando", icone: "" },
+  { id: "postado", nome: "Postado", icone: "" },
 ];
 
 export const FORMATOS = ["Reels", "Carrossel", "Foto", "Story", "Vídeo longo", "Outro"];
@@ -58,7 +58,7 @@ export const TEMAS_CONTEUDO = [
 export const AREAS = ["Estudo", "Carreira", "Conteúdo", "Saúde", "Treino", "Dinheiro", "Casa", "Pessoal"];
 
 export const TIPOS_EVENTO = [
-  { id: "post", nome: "Post", icone: "📸" },
-  { id: "compromisso", nome: "Compromisso", icone: "📌" },
-  { id: "evento", nome: "Evento", icone: "🎉" },
+  { id: "post", nome: "Post", icone: "" },
+  { id: "compromisso", nome: "Compromisso", icone: "" },
+  { id: "evento", nome: "Evento", icone: "" },
 ] as const;

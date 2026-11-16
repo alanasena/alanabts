@@ -7,7 +7,7 @@ export default function Pagina() {
   return (
     <EmBreve
       titulo="Astrologia"
-      icone="🔮"
+      icone=""
       vibe="h2o"
       etapa="etapa da astrologia"
       cor="azul"

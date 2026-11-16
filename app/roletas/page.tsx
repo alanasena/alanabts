@@ -7,7 +7,7 @@ export default function Pagina() {
   return (
     <EmBreve
       titulo="Roletas"
-      icone="🎡"
+      icone=""
       vibe="tv"
       etapa="etapa das roletas"
       cor="prata"

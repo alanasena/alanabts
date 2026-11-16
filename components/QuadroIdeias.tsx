@@ -20,7 +20,7 @@ export default function QuadroIdeias() {
 
   const carregar = useCallback(async () => {
     const { data, error } = await supabase().from("ideias").select("*").order("ordem").order("criado_em", { ascending: false });
-    if (error) setErro("Não consegui carregar as ideias 🥲");
+    if (error) setErro("Não consegui carregar as ideias");
     else setIdeias((data ?? []) as Ideia[]);
     setCarregando(false);
   }, []);
@@ -60,7 +60,7 @@ export default function QuadroIdeias() {
           <button className="botao-gloss">+ ideia</button>
         </form>
         <button className="botao-preto" onClick={() => setAberta({ titulo: "", coluna: "ideia", imagens: [] })}>
-          ✎ ideia completa
+          ideia completa
         </button>
         <select value={filtro} onChange={(e) => setFiltro(e.target.value)} aria-label="Filtrar por tema">
           <option value="">todos os temas</option>
@@ -90,7 +90,7 @@ export default function QuadroIdeias() {
               }}
             >
               <h2 className="coluna-titulo">
-                <span>{col.icone} {col.nome}</span>
+                <span>{col.nome}</span>
                 <span className="contagem">{cartoes.length}</span>
               </h2>
               <div className="coluna-cartoes">
@@ -178,7 +178,7 @@ function EditarIdeia({
       ? await sb.update(dados).eq("id", f.id).select().single()
       : await sb.insert({ ...dados, ordem: -Date.now() }).select().single();
     setSalvando(false);
-    if (error || !data) return setAviso("Não consegui salvar 🥲");
+    if (error || !data) return setAviso("Não consegui salvar");
     aoSalvar(data as Ideia);
   };
 
@@ -189,11 +189,11 @@ function EditarIdeia({
   };
 
   const agendar = async () => {
-    if (!f.id) return setAviso("Salva a ideia primeiro, depois agenda 😉");
+    if (!f.id) return setAviso("Salva a ideia primeiro, depois agenda");
     const { error } = await supabase()
       .from("eventos")
       .insert({ titulo: f.titulo, data: dataPost, tipo: "post", ideia_id: f.id });
-    setAviso(error ? "Não consegui agendar 🥲" : "Agendada no calendário! 📅");
+    setAviso(error ? "Não consegui agendar" : "Agendada no calendário!");
   };
 
   const subir = async (arquivos: FileList | null) => {
@@ -203,13 +203,13 @@ function EditarIdeia({
       const links = await Promise.all(Array.from(arquivos).map((a) => subirFoto(a, "ideias")));
       set("imagens", [...(f.imagens ?? []), ...links]);
     } catch {
-      setAviso("Não consegui subir a imagem 🥲");
+      setAviso("Não consegui subir a imagem");
     }
     setSubindo(false);
   };
 
   return (
-    <Modal titulo={f.id ? "editar_ideia.exe" : "nova_ideia.exe"} icone="💡" cor="rosa" aoFechar={aoFechar}>
+    <Modal titulo={f.id ? "editar_ideia.exe" : "nova_ideia.exe"} icone="" cor="rosa" aoFechar={aoFechar}>
       <div className="form-grade">
         <label className="largo">
           título
@@ -236,7 +236,7 @@ function EditarIdeia({
         <label>
           etapa
           <select value={f.coluna ?? "ideia"} onChange={(e) => set("coluna", e.target.value)}>
-            {COLUNAS.map((c) => <option key={c.id} value={c.id}>{c.icone} {c.nome}</option>)}
+            {COLUNAS.map((c) => <option key={c.id} value={c.id}>{c.nome}</option>)}
           </select>
         </label>
         <label>
@@ -267,7 +267,7 @@ function EditarIdeia({
 
         {f.id && (
           <div className="largo agendar">
-            <span className="rotulo">📅 jogar no calendário</span>
+            <span className="rotulo">jogar no calendário</span>
             <input type="date" value={dataPost} onChange={(e) => setDataPost(e.target.value)} />
             <button className="botao-preto" onClick={agendar}>agendar post</button>
           </div>

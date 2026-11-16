@@ -59,7 +59,7 @@ export default function Calendario() {
         <div className="contadores">
           {contadores.map((c) => (
             <button key={c.id} className="contador" onClick={() => setAberto(c)}>
-              <span className="contador-num">⏳ {textoFaltam(c.data)}</span>
+              <span className="contador-num">{textoFaltam(c.data)}</span>
               <span>{c.titulo}</span>
             </button>
           ))}
@@ -108,8 +108,8 @@ export default function Calendario() {
                         setAberto(e);
                       }}
                     >
-                      {icone(e.tipo)} {e.hora && <b>{e.hora.slice(0, 5)}</b>} {e.titulo}
-                      {e.contador && " ⏳"}
+                      {e.hora && <b>{e.hora.slice(0, 5)}</b>} {e.titulo}
+                      {e.contador && ""}
                     </button>
                   ))}
                 </div>
@@ -163,7 +163,7 @@ function EditarEvento({
     };
     const sb = supabase().from("eventos");
     const { error } = f.id ? await sb.update(dados).eq("id", f.id) : await sb.insert(dados);
-    if (error) return setAviso("Não consegui salvar 🥲");
+    if (error) return setAviso("Não consegui salvar");
     aoMudar();
   };
 
@@ -174,11 +174,11 @@ function EditarEvento({
   };
 
   return (
-    <Modal titulo={f.id ? "editar_dia.exe" : `${dataBonita(f.data)}.exe`} icone="📅" cor="zebra" aoFechar={aoFechar}>
+    <Modal titulo={f.id ? "editar_dia.exe" : `${dataBonita(f.data)}.exe`} icone="" cor="zebra" aoFechar={aoFechar}>
       <div className="tipos">
         {TIPOS_EVENTO.map((t) => (
           <button key={t.id} className={f.tipo === t.id ? "ativo" : ""} onClick={() => set("tipo", t.id)}>
-            {t.icone} {t.nome}
+            {t.nome}
           </button>
         ))}
       </div>
@@ -217,7 +217,7 @@ function EditarEvento({
         </label>
         <label className="largo checkbox-glitter">
           <input type="checkbox" checked={!!f.contador} onChange={(e) => set("contador", e.target.checked)} />
-          <span>⏳ ativar contador de dias até esse dia (aparece no início)</span>
+          <span>ativar contador de dias até esse dia (aparece no início)</span>
         </label>
       </div>
       {aviso && <p className="aviso">{aviso}</p>}

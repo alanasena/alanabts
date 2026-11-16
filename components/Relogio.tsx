@@ -24,7 +24,7 @@ export default function Relogio() {
 
   return (
     <div className="relogio">
-      <p className="saudacao">{saudacao(agora.getHours())}! ✨</p>
+      <p className="saudacao">{saudacao(agora.getHours())}!</p>
       <p className="data">{data}</p>
       <p className="hora pixel">{hora}</p>
     </div>

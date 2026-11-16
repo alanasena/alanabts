@@ -1,10 +1,21 @@
 import type { Metadata, Viewport } from "next";
+import "@fontsource/bodoni-moda/800-italic.css";
+import "@fontsource/bodoni-moda/700.css";
+import "@fontsource/playfair-display/700.css";
+import "@fontsource/playfair-display/700-italic.css";
+import "@fontsource/dm-sans/400.css";
+import "@fontsource/dm-sans/500.css";
+import "@fontsource/dm-sans/700.css";
+import "@fontsource/vt323/400.css";
+import "@fontsource/rubik/800-italic.css";
+import "@fontsource/rubik/900-italic.css";
 import "./globals.css";
 import Efeitos from "@/components/Efeitos";
 import Sessao from "@/components/Sessao";
 import TelaCarregando from "@/components/TelaCarregando";
 import Nav from "@/components/Nav";
 import Player from "@/components/Player";
+import BarraWindows from "@/components/BarraWindows";
 import FundoDecorado from "@/components/Adesivos";
 import { SITE } from "@/config/site";
 
@@ -15,7 +26,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ff4fb8",
+  themeColor: "#f26aa6",
   width: "device-width",
   initialScale: 1,
 };
@@ -25,15 +36,9 @@ const temaInicial = `try{if(localStorage.getItem('bts:tema')==='noite')document.
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="pt-BR" data-fundo={SITE.fundo} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: temaInicial }} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Pacifico&family=VT323&family=Playfair+Display:ital,wght@0,700;1,600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,800;1,6..96,700&family=Anton&display=swap"
-        />
       </head>
       <body>
         <Efeitos>
@@ -42,10 +47,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <FundoDecorado />
           <Nav />
           <main className="conteudo">{children}</main>
-          <footer className="rodape">
-            feito com 💖, glitter e internet discada ✦ {SITE.curto} © {new Date().getFullYear()}
-          </footer>
           <Player />
+            <BarraWindows />
           </Sessao>
         </Efeitos>
       </body>

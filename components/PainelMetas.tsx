@@ -7,12 +7,12 @@ import { MESES, hojeISO, dataBonita } from "@/lib/datas";
 import Janela from "./Janela";
 
 function mensagem(feitas: number, total: number) {
-  if (!total) return "Nenhuma meta ainda. Bora escrever? ✍️";
+  if (!total) return "Nenhuma meta ainda. Bora escrever?";
   const p = feitas / total;
-  if (p === 1) return "TODAS! Você é a diva do planejamento 👑";
-  if (p >= 0.7) return "Quase lá, tá arrasando 💅";
-  if (p >= 0.4) return "Metade do caminho, segue o baile ✨";
-  return "Devagarinho também chega 🐢💖";
+  if (p === 1) return "TODAS! Você é a diva do planejamento";
+  if (p >= 0.7) return "Quase lá, tá arrasando";
+  if (p >= 0.4) return "Metade do caminho, segue o baile";
+  return "Devagarinho também chega";
 }
 
 export default function PainelMetas() {
@@ -103,7 +103,7 @@ function ListaMetas({ periodo, ano, mes, titulo, cor }: { periodo: "mes" | "ano"
   const semArea = metas.filter((m) => !m.area || !AREAS.includes(m.area));
 
   return (
-    <Janela titulo={`${titulo}.exe`} icone={periodo === "mes" ? "⭐" : "👑"} cor={cor} fita>
+    <Janela titulo={`${titulo}.exe`} icone={periodo === "mes" ? "" : ""} cor={cor} fita>
       <div className="progresso">
         <div className="progresso-barra">
           <span style={{ width: `${metas.length ? (feitas / metas.length) * 100 : 0}%` }} />
@@ -179,9 +179,9 @@ function Tarefas() {
   const feitas = tarefas.filter((t) => t.concluida);
 
   return (
-    <Janela titulo="tarefas_e_compromissos.exe" icone="📌" cor="zebra" fita>
+    <Janela titulo="tarefas_e_compromissos.exe" icone="" cor="zebra" fita>
       <ul className="lista-check">
-        {pendentes.length === 0 && <li className="vazio">Nada pendente. Pode ir passar um gloss 💄</li>}
+        {pendentes.length === 0 && <li className="vazio">Nada pendente. Pode ir passar um gloss</li>}
         {pendentes.map((t) => (
           <li key={t.id} className={t.data && t.data < hoje ? "atrasada" : ""}>
             <label>
@@ -239,11 +239,11 @@ function ResumoMes({ ano, mes }: { ano: number; mes: number }) {
   const salvar = async () => {
     setStatus("salvando...");
     const { error } = await supabase().from("resumos_mes").upsert({ ano, mes, texto }, { onConflict: "ano,mes" });
-    setStatus(error ? "não salvou 🥲" : "salvo ✓");
+    setStatus(error ? "não salvou" : "salvo ✓");
   };
 
   return (
-    <Janela titulo={`querido_diario_${MESES[mes - 1]}.txt`} icone="📓" cor="preto" fita>
+    <Janela titulo={`querido_diario_${MESES[mes - 1]}.txt`} icone="" cor="preto" fita>
       <p className="nota-pequena" style={{ marginTop: 0 }}>Como foi o mês? O que deu certo, o que ficou pro próximo...</p>
       <textarea className="diario" rows={7} value={texto} onChange={(e) => setTexto(e.target.value)} onBlur={salvar} placeholder="querido diário..." />
       <div className="modal-acoes">

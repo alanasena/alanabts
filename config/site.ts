@@ -5,6 +5,8 @@ export const SITE = {
   curto: "Alana BTS",
   instagram: "alanabts_",
   signo: "Escorpião",
+  // fundo do site: "liso" (rosinha clarinho) ou "oncinha" (oncinha no fundo todo)
+  fundo: "oncinha" as "liso" | "oncinha",
 };
 
 export type Aba = {
@@ -15,18 +17,18 @@ export type Aba = {
 };
 
 export const ABAS: Aba[] = [
-  { href: "/", nome: "Início", icone: "🏠" },
-  { href: "/noticias", nome: "Notícias", icone: "📰" },
-  { href: "/astrologia", nome: "Astrologia", icone: "🔮" },
-  { href: "/sobre", nome: "Sobre mim", icone: "💋" },
-  { href: "/blog", nome: "Blog", icone: "✍️" },
-  { href: "/album", nome: "Álbum", icone: "📸" },
-  { href: "/wishlist", nome: "Wishlist", icone: "🐆" },
-  { href: "/consumo", nome: "Tô ouvindo & vendo", icone: "🎧" },
-  { href: "/favoritos", nome: "Favoritos", icone: "📺" },
-  { href: "/bonequinha", nome: "Bonequinha", icone: "👗" },
-  { href: "/roletas", nome: "Roletas", icone: "🎡" },
-  { href: "/ideias", nome: "Ideias", icone: "💡", privada: true },
-  { href: "/calendario", nome: "Calendário", icone: "📅", privada: true },
-  { href: "/metas", nome: "Metas", icone: "⭐", privada: true },
+  { href: "/", nome: "Início", icone: "inicio" },
+  { href: "/noticias", nome: "Notícias", icone: "noticias" },
+  { href: "/astrologia", nome: "Astrologia", icone: "astrologia" },
+  { href: "/sobre", nome: "Sobre mim", icone: "sobre" },
+  { href: "/blog", nome: "Blog", icone: "blog" },
+  { href: "/album", nome: "Álbum", icone: "album" },
+  { href: "/wishlist", nome: "Wishlist", icone: "wishlist" },
+  { href: "/consumo", nome: "Tô ouvindo & vendo", icone: "consumo" },
+  { href: "/favoritos", nome: "Favoritos", icone: "favoritos" },
+  { href: "/bonequinha", nome: "Bonequinha", icone: "bonequinha" },
+  { href: "/roletas", nome: "Roletas", icone: "roletas" },
+  { href: "/ideias", nome: "Ideias", icone: "ideias", privada: true },
+  { href: "/calendario", nome: "Calendário", icone: "calendario", privada: true },
+  { href: "/metas", nome: "Metas", icone: "metas", privada: true },
 ];

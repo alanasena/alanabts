@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Ideias de conteúdo" };
 export default function Pagina() {
   return (
     <div className="pagina vibe-winx pagina-larga">
-      <h1 className="titulo-pagina"><span className="emoji" aria-hidden>💡</span> Ideias de conteúdo <span className="selo-privado">🔒 só a Alana</span></h1>
+      <h1 className="titulo-pagina">Ideias de conteúdo <span className="selo-privado">só a Alana</span></h1>
       <Trancado>
         <QuadroIdeias />
       </Trancado>

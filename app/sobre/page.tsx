@@ -7,7 +7,7 @@ export default function Pagina() {
   return (
     <EmBreve
       titulo="Sobre mim"
-      icone="💋"
+      icone=""
       vibe="revista"
       etapa="próxima etapa"
       cor="rosa"

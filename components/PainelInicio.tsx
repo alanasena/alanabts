@@ -10,8 +10,8 @@ import { useSessao } from "./Sessao";
 function SoAlana({ href }: { href: string }) {
   return (
     <div className="em-breve-mini">
-      <p className="pixel">🔒 só a Alana vê</p>
-      <p>Essa parte é secreta 🤫</p>
+      <p className="pixel">só a Alana vê</p>
+      <p>Essa parte é secreta</p>
       <Link href={href} className="botao-gloss">entrar</Link>
     </div>
   );
@@ -44,7 +44,7 @@ export function ProximoPost() {
           {posts.map((p, i) => (
             <li key={p.id} className={i === 0 ? "destaque" : ""}>
               <span className="quando">{p.data === hojeISO() ? "HOJE" : dataBonita(p.data)}{p.hora && ` · ${p.hora.slice(0, 5)}`}</span>
-              <span>📸 {p.titulo}</span>
+              <span>{p.titulo}</span>
             </li>
           ))}
         </ul>
@@ -52,7 +52,7 @@ export function ProximoPost() {
       {contadores.length > 0 && (
         <ul className="lista-contadores">
           {contadores.map((c) => (
-            <li key={c.id}>⏳ <b>{textoFaltam(c.data)}</b> pra {c.titulo}</li>
+            <li key={c.id}><b>{textoFaltam(c.data)}</b> pra {c.titulo}</li>
           ))}
         </ul>
       )}

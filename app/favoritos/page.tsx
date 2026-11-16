@@ -7,7 +7,7 @@ export default function Pagina() {
   return (
     <EmBreve
       titulo="Favoritos"
-      icone="📺"
+      icone=""
       vibe="tv"
       etapa="próxima etapa"
       cor="lilas"

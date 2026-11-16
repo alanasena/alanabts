@@ -32,7 +32,7 @@ export default function Sessao({ children }: { children: React.ReactNode }) {
   const entrar = async (email: string, senha: string) => {
     const { error } = await supabase().auth.signInWithPassword({ email, password: senha });
     if (!error) return null;
-    return error.message.includes("Invalid") ? "E-mail ou senha errados 🥲" : "Não consegui entrar agora. Tenta de novo.";
+    return error.message.includes("Invalid") ? "E-mail ou senha errados" : "Não consegui entrar agora. Tenta de novo.";
   };
   const sair = async () => {
     await supabase().auth.signOut();
@@ -79,9 +79,9 @@ export function Trancado({ children }: { children: React.ReactNode }) {
   if (!usuaria)
     return (
       <div className="trancado">
-        <Janela titulo="area_secreta.exe" icone="🔒" cor="preto" fita>
+        <Janela titulo="area_secreta.exe" icone="" cor="preto" fita>
           <p className="trancado-msg">
-            Ops! Essa parte é só da <b>Alana</b> 💅<br />
+            Ops! Essa parte é só da <b>Alana</b>.<br />
             Se você é a Alana, entra aqui:
           </p>
           <FormEntrar />

@@ -12,13 +12,13 @@ export default async function Noticias() {
 
   return (
     <div className="pagina vibe-aero">
-      <h1 className="titulo-pagina">📰 Notícias do dia</h1>
-      <p className="subtitulo">Atualiza sozinha a cada 30 minutos. Sem tigrinho e sem subcelebridade. 💅</p>
+      <h1 className="titulo-pagina">Notícias do dia</h1>
+      <p className="subtitulo">Atualiza sozinha a cada 30 minutos. Sem tigrinho e sem subcelebridade.</p>
       <div className="grade-noticias">
         {blocos.map((b, i) => (
           <Janela key={b.id} titulo={`${b.nome}`} icone={b.icone} cor={CORES[i % CORES.length]}>
             {b.noticias.length === 0 ? (
-              <p className="nota-pequena">Não consegui buscar agora. Tenta de novo daqui a pouco 📡</p>
+              <p className="nota-pequena">Não consegui buscar agora. Tenta de novo daqui a pouco</p>
             ) : (
               <ul className="lista-noticias">
                 {b.noticias.map((n) => (

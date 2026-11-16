@@ -11,6 +11,7 @@ import "@fontsource/rubik/800-italic.css";
 import "@fontsource/rubik/900-italic.css";
 import "@fontsource/space-mono/400.css";
 import "@fontsource/space-mono/700.css";
+import "@fontsource/special-elite/400.css";
 import "./globals.css";
 import Efeitos from "@/components/Efeitos";
 import Sessao from "@/components/Sessao";

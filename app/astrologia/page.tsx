@@ -2,16 +2,18 @@ import type { Metadata } from "next";
 import Janela from "@/components/Janela";
 import RodaMapa from "@/components/RodaMapa";
 import Compatibilidade from "@/components/Compatibilidade";
+import TabelasMapa from "@/components/TabelasMapa";
 import { CeuDeHoje, HoroscopoDoDia, PrevisaoMes } from "@/components/HoroscopoDoDia";
 import { LuaDeHoje } from "@/components/HojeNoCeu";
-import { casaDe, casas, formatarGrau, posicoes, SIGNOS, SIMBOLOS, signoDe } from "@/lib/astro";
-import { BIG3, INTERPRETACOES, LINKS_ASTRO, NASCIMENTO, SOBRE_ESCORPIAO, VISUAL_H2O } from "@/config/astrologia";
+import { casas, posicoes, SIGNOS, SIMBOLOS, signoDe } from "@/lib/astro";
+import { CASA_DO_PLANETA } from "@/config/mapa-leituras";
+import { BIG3, LINKS_ASTRO, NASCIMENTO, SOBRE_ESCORPIAO, VISUAL_H2O } from "@/config/astrologia";
 
 export const metadata: Metadata = { title: "Astrologia" };
 
 export default function Astrologia() {
   const { asc, mc, cuspides } = casas(NASCIMENTO.data, NASCIMENTO.lat, NASCIMENTO.lon);
-  const planetas = posicoes(NASCIMENTO.data).map((p) => ({ ...p, casa: casaDe(p.lon, cuspides) }));
+  const planetas = posicoes(NASCIMENTO.data).map((p) => ({ ...p, casa: CASA_DO_PLANETA[p.id] }));
   const sol = planetas[0];
   const lua = planetas[1];
 
@@ -92,41 +94,11 @@ export default function Astrologia() {
           <RodaMapa planetas={planetas} asc={asc} mc={mc} cuspides={cuspides} />
           <img className="rc astro-estrela" src="/h2o/estrela-laranja.webp" alt="" />
         </Janela>
-        <Janela titulo="seus planetas" cor="lilas" className="j-tabela">
-          <table className="tabela-mapa">
-            <tbody>
-              {planetas.map((p) => (
-                <tr key={p.id}>
-                  <td className="simbolo">{p.simbolo}</td>
-                  <td>{p.nome}</td>
-                  <td>{SIMBOLOS[p.signo]} {SIGNOS[p.signo]}</td>
-                  <td className="grau">{formatarGrau(p.lon)}{p.retro && " ℞"}</td>
-                  <td className="casa">casa {p.casa}</td>
-                </tr>
-              ))}
-              <tr><td className="simbolo">AC</td><td>Ascendente</td><td>{SIMBOLOS[signoDe(asc)]} {SIGNOS[signoDe(asc)]}</td><td className="grau">{formatarGrau(asc)}</td><td /></tr>
-              <tr><td className="simbolo">MC</td><td>Meio do Céu</td><td>{SIMBOLOS[signoDe(mc)]} {SIGNOS[signoDe(mc)]}</td><td className="grau">{formatarGrau(mc)}</td><td /></tr>
-            </tbody>
-          </table>
-          <p className="nota-pequena">casas no sistema Placidus · 9/11/2004 às 17h40 em {NASCIMENTO.local}</p>
+        <Janela titulo="meu mapa por dentro" cor="lilas" className="j-tabela">
+          <TabelasMapa planetas={planetas.map((p) => ({ id: p.id, lon: p.lon }))} asc={asc} mc={mc} cuspides={cuspides} />
+          <p className="nota-pequena">9/11/2004 às 17h40 em {NASCIMENTO.local} · casas no sistema Placidus</p>
         </Janela>
       </section>
-
-      {/* Interpretações */}
-      <Janela titulo="o que cada parte do seu mapa diz" cor="rosa" className="j-interpretacoes">
-        <div className="interpretacoes">
-          {[...planetas.map((p) => p.id), "Asc", "MC"].map((id) => {
-            const i = INTERPRETACOES[id];
-            const p = planetas.find((x) => x.id === id);
-            return (
-              <details key={id} className="interp" open={id === "Sun"}>
-                <summary><span className="simbolo">{p?.simbolo ?? (id === "Asc" ? "AC" : "MC")}</span> {i.titulo}</summary>
-                <p>{i.texto}</p>
-              </details>
-            );
-          })}
-        </div>
-      </Janela>
 
       <div className="h2o-divisor" aria-hidden>
         <img src="/h2o/concha-listrada.webp" alt="" /><img src="/h2o/plumeria-branca.webp" alt="" /><img src="/h2o/estrela-creme.webp" alt="" /><img src="/h2o/hibisco-rosa.webp" alt="" /><img src="/h2o/lirio.webp" alt="" />

@@ -173,11 +173,17 @@ export default function Player() {
   useEffect(() => {
     window.dispatchEvent(new CustomEvent("bts:mp3-estado", { detail: { titulo: titulo || fonte?.nome, tocando } }));
   }, [titulo, tocando, fonte]);
-  const acoes = useRef({ playPause, pular });
-  acoes.current = { playPause, pular };
+  const acoes = useRef({ playPause, pular, tocarFonte });
+  acoes.current = { playPause, pular, tocarFonte };
   useEffect(() => {
     const ouvir = (e: Event) => {
-      const a = (e as CustomEvent<string>).detail;
+      const a = (e as CustomEvent<string | { tocar: Fonte }>).detail;
+      // outras páginas podem pedir pra tocar um link (ex: "tô ouvindo")
+      if (typeof a === "object" && a?.tocar) {
+        acoes.current.tocarFonte(a.tocar);
+        setTelaIpod("tocando");
+        return;
+      }
       if (a === "play") acoes.current.playPause();
       if (a === "passar") acoes.current.pular(1);
       if (a === "voltar") acoes.current.pular(-1);

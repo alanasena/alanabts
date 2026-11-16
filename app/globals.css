@@ -2107,3 +2107,110 @@ body:has(.pagina-wish) .fundo { display: none; }
 .it-ad { position: absolute; z-index: 3; width: 17cqw; right: 4cqw; top: 2cqw; transform: rotate(14deg); filter: drop-shadow(1cqw 1.5cqw 1cqw rgba(0,0,0,.25)); }
 .it-rodape { position: absolute; left: 5cqw; bottom: 2.2cqw; margin: 0; font: 700 2.4cqw/1 "DM Sans", sans-serif; letter-spacing: .6cqw; text-transform: uppercase; color: #999; }
 .verso .it-rodape { left: auto; right: 5cqw; }
+/* =========================================================
+   TÔ OUVINDO & VENDO — Frutiger Aero + Windows Media Player 11
+   ========================================================= */
+html[data-visual] body:has(.pagina-aero), html[data-visual][data-tema="noite"] body:has(.pagina-aero) { background: #0b4f8f; }
+body:has(.pagina-aero) .fundo { display: none; }
+.pagina-aero::before { content: ""; position: fixed; inset: 0; z-index: -1; background: url("/aero/fundo.webp") center / cover no-repeat; }
+html[data-tema="noite"] .pagina-aero::before { background-image: url("/aero/fundo2.webp"); filter: brightness(.55) saturate(1.2); }
+.wmp-pagina { max-width: 1040px; margin: 0 auto; padding: 10px 10px 40px; font-family: "Segoe UI", "DM Sans", Arial, sans-serif; }
+
+.wmp {
+  border-radius: 10px; overflow: hidden; color: #e8f4ff;
+  background: linear-gradient(#1c2430, #0b0f16);
+  border: 1px solid rgba(255,255,255,.55); box-shadow: 0 0 0 1px #000, 0 20px 50px rgba(0,30,80,.55), inset 0 1px 0 rgba(255,255,255,.4);
+}
+.wmp-titulo {
+  position: relative; display: flex; align-items: center; gap: 8px; padding: 7px 10px; font-size: 13px; color: #fff; text-shadow: 0 0 6px rgba(120,200,255,.9);
+  background: linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,.06) 50%, rgba(0,0,0,.15) 51%), linear-gradient(90deg, rgba(60,130,200,.85), rgba(40,80,140,.85));
+}
+.wmp-logo { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; color: #fff; background: radial-gradient(circle at 35% 30%, #ffcf7a, #ff8a00 60%, #b84c00); box-shadow: 0 0 6px #ffae3d; }
+.wmp-janela { margin-left: auto; display: flex; gap: 3px; }
+.wmp-janela i { width: 26px; height: 17px; border-radius: 3px; border: 1px solid rgba(0,0,0,.5); background: linear-gradient(rgba(255,255,255,.55), rgba(255,255,255,.1) 50%, rgba(0,0,0,.1) 51%), #3b6ea8; }
+.wmp-janela i.x { width: 42px; background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.1) 50%, rgba(0,0,0,.1) 51%), #c8352a; }
+
+.wmp-abas { display: flex; flex-wrap: wrap; gap: 2px; padding: 4px 6px 0; background: linear-gradient(#2a3442, #121820); border-bottom: 1px solid #000; }
+.wmp-abas button {
+  display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 6px 6px 0 0; padding: 9px 16px; color: #cfe6ff; font: 600 13.5px/1 "Segoe UI", "DM Sans", sans-serif; cursor: pointer;
+  background: linear-gradient(rgba(255,255,255,.12), rgba(255,255,255,0) 50%, rgba(0,0,0,.2));
+}
+.wmp-abas button:hover { color: #fff; text-shadow: 0 0 8px #6cf; }
+.wmp-abas button.ativa { color: #fff; background: linear-gradient(rgba(140,210,255,.55), rgba(40,120,210,.55) 50%, rgba(10,60,130,.75) 51%, rgba(40,140,230,.6)); box-shadow: 0 0 12px rgba(80,180,255,.7), inset 0 1px 0 rgba(255,255,255,.6); }
+.wmp-abas .wmp-add { margin-left: auto; background: linear-gradient(rgba(190,255,140,.55), rgba(70,170,40,.7) 50%, rgba(30,110,20,.85) 51%); color: #fff; }
+
+.wmp-corpo { min-height: 460px; background: radial-gradient(ellipse at 50% 120%, rgba(30,120,220,.35), transparent 60%), linear-gradient(#0d131c, #050709); }
+.wmp-corpo.musica { display: grid; grid-template-columns: 1fr 300px; }
+.wmp-aviso { padding: 40px; text-align: center; color: #9fc6ec; }
+
+/* palco com visualizador */
+.wmp-palco { position: relative; display: grid; place-items: center; padding: 26px; overflow: hidden; }
+.wmp-vis { position: absolute; left: 0; right: 0; bottom: 0; height: 70%; display: flex; align-items: flex-end; gap: 4px; padding: 0 14px; opacity: .55; }
+.wmp-vis i { flex: 1; height: 12%; border-radius: 3px 3px 0 0; background: linear-gradient(#b8ff5c, #2bd4ff 50%, #2a5cff); box-shadow: 0 0 10px rgba(60,200,255,.6); }
+.wmp-vis.on i { animation: barra 900ms ease-in-out infinite alternate; }
+@keyframes barra { 0% { height: 8%; } 40% { height: 65%; } 70% { height: 30%; } 100% { height: 90%; } }
+.wmp-capa-grande { position: relative; z-index: 1; display: grid; grid-template-columns: 240px 1fr; gap: 24px; align-items: center; max-width: 620px; }
+.wmp-capa-grande > img, .wmp-capa-grande > .sem-capa { width: 240px; height: 240px; object-fit: cover; border-radius: 4px; box-shadow: 0 0 0 1px rgba(255,255,255,.4), 0 10px 30px rgba(0,0,0,.6); -webkit-box-reflect: below 4px linear-gradient(transparent 65%, rgba(255,255,255,.28)); }
+.sem-capa { display: grid; place-items: center; background: linear-gradient(135deg, #2a6fd6, #0b2a5c); color: rgba(255,255,255,.7); }
+.wmp-info { display: grid; gap: 6px; }
+.wmp-info b { font: 600 28px/1.1 "Segoe UI", "DM Sans", sans-serif; color: #fff; text-shadow: 0 0 12px rgba(80,180,255,.7); }
+.wmp-info span { font-size: 16px; color: #9fd0ff; }
+.wmp-info em { justify-self: start; font-style: normal; font-size: 12px; padding: 3px 10px; border-radius: 10px; background: rgba(120,220,90,.25); color: #c9ff9a; border: 1px solid rgba(160,255,120,.5); }
+.wmp-info p { margin: 6px 0 0; font-size: 14.5px; line-height: 1.45; color: #d8eaff; font-style: italic; }
+
+/* lista do lado */
+.wmp-playlist { display: flex; flex-direction: column; gap: 2px; padding: 8px; border-left: 1px solid #000; background: linear-gradient(#141c27, #0a0f15); box-shadow: inset 1px 0 0 rgba(255,255,255,.08); max-height: 520px; overflow-y: auto; }
+.wmp-pl-titulo { margin: 0 0 6px; padding: 6px 8px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #7fb8ee; border-bottom: 1px solid rgba(255,255,255,.1); }
+.wmp-playlist button { display: grid; grid-template-columns: 38px 1fr auto; align-items: center; gap: 8px; padding: 5px 6px; border: 1px solid transparent; border-radius: 4px; background: none; color: #dbeeff; text-align: left; cursor: pointer; }
+.wmp-playlist button:hover { background: rgba(80,160,255,.12); }
+.wmp-playlist button.sel { background: linear-gradient(rgba(120,200,255,.35), rgba(40,120,220,.3)); border-color: rgba(140,210,255,.6); }
+.wmp-playlist button.antiga { opacity: .55; }
+.wmp-playlist img, .mini-sem { width: 38px; height: 38px; object-fit: cover; border-radius: 3px; display: grid; place-items: center; background: #1d3556; }
+.pl-txt { display: grid; min-width: 0; }
+.pl-txt b { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pl-txt small { font-size: 11.5px; color: #8fb8e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pl-editar { color: #8fb8e0; }
+.wmp-vazio { color: #6f93b8; font-size: 13px; padding: 8px; }
+
+/* biblioteca */
+.wmp-biblioteca { padding: 16px 18px 22px; }
+.wmp-secao { margin: 6px 0 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: #7fb8ee; border-bottom: 1px solid rgba(255,255,255,.1); padding-bottom: 6px; }
+.wmp-grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; margin-bottom: 18px; }
+.wmp-card { display: grid; gap: 4px; align-content: start; padding: 8px; border-radius: 6px; border: 1px solid transparent; cursor: pointer; }
+.wmp-card:hover { background: rgba(80,160,255,.1); }
+.wmp-card.sel { background: linear-gradient(rgba(120,200,255,.25), rgba(40,120,220,.18)); border-color: rgba(140,210,255,.55); }
+.card-capa { position: relative; aspect-ratio: 2 / 3; border-radius: 4px; overflow: hidden; box-shadow: 0 6px 16px rgba(0,0,0,.6); }
+.card-capa img, .card-capa .sem-capa { width: 100%; height: 100%; object-fit: cover; }
+.card-status { position: absolute; left: 6px; bottom: 6px; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; color: #fff; background: linear-gradient(rgba(170,255,120,.9), rgba(60,170,30,.95)); box-shadow: 0 0 8px rgba(120,255,80,.6); }
+.wmp-card b { font-size: 14px; color: #fff; }
+.wmp-card small { font-size: 12px; color: #8fb8e0; }
+.wmp-card p { margin: 2px 0 0; font-size: 12.5px; font-style: italic; color: #cfe3fa; line-height: 1.35; }
+.card-acoes { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.card-acoes a, .card-acoes button { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 10px; border: 1px solid rgba(140,210,255,.5); background: linear-gradient(rgba(255,255,255,.2), rgba(255,255,255,0)), #1e4f8f; color: #fff; font-size: 11.5px; text-decoration: none; cursor: pointer; }
+
+/* barra de controles de cristal */
+.wmp-controles { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 10px 16px; background: linear-gradient(rgba(255,255,255,.18), rgba(255,255,255,.03) 45%, rgba(0,0,0,.4) 46%), #121a24; border-top: 1px solid rgba(255,255,255,.25); }
+.wmp-tocando { display: grid; min-width: 0; }
+.wmp-tocando b { font-size: 13px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wmp-tocando small { font-size: 11.5px; color: #8fb8e0; }
+.wmp-botoes { display: flex; align-items: center; gap: 6px; }
+.wmp-botoes button { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(0,0,0,.6); color: #dfefff; cursor: pointer; background: radial-gradient(circle at 50% 20%, rgba(255,255,255,.55), rgba(255,255,255,.05) 55%), #2a3646; box-shadow: inset 0 1px 0 rgba(255,255,255,.4); }
+.wmp-botoes button:hover { color: #fff; box-shadow: 0 0 10px rgba(80,180,255,.8); }
+.wmp-botoes .play { width: 56px; height: 56px; margin: 0 4px; color: #fff; background: radial-gradient(circle at 50% 18%, rgba(255,255,255,.8), rgba(255,255,255,.1) 50%), radial-gradient(circle at 50% 80%, #5fd0ff, #0a5fc4 70%); box-shadow: 0 0 16px rgba(60,170,255,.85), inset 0 -3px 6px rgba(0,0,40,.5); }
+.wmp-botoes .dec { opacity: .6; cursor: default; }
+.wmp-volume { justify-self: end; display: flex; align-items: center; gap: 8px; color: #8fb8e0; }
+.wmp-volume span { width: 90px; height: 5px; border-radius: 3px; background: #05080c; box-shadow: inset 0 1px 2px #000; }
+.wmp-volume i { display: block; width: 70%; height: 100%; border-radius: 3px; background: linear-gradient(90deg, #2bd4ff, #b8ff5c); }
+.wmp-dica { margin: 10px auto 0; max-width: 700px; text-align: center; font-size: 13px; color: #fff; text-shadow: 0 1px 4px rgba(0,40,100,.8); }
+
+@media (max-width: 760px) {
+  .wmp-corpo.musica { grid-template-columns: 1fr; }
+  .wmp-capa-grande { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .wmp-capa-grande > img, .wmp-capa-grande > .sem-capa { width: 200px; height: 200px; }
+  .wmp-info em { justify-self: center; }
+  .wmp-playlist { border-left: 0; border-top: 1px solid #000; max-height: none; }
+  .wmp-abas button { padding: 8px 10px; font-size: 12.5px; }
+  .wmp-controles { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .wmp-volume { display: none; }
+  .wmp-grade { grid-template-columns: repeat(2, 1fr); }
+}

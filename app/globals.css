@@ -1350,3 +1350,10 @@ html[data-tema="noite"] .h2o-capa-foto.noite { display: block; }
 .h2o-capa-foto.dia { object-position: center 18%; }
 html:not([data-tema="noite"]) .h2o-capa-brilho { background: radial-gradient(ellipse at 50% 60%, rgba(10,60,90,.35), transparent 70%), linear-gradient(180deg, transparent 50%, rgba(10,90,120,.45)); }
 html:not([data-tema="noite"]) .astro .h2o-capa .titulo-pagina { text-shadow: 0 2px 0 rgba(0,70,100,.5), 0 0 22px rgba(0,80,120,.55), 0 0 40px rgba(255,140,200,.45); }
+/* versão "areia": fundo de areia + mar (praia vista de cima) */
+html[data-visual]:not([data-tema="noite"]) body:has(.h2o-areia) {
+  background: linear-gradient(rgba(255,250,240,.08), rgba(255,250,240,.08)), url("/h2o/praia-alto.webp") center / cover fixed;
+}
+/* versão "praia": capa de dia com a foto da praia (areia + mar) */
+.h2o-capa-foto.dia { object-position: center 45% !important; }
+html:not([data-tema="noite"]) .h2o-praia .h2o-capa-brilho { background: linear-gradient(90deg, rgba(10,60,80,.15), rgba(10,60,80,.05) 50%, rgba(0,90,140,.25)), radial-gradient(ellipse at 50% 55%, rgba(10,60,90,.35), transparent 65%); }

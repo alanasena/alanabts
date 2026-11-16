@@ -8,6 +8,11 @@ export const NASCIMENTO = {
   lon: -38.3725,
 };
 
+// Visual da capa/fundo da astrologia:
+// "areia" = fundo de areia + mar, capa de dia com coqueiros
+// "praia" = fundo de água, capa de dia com a foto da praia (areia + mar)
+export const VISUAL_H2O: "areia" | "praia" = "praia";
+
 // ---------- SEU MAPA ----------
 export const BIG3 = {
   sol: "Escorpião: intensa, observadora e leal até o fim. Você sente tudo em dobro e não aceita nada pela metade.",

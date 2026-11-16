@@ -5,7 +5,7 @@ import Compatibilidade from "@/components/Compatibilidade";
 import { CeuDeHoje, HoroscopoDoDia, PrevisaoMes } from "@/components/HoroscopoDoDia";
 import { LuaDeHoje } from "@/components/HojeNoCeu";
 import { casaDe, casas, formatarGrau, posicoes, SIGNOS, SIMBOLOS, signoDe } from "@/lib/astro";
-import { BIG3, INTERPRETACOES, LINKS_ASTRO, NASCIMENTO, SOBRE_ESCORPIAO } from "@/config/astrologia";
+import { BIG3, INTERPRETACOES, LINKS_ASTRO, NASCIMENTO, SOBRE_ESCORPIAO, VISUAL_H2O } from "@/config/astrologia";
 
 export const metadata: Metadata = { title: "Astrologia" };
 
@@ -16,7 +16,7 @@ export default function Astrologia() {
   const lua = planetas[1];
 
   return (
-    <div className="pagina astro">
+    <div className={`pagina astro h2o-${VISUAL_H2O}`}>
       <div className="mar" aria-hidden>
         {Array.from({ length: 14 }, (_, i) => (
           <span key={i} className="bolha-mar" style={{ left: `${(i * 37) % 100}%`, width: 8 + ((i * 7) % 20), height: 8 + ((i * 7) % 20), animationDelay: `${(i * 1.3) % 10}s`, animationDuration: `${10 + ((i * 3) % 8)}s` }} />
@@ -25,7 +25,7 @@ export default function Astrologia() {
 
       {/* capa: lua cheia sobre o mar + colagem */}
       <section className="h2o-capa">
-        <img className="h2o-capa-foto dia" src="/h2o/lagoa.webp" alt="" />
+        <img className="h2o-capa-foto dia" src="/h2o/praia-coqueiros.webp" alt="" />
         <img className="h2o-capa-foto noite" src="/h2o/lua-mar.webp" alt="" />
         <div className="h2o-capa-brilho" />
         <img className="rc r-hib1" src="/h2o/hibisco-pink.webp" alt="" />

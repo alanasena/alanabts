@@ -1175,3 +1175,178 @@ html[data-visual="foto"] .progresso-barra { border: var(--borda); }
 html[data-visual="foto"] .progresso-barra span { background: repeating-linear-gradient(-45deg, #ff8fc0 0 8px, #ffc2de 8px 16px); }
 html[data-visual="foto"] .grupo-area h3 { color: #6a7fd1; }
 html[data-visual="foto"] .carregando-dados { background: #fff; color: #2e2a4f; border: var(--borda); }
+
+/* =========================================================
+   ASTROLOGIA
+   ========================================================= */
+.astro { display: grid; gap: 26px; }
+.astro .titulo-pagina { margin-bottom: 0; }
+.astro .subtitulo { margin-top: -10px; margin-bottom: 0; font-size: 13px; color: var(--texto-suave); }
+.big3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.big3-rot { margin: 0; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--texto-suave); }
+.big3-signo { margin: 2px 0 6px; font-family: var(--fonte-bolha); font-style: italic; font-weight: 900; font-size: 30px; color: #ff8fc0; -webkit-text-stroke: 1.5px var(--tinta); paint-order: stroke fill; text-shadow: 2px 2px 0 var(--tinta); }
+.big3-signo span { font-style: normal; -webkit-text-stroke: 0; text-shadow: none; color: var(--tinta); font-size: 26px; }
+.big3-txt { margin: 0; font-size: 13px; line-height: 1.5; }
+.astro-linha { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.astro-lateral { position: relative; display: grid; gap: 18px; align-content: start; }
+.astro-borboleta { position: absolute; right: -16px; top: -26px; rotate: 14deg; }
+.horoscopo-data { margin: 0 0 8px; font-size: 11.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--chiclete-escuro); font-weight: 700; }
+.horoscopo-clima { margin: 0 0 12px; font-family: var(--fonte-revista); font-style: italic; font-weight: 700; font-size: 19px; line-height: 1.35; }
+.horoscopo-areas { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 8px; }
+.horoscopo-areas li { display: grid; grid-template-columns: 18px 86px 1fr; gap: 8px; align-items: start; font-size: 13px; padding: 8px 10px; border: 1px dashed var(--creme-escuro); border-radius: 4px; }
+.horoscopo-areas svg { color: var(--chiclete); margin-top: 1px; }
+.horoscopo-extra { margin: 6px 0; font-size: 12.5px; }
+.sorte { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.sorte span { font-size: 12px; padding: 4px 10px; border: var(--borda); border-radius: 999px; background: #fff0f7; color: #2e2a4f; }
+.astro-mapa { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.j-roda { position: relative; }
+.roda-mapa { width: 100%; max-width: 460px; display: block; margin: 0 auto; }
+.astro-estrela { position: absolute; left: -18px; bottom: -18px; }
+.tabela-mapa { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tabela-mapa td { padding: 7px 6px; border-bottom: 1px dashed var(--creme-escuro); }
+.tabela-mapa .simbolo { font-size: 16px; width: 28px; text-align: center; color: var(--chiclete-escuro); font-weight: 700; }
+.tabela-mapa .grau { color: var(--texto-suave); white-space: nowrap; }
+.tabela-mapa .casa { white-space: nowrap; color: #6a7fd1; }
+.interpretacoes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; }
+.interp { border: 1px dashed var(--creme-escuro); border-radius: 4px; padding: 8px 10px; }
+.interp[open] { background: #fff7fb; border-style: solid; border-color: #ffc2de; }
+html[data-tema="noite"] .interp[open] { background: var(--creme-escuro); }
+.interp summary { font-weight: 700; font-size: 13.5px; list-style: none; display: flex; gap: 8px; align-items: center; }
+.interp summary::-webkit-details-marker { display: none; }
+.interp summary::after { content: "+"; margin-left: auto; color: var(--chiclete-escuro); }
+.interp[open] summary::after { content: "–"; }
+.interp p { margin: 8px 0 2px; font-size: 13px; line-height: 1.55; }
+.interp .simbolo { color: var(--chiclete-escuro); width: 22px; text-align: center; }
+.astro-final { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: start; }
+.ficha { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin: 0 0 10px; font-size: 13px; }
+.ficha dt { color: var(--texto-suave); }
+.ficha dd { margin: 0; font-weight: 700; }
+.rotulo-mini { margin: 10px 0 4px; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--texto-suave); }
+.tags { display: flex; flex-wrap: wrap; gap: 5px; margin: 0; }
+.astro .lista-brilho { font-size: 13px; margin-top: 12px; }
+.compat-signos { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
+.compat-signos button { height: 34px; border: var(--borda); border-radius: 3px; background: #fff; font-size: 17px; color: #2e2a4f; }
+.compat-signos button.ativo { background: #ffc2de; box-shadow: 2px 2px 0 var(--tinta); }
+.compat-par { margin: 14px 0 8px; font-weight: 700; font-size: 14px; }
+.compat-nota { margin: 6px 0; font-size: 12px; color: var(--chiclete-escuro); font-weight: 700; }
+.compat-texto { margin: 0; font-size: 13px; line-height: 1.5; }
+.lista-ceu { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 2px; font-size: 12.5px; }
+.lista-ceu li { display: grid; grid-template-columns: 22px 1fr auto; gap: 6px; padding: 4px 0; border-bottom: 1px dashed var(--creme-escuro); }
+.lista-ceu .simbolo { color: var(--chiclete-escuro); text-align: center; }
+.lista-ceu .onde { color: var(--texto-suave); }
+@media (max-width: 960px) {
+  .big3, .astro-linha, .astro-mapa, .astro-final, .interpretacoes { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) { .horoscopo-areas li { grid-template-columns: 18px 1fr; } .horoscopo-areas span { grid-column: 1 / -1; } }
+.astro > .janela { max-width: none; margin: 0; }
+.interpretacoes { align-items: start; }
+.astro, .astro * { font-variant-emoji: text; }
+.astro { grid-template-columns: minmax(0, 1fr); }
+.astro > *, .big3 > *, .astro-linha > *, .astro-mapa > *, .astro-final > * { min-width: 0; }
+.tabela-mapa { table-layout: auto; }
+@media (max-width: 520px) { .tabela-mapa td { padding: 6px 3px; font-size: 12px; } }
+
+/* =========================================================
+   VIBE H2O MENINAS SEREIAS (astrologia) com fotos de verdade:
+   água turquesa, lua cheia, escamas de sereia, pérolas, conchas e hibiscos
+   ========================================================= */
+html[data-visual] body:has(.astro) {
+  background: linear-gradient(180deg, rgba(10,70,90,.15), rgba(10,70,90,.35)), url("/h2o/agua.webp") center / 700px fixed;
+}
+html[data-visual][data-tema="noite"] body:has(.astro) { background: linear-gradient(rgba(5,25,45,.7), rgba(5,25,45,.8)), url("/h2o/agua.webp") center / 700px fixed; }
+html[data-visual] body:has(.astro) .fundo { display: none; }
+.mar { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.bolha-mar { position: absolute; bottom: -40px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95) 0 12%, rgba(255,255,255,.2) 32%, rgba(200,250,255,.15) 70%); border: 1px solid rgba(255,255,255,.7); animation: subir-mar linear infinite; }
+@keyframes subir-mar { 0% { transform: translate(0,0); opacity: 0; } 10% { opacity: .9; } 100% { transform: translate(-20px, -110vh); opacity: 0; } }
+.rc { position: absolute; pointer-events: none; filter: drop-shadow(0 8px 10px rgba(0,40,60,.35)); }
+
+/* capa */
+.h2o-capa { position: relative; height: 380px; border-radius: 26px; overflow: visible; margin-top: 6px; }
+.h2o-capa-foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; border-radius: 26px; border: 3px solid #fff; box-shadow: 0 16px 40px rgba(0,40,60,.45); }
+.h2o-capa-brilho { position: absolute; inset: 0; border-radius: 26px; background: radial-gradient(ellipse at 50% 35%, transparent 30%, rgba(8,30,55,.45)), linear-gradient(180deg, transparent 55%, rgba(20,150,170,.35)); }
+.h2o-capa-texto { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 46px; text-align: center; }
+.h2o-sobre { margin: 0 0 4px; color: #fff; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
+html[data-visual] .astro .h2o-capa .titulo-pagina {
+  margin: 0; padding: 0; font-family: var(--fonte-capa); font-style: italic; font-weight: 800; text-transform: lowercase; letter-spacing: -2px;
+  font-size: clamp(64px, 11vw, 132px); line-height: 1; color: #fff; -webkit-text-fill-color: #fff; -webkit-text-stroke: 0; background: none;
+  text-shadow: 0 0 18px rgba(170,245,255,.9), 0 0 40px rgba(120,230,255,.6), 0 4px 0 rgba(0,60,80,.35); filter: none; animation: none;
+}
+.h2o-sub { margin: 6px 0 0; padding: 6px 16px; border-radius: 999px; font-size: 12.5px; color: #0b5d72; font-weight: 700; background: rgba(255,255,255,.88); }
+.r-hib1 { width: 150px; left: -40px; top: -30px; rotate: -18deg; z-index: 3; }
+.r-hib2 { width: 96px; left: 90px; top: 40px; rotate: 20deg; z-index: 2; }
+.r-plu { width: 110px; right: 120px; bottom: -40px; rotate: 12deg; z-index: 3; }
+.r-concha { width: 120px; right: -34px; top: 26px; rotate: 18deg; z-index: 3; }
+.r-estrela { width: 110px; left: 30px; bottom: -44px; rotate: -24deg; z-index: 3; }
+.r-perolas { width: 110px; right: 60px; top: -34px; rotate: -10deg; z-index: 3; }
+.r-concha2 { width: 80px; left: 210px; bottom: -30px; rotate: -8deg; z-index: 2; }
+.r-estrela2 { width: 74px; right: 0; bottom: 30px; rotate: 30deg; z-index: 2; }
+
+/* janelas: barra de escama de sereia, corpo madrepérola */
+.astro .janela { border: 2px solid rgba(255,255,255,.95); border-radius: 18px; overflow: hidden; box-shadow: 0 12px 30px rgba(0,40,60,.35);
+  background: linear-gradient(rgba(255,255,255,.9), rgba(255,255,255,.9)), url("/h2o/madreperola.webp") center / cover; }
+html[data-tema="noite"] .astro .janela { background: linear-gradient(rgba(10,45,60,.9), rgba(10,45,60,.9)), url("/h2o/madreperola.webp") center / cover; }
+html[data-visual] .astro .janela-titulo, html[data-visual] .astro .janela-rosa .janela-titulo, html[data-visual] .astro .janela-azul .janela-titulo, html[data-visual] .astro .janela-ciano .janela-titulo, html[data-visual] .astro .janela-lilas .janela-titulo {
+  min-height: 34px; color: #fff; border-bottom: 2px solid rgba(255,255,255,.9); border-radius: 0; font-size: 13px; letter-spacing: .5px;
+  text-shadow: 0 1px 3px rgba(0,40,60,.9), 0 0 8px rgba(0,40,60,.6);
+  background: linear-gradient(180deg, rgba(255,255,255,.25), transparent 60%), url("/h2o/escamas.webp") center / 260px;
+}
+html[data-visual] .astro .janela-rosa .janela-titulo { background: linear-gradient(180deg, rgba(255,140,190,.55), rgba(255,90,160,.35)), url("/h2o/escamas-perola.webp") center / 220px; text-shadow: 0 1px 3px rgba(120,20,70,.9); }
+html[data-visual] .astro .janela-lilas .janela-titulo { background: linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,200,230,.25)), url("/h2o/perolas-fundo.webp") center / 260px; text-shadow: 0 1px 3px rgba(90,40,90,.95); }
+html[data-visual] .astro .janela-nome::before { content: "✦"; color: #fff; }
+.astro .janela-botoes i { border: 1.5px solid #fff; color: #fff; background: rgba(255,255,255,.25); border-radius: 50%; }
+html[data-visual] .astro .janela-botoes .fechar { background: rgba(255,255,255,.35); color: #fff; }
+
+/* moodboard de polaroids */
+.h2o-mood { position: relative; display: flex; justify-content: center; gap: 4px; padding: 10px 0 18px; }
+.polaroid-h2o { margin: 0 -10px; width: 170px; padding: 8px 8px 30px; background: #fff; box-shadow: 0 10px 22px rgba(0,40,60,.35); position: relative; }
+.polaroid-h2o img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+.polaroid-h2o figcaption { position: absolute; left: 0; right: 0; bottom: 6px; text-align: center; font-family: "Comic Sans MS", "Chalkboard SE", cursive; font-size: 13px; color: #0b5d72; }
+.polaroid-h2o.p0 { rotate: -6deg; } .polaroid-h2o.p1 { rotate: 4deg; top: 12px; z-index: 2; } .polaroid-h2o.p2 { rotate: -3deg; } .polaroid-h2o.p3 { rotate: 5deg; top: 8px; z-index: 2; } .polaroid-h2o.p4 { rotate: -5deg; }
+.mood-perola { width: 60px; left: 22%; bottom: -6px; z-index: 3; }
+.mood-vidro { width: 90px; right: 18%; top: -18px; z-index: 3; rotate: 12deg; }
+.h2o-divisor { display: flex; justify-content: center; align-items: center; gap: 22px; }
+.h2o-divisor img { width: 70px; filter: drop-shadow(0 6px 8px rgba(0,40,60,.35)); }
+.h2o-divisor img:nth-child(odd) { rotate: -12deg; } .h2o-divisor img:nth-child(even) { rotate: 10deg; width: 58px; }
+
+/* detalhes do conteúdo */
+html[data-visual] .astro .big3-signo { font-family: var(--fonte-capa); font-style: italic; font-weight: 800; color: #e2347f; -webkit-text-stroke: 0; text-shadow: none; font-size: 32px; }
+html[data-visual] .astro .big3-signo span { color: #0f8ea3; font-family: var(--fonte); font-style: normal; }
+html[data-tema="noite"] .astro .big3-signo span { color: #9ff0f6; }
+.astro .big3-rot, .astro .horoscopo-data, .astro .lua-luz, .astro .compat-nota { color: #e2347f; }
+.astro .horoscopo-clima { color: #0b5d72; }
+html[data-tema="noite"] .astro .horoscopo-clima { color: #bff6ff; }
+.astro .horoscopo-areas svg, .astro .tabela-mapa .simbolo, .astro .interp .simbolo, .astro .lista-ceu .simbolo { color: #0f8ea3; }
+.astro .horoscopo-areas li, .astro .interp, .astro .tabela-mapa td, .astro .lista-ceu li { border-color: rgba(15,142,163,.25); }
+.astro .horoscopo-areas li { background: rgba(255,255,255,.7); border-style: solid; border-radius: 12px; }
+.astro .interp { border-radius: 12px; background: rgba(255,255,255,.55); }
+.astro .interp[open] { background: rgba(255,230,242,.85); border-color: #ff9cc6; }
+html[data-tema="noite"] .astro .interp[open] { background: #1d4f60; }
+.astro .sorte span { background: rgba(255,255,255,.85); border: 1.5px solid #0f8ea3; color: #0b5d72; }
+.astro .tag { background: #ffe0ee; color: #b0245f; border-radius: 999px; }
+.astro .tag-formato { background: #d6f6fa; color: #0b5d72; }
+.astro .compat-signos button { border: 1.5px solid #0f8ea3; border-radius: 12px; color: #0b5d72; background: rgba(255,255,255,.85); }
+.astro .compat-signos button.ativo { background: #ff8fc0; border-color: #e2347f; color: #fff; }
+.astro .progresso-barra { border: 1.5px solid #0f8ea3; }
+.astro .progresso-barra span { background: url("/h2o/escamas.webp") center / 120px; }
+.astro .lista-brilho li::before { content: "✿"; color: #e2347f; }
+.astro .link-simples, .astro .nota-pequena a { color: #e2347f; }
+.astro .tabela-mapa .casa { color: #0f8ea3; }
+.astro-borboleta { width: 90px; right: -26px; top: -40px; rotate: 16deg; }
+.astro-estrela { width: 90px; left: -30px; bottom: -34px; rotate: -18deg; }
+@media (max-width: 860px) {
+  .h2o-capa { height: 300px; }
+  .r-hib2, .r-concha2, .r-estrela2, .r-perolas { display: none; }
+  .r-hib1 { width: 100px; left: -14px; } .r-concha { width: 80px; right: -10px; } .r-plu { width: 80px; right: 20px; } .r-estrela { width: 80px; left: 10px; }
+  .h2o-mood { overflow: hidden; } .polaroid-h2o { width: 120px; } .polaroid-h2o.p3, .polaroid-h2o.p4 { display: none; }
+  .astro-borboleta, .astro-estrela { display: none; }
+}
+.h2o-mood { gap: 14px; flex-wrap: wrap; }
+.polaroid-h2o { margin: 0; }
+.mood-perola { left: 30%; }
+/* capa da astrologia: praia de dia, lua à noite */
+.h2o-capa-foto.noite { display: none; }
+html[data-tema="noite"] .h2o-capa-foto.dia { display: none; }
+html[data-tema="noite"] .h2o-capa-foto.noite { display: block; }
+.h2o-capa-foto.dia { object-position: center 18%; }
+html:not([data-tema="noite"]) .h2o-capa-brilho { background: radial-gradient(ellipse at 50% 60%, rgba(10,60,90,.35), transparent 70%), linear-gradient(180deg, transparent 50%, rgba(10,90,120,.45)); }
+html:not([data-tema="noite"]) .astro .h2o-capa .titulo-pagina { text-shadow: 0 2px 0 rgba(0,70,100,.5), 0 0 22px rgba(0,80,120,.55), 0 0 40px rgba(255,140,200,.45); }

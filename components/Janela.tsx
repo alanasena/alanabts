@@ -1,5 +1,5 @@
 // Janelinha estilo Windows XP, versão 2000s rosa (com fitinha colando no mural)
-export type CorJanela = "rosa" | "preto" | "oncinha" | "zebra" | "prata" | "azul" | "verde" | "lilas";
+export type CorJanela = "rosa" | "preto" | "oncinha" | "zebra" | "prata" | "azul" | "verde" | "lilas" | "ciano";
 
 type Props = {
   titulo: string;

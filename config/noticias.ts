@@ -2,8 +2,6 @@
 
 const gnews = (q: string) =>
   `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
-const gnewsTopico = (t: string) =>
-  `https://news.google.com/rss/headlines/section/topic/${t}?hl=pt-BR&gl=BR&ceid=BR:pt-419`;
 
 export type Tema = {
   id: string;
@@ -14,10 +12,10 @@ export type Tema = {
 
 export const TEMAS: Tema[] = [
   {
-    id: "brasil",
-    nome: "Brasil",
+    id: "principais",
+    nome: "Principais do dia",
     icone: "",
-    fontes: ["https://g1.globo.com/rss/g1/brasil/", gnewsTopico("NATION")],
+    fontes: ["https://news.google.com/rss?hl=pt-BR&gl=BR&ceid=BR:pt-419", "https://g1.globo.com/rss/g1/"],
   },
   {
     id: "politica",
@@ -26,25 +24,13 @@ export const TEMAS: Tema[] = [
     fontes: ["https://g1.globo.com/rss/g1/politica/", gnews("política Brasil when:1d")],
   },
   {
-    id: "tecnologia",
-    nome: "Tecnologia",
-    icone: "",
-    fontes: ["https://g1.globo.com/rss/g1/tecnologia/", gnewsTopico("TECHNOLOGY")],
-  },
-  {
     id: "pop",
     nome: "Divas do pop",
     icone: "",
     fontes: [
-      gnews('Anitta OR "Lady Gaga" OR Madonna OR Rihanna OR Beyoncé OR "Ariana Grande" OR "Taylor Swift" when:2d'),
+      gnews('Anitta OR "Lady Gaga" OR Madonna OR Rihanna OR Beyoncé OR "Ariana Grande" OR "Corrida das Blogueiras" when:2d'),
       "https://g1.globo.com/rss/g1/pop-arte/",
     ],
-  },
-  {
-    id: "lgbt",
-    nome: "Mundo LGBT+",
-    icone: "",
-    fontes: [gnews('"Corrida das Blogueiras" OR LGBT OR "drag queen" OR LGBTQIA+ when:3d')],
   },
 ];
 

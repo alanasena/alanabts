@@ -5,10 +5,13 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ABAS } from "@/config/site";
 import Icone from "./Icone";
+import { Palette } from "lucide-react";
+import { useEfeitos } from "./Efeitos";
 
 // Barra de tarefas estilo Windows: botão Iniciar, aba aberta e relógio
 export default function BarraWindows() {
   const rota = usePathname();
+  const { visual, trocarVisual } = useEfeitos();
   const [aberto, setAberto] = useState(false);
   const [hora, setHora] = useState("");
   const menu = useRef<HTMLDivElement>(null);
@@ -63,7 +66,9 @@ export default function BarraWindows() {
         </span>
       )}
       <span className="taskbar-bandeja">
-        <Icone nome="brilho" tamanho={14} />
+        <button className="trocar-visual" onClick={trocarVisual} title="Trocar o visual do site">
+          <Palette size={14} /> {visual === "oncinha" ? "visual oncinha" : "visual clarinho"}
+        </button>
         <span className="taskbar-hora">{hora}</span>
       </span>
     </div>

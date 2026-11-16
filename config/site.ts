@@ -5,8 +5,11 @@ export const SITE = {
   curto: "Alana BTS",
   instagram: "alanabts_",
   signo: "Escorpião",
-  // fundo do site: "liso" (rosinha clarinho) ou "oncinha" (oncinha no fundo todo)
-  fundo: "oncinha" as "liso" | "oncinha",
+  // visual padrão: "foto" (clarinho, igual à referência) ou "oncinha" (oncinha no fundo todo).
+  // Dá pra trocar no botãozinho da barra lá embaixo.
+  visual: "foto" as "foto" | "oncinha",
+  // sua foto da janela principal: coloque o arquivo em public/ e escreva o nome aqui, ex: "/alana.jpg"
+  foto: "",
 };
 
 export type Aba = {

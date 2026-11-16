@@ -9,6 +9,8 @@ import "@fontsource/dm-sans/700.css";
 import "@fontsource/vt323/400.css";
 import "@fontsource/rubik/800-italic.css";
 import "@fontsource/rubik/900-italic.css";
+import "@fontsource/space-mono/400.css";
+import "@fontsource/space-mono/700.css";
 import "./globals.css";
 import Efeitos from "@/components/Efeitos";
 import Sessao from "@/components/Sessao";
@@ -32,11 +34,11 @@ export const viewport: Viewport = {
 };
 
 // evita "piscar" claro quando o modo noturno tá ligado
-const temaInicial = `try{if(localStorage.getItem('bts:tema')==='noite')document.documentElement.dataset.tema='noite'}catch(e){}`;
+const temaInicial = `try{var d=document.documentElement;if(localStorage.getItem('bts:tema')==='noite')d.dataset.tema='noite';var v=localStorage.getItem('bts:visual');if(v)d.dataset.visual=v}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" data-fundo={SITE.fundo} suppressHydrationWarning>
+    <html lang="pt-BR" data-visual={SITE.visual} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: temaInicial }} />
       </head>

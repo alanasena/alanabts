@@ -8,6 +8,8 @@ type Ctx = {
   sons: boolean;
   alternarSons: () => void;
   tocarBlip: () => void;
+  visual: string;
+  trocarVisual: () => void;
 };
 
 const EfeitosCtx = createContext<Ctx | null>(null);
@@ -31,11 +33,13 @@ const CORES_GLITTER = ["#ff4fb8", "#ffd84f", "#59e1ff", "#ffffff", "#c58bff", "#
 export default function Efeitos({ children }: { children: React.ReactNode }) {
   const [noite, setNoite] = useState(false);
   const [sons, setSons] = useState(true);
+  const [visual, setVisual] = useState("");
   const audio = useRef<AudioContext | null>(null);
   const sonsRef = useRef(true);
 
   useEffect(() => {
     setNoite(ler("bts:tema", "dia") === "noite");
+    setVisual(document.documentElement.dataset.visual ?? "foto");
     const s = ler("bts:sons", "sim") === "sim";
     setSons(s);
     sonsRef.current = s;
@@ -121,6 +125,13 @@ export default function Efeitos({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  const trocarVisual = () => {
+    const novo = visual === "oncinha" ? "foto" : "oncinha";
+    document.documentElement.dataset.visual = novo;
+    salvar("bts:visual", novo);
+    setVisual(novo);
+  };
+
   const alternarNoite = () =>
     setNoite((n) => {
       salvar("bts:tema", n ? "dia" : "noite");
@@ -134,7 +145,7 @@ export default function Efeitos({ children }: { children: React.ReactNode }) {
     });
 
   return (
-    <EfeitosCtx.Provider value={{ noite, alternarNoite, sons, alternarSons, tocarBlip }}>
+    <EfeitosCtx.Provider value={{ noite, alternarNoite, sons, alternarSons, tocarBlip, visual, trocarVisual }}>
       {children}
     </EfeitosCtx.Provider>
   );

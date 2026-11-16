@@ -116,9 +116,15 @@ export default async function Inicio() {
           </Janela>
           <span className="adesivo-flip"><CelularFlip tamanho={118} /></span>
           <span className="adesivo-estrela-top"><EstrelaLilas tamanho={64} /></span>
-          <Janela titulo="próximo post" cor="rosa" className="j-proximo-topo">
-            <ProximoPost />
-          </Janela>
+          <div className="bilhete-post">
+            <strong>não esquece:</strong>
+            <ul>
+              <li>beber água</li>
+              <li>postar no daily</li>
+              <li>ser icônica</li>
+              <li>ligar pra bff</li>
+            </ul>
+          </div>
         </div>
 
         <div className="coluna-dir">
@@ -130,22 +136,13 @@ export default async function Inicio() {
             <TocandoAgora />
           </Janela>
 
-          <div className="bilhete-post">
-            <strong>não esquece:</strong>
-            <ul>
-              <li>beber água</li>
-              <li>postar no daily</li>
-              <li>ser icônica</li>
-              <li>ligar pra bff</li>
-            </ul>
-          </div>
 
             <Janela titulo="notícias do dia" cor="lilas" className="j-noticias-dir">
                       {noticias.length === 0 ? (
               <p className="nota-pequena">As notícias aparecem aqui quando o site estiver no ar.</p>
             ) : (
               <ul className="resumo-noticias">
-                {noticias.slice(0, 4).map((n) => (
+                {noticias.slice(0, 3).map((n) => (
                   <li key={n.link}>
                     <a href={n.link} target="_blank" rel="noreferrer">› {n.titulo}</a>
                     <small>{n.tema}{n.data && ` · ${haQuanto(n.data)}`}</small>
@@ -259,18 +256,8 @@ export default async function Inicio() {
         </section>
 
         <div className="coluna-painel">
-          <Janela titulo="meus favs" cor="azul">
-            <ul className="lista-favs">
-              {["/wishlist", "/favoritos", "/album", "/consumo", "/bonequinha"].map((h) => (
-                <li key={h}>
-                  <Link href={h}>
-                    <Icone nome={aba(h).icone} tamanho={16} />
-                    <span>{aba(h).nome.toLowerCase()}</span>
-                    <span className="seta">›</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          <Janela titulo="próximo post" cor="azul">
+            <ProximoPost />
           </Janela>
           <span className="adesivo-coracao-cromo"><CoracaoCromado tamanho={64} /></span>
         </div>

@@ -1101,3 +1101,12 @@ html[data-visual="foto"] .boot-alana {
 }
 html[data-visual="foto"] .boot-xp i { color: #ff8fc4; }
 html[data-visual="foto"] .boot-blocos i { background: linear-gradient(180deg, #e3ecff, #8fa6ec); }
+/* notícias da coluna da direita: curtinhas pra não esticar a página */
+.j-noticias-dir .resumo-noticias { gap: 8px; margin-bottom: 6px; }
+.j-noticias-dir .resumo-noticias a { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 12px; line-height: 1.35; }
+.j-noticias-dir .resumo-noticias small { font-size: 10.5px; }
+.j-noticias-dir .janela-corpo { padding: 10px 12px 12px; }
+.coluna-foto .bilhete-post { margin-top: 40px; rotate: -2deg; }
+.banner-ceu { min-height: 300px; }
+.coluna-foto .adesivo-flip { right: -18px; top: 300px; }
+@media (min-width: 1600px) { .conteudo { max-width: 1440px; } .inicio-topo { grid-template-columns: 230px minmax(0, 1fr) 290px 260px; } }

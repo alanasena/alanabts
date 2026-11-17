@@ -103,12 +103,13 @@ async function desenharBoneca(ctx: CanvasRenderingContext2D, l: Look) {
   }
   // roupas
   const camadas: string[] = [];
+  // sapato primeiro, pra calça ficar por cima dele
+  if (l.sapato) camadas.push(`sapatos/${l.sapato}`);
   if (l.vestido) camadas.push(`roupas/${l.vestido}`);
   else {
     if (l.baixo) camadas.push(`roupas/${l.baixo}`);
     if (l.cima) camadas.push(`roupas/${l.cima}`);
   }
-  if (l.sapato) camadas.push(`sapatos/${l.sapato}`);
   for (const a of l.acessorios) camadas.push(`acessorios/${a}`);
   for (const c of camadas) ctx.drawImage(await carregar(`${P}/${c}.webp`), 0, 0);
 }

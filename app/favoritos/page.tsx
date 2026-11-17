@@ -1,19 +1,12 @@
 import type { Metadata } from "next";
-import EmBreve from "@/components/EmBreve";
+import Favoritos from "@/components/Favoritos";
 
-export const metadata: Metadata = { title: "Favoritos" };
+export const metadata: Metadata = { title: "Favoritos do mês" };
 
 export default function Pagina() {
   return (
-    <EmBreve
-      titulo="Favoritos"
-      icone=""
-      vibe="tv"
-      etapa="próxima etapa"
-      cor="lilas"
-      vaiTer={[
-        "Suas séries e filmes favoritos (Desperate Housewives, Sex and the City...)",
-      ]}
-    />
+    <div className="pagina pagina-atv">
+      <Favoritos />
+    </div>
   );
 }

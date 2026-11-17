@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { BookOpen, Clapperboard, ExternalLink, Music2, Pause, Pencil, Play, Plus, Repeat, Shuffle, SkipBack, SkipForward, Square, Volume2, MonitorPlay } from "lucide-react";
+import { BookOpen, Clapperboard, ExternalLink, MonitorPlay, Music2, Pause, Pencil, Play, Plus } from "lucide-react";
 import { supabase, subirFoto } from "@/lib/supabase";
 import { paraEmbed } from "@/lib/embed";
 import { useSessao } from "./Sessao";
@@ -71,117 +71,94 @@ export default function Consumo() {
 
   return (
     <div className="wmp-pagina">
-      <div className="wmp">
-        {/* barra de título */}
-        <div className="wmp-titulo">
-          <span className="wmp-logo"><Play size={12} fill="currentColor" /></span>
-          <span>Alana Media Player</span>
-          <span className="wmp-janela"><i /><i /><i className="x" /></span>
-        </div>
+      <div className="wmp-rolagem">
+      <div className="wmp2">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="wmp2-moldura" src="/aero/wmp.webp" alt="" draggable={false} />
+        <span className="wmp2-nome">Alana Media Player</span>
 
-        {/* abas */}
-        <nav className="wmp-abas">
+        <nav className="wmp2-abas">
           {ABAS.map((a) => (
-            <button key={a.id} className={a.id === aba ? "ativa" : ""} onClick={() => trocarAba(a.id)}>
-              <a.icone size={15} /> {a.nome}
-            </button>
+            <button key={a.id} className={a.id === aba ? "ativa" : ""} onClick={() => trocarAba(a.id)}>{a.nome}</button>
           ))}
-          {usuaria && (
-            <button className="wmp-add" onClick={() => setEditando({ tipo: abaAtual.tipos[0], atual: true })}><Plus size={15} /> adicionar</button>
-          )}
+          {usuaria && <button className="wmp2-add" onClick={() => setEditando({ tipo: abaAtual.tipos[0], atual: true })}><Plus size={12} /> adicionar</button>}
         </nav>
 
-        {/* miolo */}
-        <div className={`wmp-corpo ${aba === "ouvindo" ? "musica" : ""}`}>
-          {carregando ? (
-            <p className="wmp-aviso">carregando biblioteca...</p>
-          ) : erro ? (
-            <p className="wmp-aviso">{erro}</p>
-          ) : aba === "ouvindo" ? (
-            <>
-              <div className="wmp-palco">
-                <div className={`wmp-vis ${tocando ? "on" : ""}`} aria-hidden>
-                  {Array.from({ length: 28 }).map((_, k) => <i key={k} style={{ animationDelay: `${-(k * 137) % 900}ms`, animationDuration: `${600 + ((k * 211) % 700)}ms` }} />)}
-                </div>
-                {atual ? (
-                  <div className="wmp-capa-grande">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    {atual.capa ? <img src={atual.capa} alt="" /> : <span className="sem-capa"><Music2 size={60} /></span>}
-                    <div className="wmp-info">
-                      <b>{atual.titulo}</b>
-                      <span>{atual.detalhe}</span>
-                      {atual.status && <em>{atual.status}</em>}
-                      {atual.comentario && <p>&ldquo;{atual.comentario}&rdquo;</p>}
-                    </div>
-                  </div>
-                ) : (
-                  <p className="wmp-aviso">nenhuma música por aqui ainda</p>
-                )}
+        {carregando || erro ? (
+          <div className="wmp2-palco"><p className="wmp2-aviso">{erro || "carregando biblioteca..."}</p></div>
+        ) : aba === "ouvindo" ? (
+          <>
+            <div className="wmp2-palco">
+              <div className={`wmp-vis ${tocando ? "on" : ""}`} aria-hidden>
+                {Array.from({ length: 30 }).map((_, k) => <i key={k} style={{ animationDelay: `${-(k * 137) % 900}ms`, animationDuration: `${600 + ((k * 211) % 700)}ms` }} />)}
               </div>
-              <aside className="wmp-playlist">
-                <p className="wmp-pl-titulo">no repeat</p>
-                {lista.map((c, k) => (
-                  <button key={c.id} className={`${c === atual ? "sel" : ""} ${c.atual ? "" : "antiga"}`} onClick={() => setSel(k)} onDoubleClick={() => tocarNoIpod(c)}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    {c.capa ? <img src={c.capa} alt="" /> : <span className="mini-sem"><Music2 size={14} /></span>}
-                    <span className="pl-txt"><b>{c.titulo}</b><small>{c.detalhe}</small></span>
-                    {usuaria && <Pencil size={13} className="pl-editar" onClick={(e) => { e.stopPropagation(); setEditando(c); }} />}
-                  </button>
-                ))}
-                {!lista.length && <p className="wmp-vazio">vazio</p>}
-              </aside>
-            </>
-          ) : (
-            <div className="wmp-biblioteca">
-              {[["agora", agora], ["já foi", historico]].map(([nome, itens]) =>
-                (itens as Coisa[]).length ? (
-                  <section key={nome as string}>
-                    <p className="wmp-secao">{nome as string}</p>
-                    <div className="wmp-grade">
-                      {(itens as Coisa[]).map((c) => (
-                        <div key={c.id} className={`wmp-card ${c === atual ? "sel" : ""}`} onClick={() => setSel(lista.indexOf(c))}>
-                          <div className="card-capa">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            {c.capa ? <img src={c.capa} alt="" /> : <span className="sem-capa"><abaAtual.icone size={34} /></span>}
-                            {c.status && <span className="card-status">{c.status}</span>}
-                          </div>
-                          <b>{c.titulo}</b>
-                          <small>{[nomeTipo(c.tipo), c.detalhe].filter(Boolean).join(" · ")}</small>
-                          {c.comentario && <p>&ldquo;{c.comentario}&rdquo;</p>}
-                          <span className="card-acoes">
-                            {c.link && <a href={c.link} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>abrir <ExternalLink size={11} /></a>}
-                            {c.tipo === "podcast" || c.tipo === "video" ? c.link && paraEmbed(c.link) && <button onClick={(e) => { e.stopPropagation(); tocarNoIpod(c); }}><Play size={11} /> no iPod</button> : null}
-                            {usuaria && <button onClick={(e) => { e.stopPropagation(); setEditando(c); }}><Pencil size={11} /></button>}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-                ) : null,
-              )}
-              {!lista.length && <p className="wmp-aviso">nada por aqui ainda</p>}
+              {atual ? (
+                <div className="wmp2-capa">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  {atual.capa ? <img src={atual.capa} alt="" /> : <span className="sem-capa"><Music2 /></span>}
+                  <div className="wmp2-info">
+                    <b>{atual.titulo}</b>
+                    <span>{atual.detalhe}</span>
+                    {atual.status && <em>{atual.status}</em>}
+                    {atual.comentario && <p>&ldquo;{atual.comentario}&rdquo;</p>}
+                  </div>
+                </div>
+              ) : <p className="wmp2-aviso">nenhuma música por aqui ainda</p>}
             </div>
-          )}
-        </div>
+            <aside className="wmp2-lista">
+              <p className="wmp2-lista-tit">Now Playing <small>{lista.length} itens</small></p>
+              {lista.map((c, k) => (
+                <button key={c.id} className={`${c === atual ? "sel" : ""} ${c.atual ? "" : "antiga"}`} onClick={() => setSel(k)} onDoubleClick={() => tocarNoIpod(c)}>
+                  <span className="pl-txt"><b>{c.titulo}</b><small>{c.detalhe}</small></span>
+                  {usuaria && <Pencil className="pl-editar" onClick={(e) => { e.stopPropagation(); setEditando(c); }} />}
+                </button>
+              ))}
+              {!lista.length && <p className="wmp-vazio">Drag items here</p>}
+            </aside>
+          </>
+        ) : (
+          <div className="wmp2-biblio">
+            {[["agora", agora], ["já foi", historico]].map(([nome, itens]) =>
+              (itens as Coisa[]).length ? (
+                <section key={nome as string}>
+                  <p className="wmp2-secao">{nome as string}</p>
+                  <div className="wmp2-grade">
+                    {(itens as Coisa[]).map((c) => (
+                      <div key={c.id} className={`wmp2-card ${c === atual ? "sel" : ""}`} onClick={() => setSel(lista.indexOf(c))}>
+                        <div className="card-capa">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          {c.capa ? <img src={c.capa} alt="" /> : <span className="sem-capa"><abaAtual.icone /></span>}
+                          {c.status && <span className="card-status">{c.status}</span>}
+                        </div>
+                        <b>{c.titulo}</b>
+                        <small>{[nomeTipo(c.tipo), c.detalhe].filter(Boolean).join(" · ")}</small>
+                        {c.comentario && <p>&ldquo;{c.comentario}&rdquo;</p>}
+                        <span className="card-acoes">
+                          {c.link && <a href={c.link} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>abrir <ExternalLink /></a>}
+                          {(c.tipo === "podcast" || c.tipo === "video") && c.link && paraEmbed(c.link) ? <button onClick={(e) => { e.stopPropagation(); tocarNoIpod(c); }}><Play /> no iPod</button> : null}
+                          {usuaria && <button onClick={(e) => { e.stopPropagation(); setEditando(c); }}><Pencil /></button>}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              ) : null,
+            )}
+            {!lista.length && <p className="wmp2-aviso escuro">nada por aqui ainda</p>}
+          </div>
+        )}
 
-        {/* barra de controles de cristal */}
-        <div className="wmp-controles">
-          <div className="wmp-tocando">
-            <b>{atual?.titulo ?? "—"}</b>
-            <small>{atual?.detalhe ?? ""}</small>
-          </div>
-          <div className="wmp-botoes">
-            <button aria-label="aleatório" onClick={() => lista.length && setSel(Math.floor(Math.random() * lista.length))}><Shuffle size={15} /></button>
-            <button aria-label="repetir" className="dec"><Repeat size={15} /></button>
-            <button aria-label="parar" onClick={() => tocando && window.dispatchEvent(new CustomEvent("bts:mp3", { detail: "play" }))}><Square size={14} /></button>
-            <button aria-label="anterior" onClick={() => setSel((s) => s - 1)}><SkipBack size={16} fill="currentColor" /></button>
-            <button aria-label="tocar" className="play" onClick={play}>{tocando ? <Pause size={26} fill="currentColor" /> : <Play size={26} fill="currentColor" />}</button>
-            <button aria-label="próximo" onClick={() => setSel((s) => s + 1)}><SkipForward size={16} fill="currentColor" /></button>
-          </div>
-          <div className="wmp-volume"><Volume2 size={16} /><span><i /></span></div>
-        </div>
+        <div className="wmp2-tocando"><b>{atual?.titulo ?? ""}</b><small>{atual?.detalhe ?? ""}</small></div>
+
+        {/* botões de verdade em cima dos botões da foto */}
+        <button className="wb b-shuffle" aria-label="aleatório" onClick={() => lista.length && setSel(Math.floor(Math.random() * lista.length))} />
+        <button className="wb b-stop" aria-label="parar" onClick={() => tocando && window.dispatchEvent(new CustomEvent("bts:mp3", { detail: "play" }))} />
+        <button className="wb b-prev" aria-label="anterior" onClick={() => setSel((x) => x - 1)} />
+        <button className={`wb b-play ${tocando ? "pausar" : ""}`} aria-label="tocar" onClick={play}>{tocando && <Pause fill="currentColor" />}</button>
+        <button className="wb b-next" aria-label="próximo" onClick={() => setSel((x) => x + 1)} />
       </div>
-      {aba === "ouvindo" && <p className="wmp-dica">o botão de play toca a música selecionada no iPod (se tiver link do Spotify ou YouTube). Clique duas vezes numa música da lista também funciona.</p>}
+      </div>
+      {aba === "ouvindo" && <p className="wmp-dica">o play toca a música selecionada no iPod (se tiver link do Spotify ou YouTube). Clique duas vezes numa música da lista também funciona.</p>}
 
       {editando && <EditarCoisa coisa={editando} aoFechar={() => setEditando(null)} aoSalvar={() => { setEditando(null); carregar(); }} />}
     </div>

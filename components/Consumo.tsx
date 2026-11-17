@@ -169,8 +169,26 @@ function EditarCoisa({ coisa, aoFechar, aoSalvar }: { coisa: Partial<Coisa>; aoF
   const [c, setC] = useState(coisa);
   const [subindo, setSubindo] = useState(false);
   const [erro, setErro] = useState("");
+  const [opcoes, setOpcoes] = useState<{ url: string; titulo: string; detalhe: string }[] | null>(null);
+  const [buscando, setBuscando] = useState(false);
   const set = (k: Partial<Coisa>) => setC((x) => ({ ...x, ...k }));
   const tipo = TIPOS.find((t) => t.id === c.tipo) ?? TIPOS[0];
+
+  // procura a capa sozinha pelo nome (e pelo link do YouTube, se tiver)
+  const buscarCapa = async () => {
+    const yt = c.link?.match(/(?:youtu\.be\/|[?&]v=|\/(?:embed|shorts|live)\/)([A-Za-z0-9_-]{6,})/)?.[1];
+    if (yt) { set({ capa: `https://img.youtube.com/vi/${yt}/hqdefault.jpg` }); setOpcoes(null); return; }
+    if (!c.titulo?.trim()) { setErro("Escreve o nome primeiro!"); return; }
+    setErro("");
+    setBuscando(true);
+    try {
+      const r = await fetch(`/api/capa?tipo=${c.tipo}&q=${encodeURIComponent(`${c.titulo} ${c.detalhe ?? ""}`.trim())}`);
+      const d = (await r.json()) as { capas: { url: string; titulo: string; detalhe: string }[] };
+      setOpcoes(d.capas);
+      if (!d.capas.length) setErro("Não achei capa. Tenta escrever diferente ou sobe a foto.");
+    } catch { setErro("Não consegui buscar agora."); }
+    setBuscando(false);
+  };
 
   const subir = async (f?: File) => {
     if (!f) return;
@@ -208,8 +226,22 @@ function EditarCoisa({ coisa, aoFechar, aoSalvar }: { coisa: Partial<Coisa>; aoF
           <label>status<input value={c.status ?? ""} onChange={(e) => set({ status: e.target.value })} placeholder={c.tipo === "serie" ? "ex: T2 E5" : c.tipo === "livro" ? "ex: pág. 120" : "ex: no repeat"} /></label>
         </div>
         <label>link (Spotify, YouTube, Netflix...)<input value={c.link ?? ""} onChange={(e) => set({ link: e.target.value })} placeholder="https://..." /></label>
+        <div className="ed-busca-capa">
+          <button type="button" onClick={buscarCapa} disabled={buscando}>{buscando ? "procurando..." : "buscar capa sozinha"}</button>
+          <small>procura pelo nome{c.tipo === "musica" ? " e artista" : ""}. Se for YouTube, pega a miniatura do vídeo.</small>
+        </div>
+        {opcoes && opcoes.length > 0 && (
+          <div className="ed-opcoes">
+            {opcoes.map((o) => (
+              <button type="button" key={o.url} className={c.capa === o.url ? "sel" : ""} onClick={() => set({ capa: o.url })} title={`${o.titulo} · ${o.detalhe}`}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={o.url} alt="" />
+              </button>
+            ))}
+          </div>
+        )}
         <label className="ed-capa">
-          capa
+          ou sobe a capa
           {/* eslint-disable-next-line @next/next/no-img-element */}
           {c.capa && <img src={c.capa} alt="" />}
           <input type="file" accept="image/*" onChange={(e) => subir(e.target.files?.[0])} />

@@ -2203,3 +2203,10 @@ html[data-tema="noite"] .pagina-aero::before { filter: brightness(.5) saturate(1
 .wmp2-lista .pl-txt { display: grid; min-width: 0; text-align: left; }
 .wmp2-lista .pl-txt b, .wmp2-lista .pl-txt small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .wmp-dica { width: fit-content; padding: 6px 14px; border-radius: 14px; background: rgba(10,50,110,.65); text-shadow: none; }
+.ed-busca-capa { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ed-busca-capa button { border: 0; border-radius: 16px; padding: 8px 14px; font-weight: 800; color: #fff; cursor: pointer; background: linear-gradient(#7fc3ff, #2a7fdc 48%, #0b55b8 52%, #3aa0ff); }
+.ed-busca-capa small { color: #5a6a80; }
+.ed-opcoes { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 8px; }
+.ed-opcoes button { padding: 0; border: 3px solid transparent; border-radius: 6px; background: none; cursor: pointer; aspect-ratio: 1; overflow: hidden; }
+.ed-opcoes button.sel { border-color: #2a7fdc; box-shadow: 0 0 8px rgba(42,127,220,.7); }
+.ed-opcoes img { width: 100%; height: 100%; object-fit: cover; display: block; }

@@ -169,33 +169,42 @@ function TelaPrograma({ tela, mes, doMes }: { tela: Tela; mes: string; doMes: Fa
   }
 }
 
-/* ---------------- controle remoto ---------------- */
-function Controle({ ligada, onPower, onCh, onAnt, onProx, onMenu, onNum, onTelaCheia, cheia }: {
-  ligada: boolean; onPower: () => void; onCh: (d: number) => void; onAnt: () => void; onProx: () => void; onMenu: () => void; onNum: (n: number) => void; onTelaCheia?: () => void; cheia?: boolean;
+/* ---------------- controle remoto (foto de um controle rosa de verdade) ---------------- */
+function Controle({ ligada, onPower, onCh, onAnt, onProx, onMenu, onNum, onTelaCheia, onInicio, onAleatorio }: {
+  ligada: boolean; onPower: () => void; onCh: (d: number) => void; onAnt: () => void; onProx: () => void; onMenu: () => void; onNum: (n: number) => void; onTelaCheia?: () => void; onInicio: () => void; onAleatorio: () => void; cheia?: boolean;
 }) {
   return (
-    <div className="controle" aria-label="controle remoto">
-      <div className="ctl-topo">
-        <span className={`ctl-led ${ligada ? "on" : ""}`} />
-        <button className="ctl-power" onClick={onPower} aria-label={cheia ? "sair da tela cheia" : "ligar/desligar"}>⏻</button>
-      </div>
-      <div className="ctl-nums">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => <button key={n} onClick={() => onNum(n)}>{n}</button>)}
-      </div>
-      <div className="ctl-dpad">
-        <button className="up" onClick={() => onCh(1)} aria-label="próximo mês">CH ▲</button>
-        <button className="lf" onClick={onAnt} aria-label="tela anterior">◀</button>
-        <button className="ok" onClick={onProx} aria-label="próxima tela">OK</button>
-        <button className="rt" onClick={onProx} aria-label="próxima tela">▶</button>
-        <button className="dn" onClick={() => onCh(-1)} aria-label="mês anterior">CH ▼</button>
-      </div>
-      <div className="ctl-cores">
-        <button className="vm" onClick={onMenu} aria-label="ir pro top do mês">TOP</button>
-        <button className="vd" onClick={onAnt} aria-label="voltar">◀◀</button>
-        <button className="am" onClick={onProx} aria-label="avançar">▶▶</button>
-        {onTelaCheia && <button className="az" onClick={onTelaCheia} aria-label="tela cheia">⛶</button>}
-      </div>
-      <span className="ctl-marca">alana TV</span>
+    <div className="controle2" aria-label="controle remoto">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/tv/controle.webp" alt="" draggable={false} />
+      <span className={`ctl2-led ${ligada ? "on" : ""}`} />
+      <button className="cb redondo" style={{ left: "15.49%", top: "4.19%", width: "14.08%", height: "4.09%" }} onClick={onPower} aria-label="ligar ou desligar" />
+      <button className="cb redondo" style={{ left: "15.85%", top: "11.15%", width: "11.97%", height: "3.48%" }} onClick={() => onNum(1)} aria-label="favorito 1" />
+      <button className="cb redondo" style={{ left: "35.92%", top: "11.15%", width: "11.97%", height: "3.48%" }} onClick={() => onNum(2)} aria-label="favorito 2" />
+      <button className="cb redondo" style={{ left: "55.28%", top: "11.15%", width: "11.97%", height: "3.48%" }} onClick={() => onNum(3)} aria-label="favorito 3" />
+      <button className="cb redondo" style={{ left: "15.85%", top: "16.05%", width: "11.97%", height: "3.48%" }} onClick={() => onNum(4)} aria-label="favorito 4" />
+      <button className="cb redondo" style={{ left: "35.92%", top: "16.05%", width: "11.97%", height: "3.48%" }} onClick={() => onNum(5)} aria-label="favorito 5" />
+      <button className="cb redondo" style={{ left: "55.28%", top: "16.05%", width: "11.97%", height: "3.48%" }} onClick={() => onNum(6)} aria-label="favorito 6" />
+      <button className="cb redondo" style={{ left: "15.85%", top: "21.17%", width: "11.97%", height: "3.48%" }} onClick={() => onNum(7)} aria-label="favorito 7" />
+      <button className="cb redondo" style={{ left: "35.92%", top: "21.17%", width: "11.97%", height: "3.48%" }} onClick={() => onNum(8)} aria-label="favorito 8" />
+      <button className="cb redondo" style={{ left: "55.28%", top: "21.17%", width: "11.97%", height: "3.48%" }} onClick={() => onNum(9)} aria-label="favorito 9" />
+      <button className="cb" style={{ left: "14.44%", top: "32.62%", width: "14.08%", height: "2.86%" }} onClick={onAnt} aria-label="voltar" />
+      <button className="cb" style={{ left: "34.15%", top: "32.62%", width: "14.08%", height: "2.86%" }} onClick={onProx} aria-label="avançar" />
+      <button className="cb" style={{ left: "53.17%", top: "32.62%", width: "14.08%", height: "2.86%" }} onClick={onAnt} aria-label="anterior" />
+      <button className="cb" style={{ left: "72.89%", top: "32.62%", width: "14.08%", height: "2.86%" }} onClick={onProx} aria-label="próximo" />
+      <button className="cb" style={{ left: "14.44%", top: "38.24%", width: "14.08%", height: "3.07%" }} onClick={onProx} aria-label="play" />
+      <button className="cb" style={{ left: "71.83%", top: "38.24%", width: "14.08%", height: "3.07%" }} onClick={onInicio} aria-label="voltar pro começo" />
+      <button className="cb redondo" style={{ left: "41.55%", top: "45.09%", width: "19.72%", height: "4.09%" }} onClick={() => onCh(1)} aria-label="próximo mês" />
+      <button className="cb redondo" style={{ left: "41.55%", top: "57.67%", width: "19.72%", height: "4.09%" }} onClick={() => onCh(-1)} aria-label="mês anterior" />
+      <button className="cb redondo" style={{ left: "20.77%", top: "50.61%", width: "14.08%", height: "5.73%" }} onClick={onAnt} aria-label="tela anterior" />
+      <button className="cb redondo" style={{ left: "67.61%", top: "50.61%", width: "14.08%", height: "5.73%" }} onClick={onProx} aria-label="próxima tela" />
+      <button className="cb redondo" style={{ left: "42.25%", top: "50.82%", width: "18.31%", height: "5.32%" }} onClick={onProx} aria-label="ok" />
+      <button className="cb redondo" style={{ left: "16.20%", top: "59.61%", width: "11.27%", height: "3.27%" }} onClick={onMenu} aria-label="top do mês" />
+      <button className="cb redondo" style={{ left: "74.30%", top: "43.97%", width: "11.27%", height: "3.27%" }} onClick={onMenu} aria-label="top do mês" />
+      <button className="cb redondo" style={{ left: "74.30%", top: "64.93%", width: "11.27%", height: "3.27%" }} onClick={onAnt} aria-label="voltar" />
+      <button className="cb redondo" style={{ left: "74.30%", top: "80.78%", width: "11.27%", height: "3.27%" }} onClick={onAleatorio} aria-label="favorito aleatório" />
+      <button className="cb redondo" style={{ left: "54.58%", top: "80.78%", width: "11.27%", height: "3.27%" }} onClick={() => onTelaCheia?.()} aria-label="tela cheia" />
+      <span className="ctl2-marca">alana <i>TV</i></span>
     </div>
   );
 }
@@ -260,6 +269,10 @@ export default function Favoritos() {
     const i = telas.findIndex((t) => t.t === "item" && t.n === n);
     if (i >= 0) trocar(i);
   }, [telas, trocar]);
+  const aleatorio = useCallback(() => {
+    const itens = telas.map((t, i) => (t.t === "item" ? i : -1)).filter((i) => i >= 0);
+    if (itens.length) trocar(itens[Math.floor(Math.random() * itens.length)]);
+  }, [telas, trocar]);
   const irTop = useCallback(() => { const i = telas.findIndex((t) => t.t === "top"); if (i >= 0) trocar(i); }, [telas, trocar]);
 
   const abrirCheia = () => {
@@ -316,20 +329,22 @@ export default function Favoritos() {
   );
 
   const controle = (
-    <Controle ligada={ligada} cheia={cheia} onPower={() => (cheia ? fecharCheia() : setLigada((l) => !l))} onCh={canal} onAnt={ant} onProx={prox} onMenu={irTop} onNum={irNum} onTelaCheia={cheia ? undefined : abrirCheia} />
+    <Controle ligada={ligada} cheia={cheia} onPower={() => (cheia ? fecharCheia() : setLigada((l) => !l))} onCh={canal} onAnt={ant} onProx={prox} onMenu={irTop} onNum={irNum} onTelaCheia={cheia ? undefined : abrirCheia} onInicio={() => trocar(0)} onAleatorio={aleatorio} />
   );
 
   return (
     <div className="atv2">
       <div className="sala">
-        <div className="tv">
-          <div className="tv-moldura">{!cheia && palco}</div>
-          <div className="tv-base"><span>alana</span><i className={ligada ? "on" : ""} /></div>
-          <div className="tv-pe" />
+        <div className="tv2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/tv/tv.webp" alt="" draggable={false} />
+          <div className="tv2-tela">{!cheia && palco}</div>
+          <span className="tv2-marca">alana</span>
+          <i className={`tv2-led ${ligada ? "on" : ""}`} />
         </div>
         <div className="sala-lado">
           {controle}
-          <p className="dica-ctl">use o controle ou as setinhas do teclado. <b>F</b> abre a tela cheia pra gravar.</p>
+          <p className="dica-ctl">use o controle ou as setinhas do teclado. <b>ZOOM</b> no controle (ou a tecla <b>F</b>) abre a tela cheia pra gravar.</p>
         </div>
       </div>
 

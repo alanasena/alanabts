@@ -2442,3 +2442,74 @@ html[data-tema="noite"] .grade-prog { background: linear-gradient(#232c45, #1a21
 .ctl2-marca i { padding: 1px 6px; border-radius: 999px; color: #fff; background: linear-gradient(#7cc0ff, #1662cc); }
 .tela-cheia .controle2 { width: 130px; }
 @media (max-width: 860px) { .controle2 { transform: none; width: 140px; } }
+/* =========================================================
+   BONEQUINHA — closet estilo Stardoll/Bratz com oncinha rosa
+   ========================================================= */
+html[data-visual] body:has(.pagina-bq) { background: #ffd6ea url("/oncinha-rosa.webp") center / 420px; }
+html[data-visual][data-tema="noite"] body:has(.pagina-bq) { background: #2a0f20 url("/oncinha-rosa.webp") center / 420px; background-blend-mode: multiply; }
+body:has(.pagina-bq) .fundo { display: none; }
+.bq { max-width: 1120px; margin: 0 auto; padding: 4px 10px 40px; font-family: "DM Sans", sans-serif; --rosa: #ff2d95; --rosa2: #c2185b; }
+.bq-topo { text-align: center; margin-bottom: 16px; }
+.bq-topo h1 { display: inline-block; margin: 0; padding: 8px 26px 12px; border-radius: 999px; font: 900 italic 50px/1 "Rubik", sans-serif; color: #fff; letter-spacing: -1px;
+  background: linear-gradient(#ff8cc3, #ff2d95 50%, #d81b72 52%, #ff5fa8); border: 4px solid #fff; box-shadow: 0 8px 0 var(--rosa2), 0 14px 26px rgba(120,10,60,.35); text-shadow: 0 3px 0 rgba(120,10,60,.4); }
+.bq-topo h1 span { font-family: "Playfair Display", serif; font-weight: 700; }
+.bq-topo p { margin: 16px auto 0; display: inline-block; padding: 6px 16px; border-radius: 14px; background: rgba(255,255,255,.88); color: #7a1a4a; font-weight: 600; font-size: 14px; }
+
+.bq-mesa { display: grid; grid-template-columns: 380px 1fr; gap: 24px; align-items: start; }
+.bq-palco-moldura { padding: 12px; border-radius: 30px; background: linear-gradient(135deg, #fff, #ffd1e6 40%, #fff 60%, #ffc0dc); box-shadow: 0 16px 34px rgba(120,10,60,.3), inset 0 0 0 3px #fff; }
+.bq-palco { position: relative; height: 640px; border-radius: 22px; overflow: hidden; display: grid; place-items: center; box-shadow: inset 0 0 0 3px rgba(255,255,255,.6); }
+.bq-palco canvas { height: 96%; width: auto; aspect-ratio: 384 / 1024; filter: drop-shadow(0 10px 14px rgba(60,0,30,.3)); transition: opacity .2s; }
+.bq-palco canvas.carregando { opacity: 0; }
+.bq-carregando { position: absolute; font: 400 24px/1 "VT323", monospace; color: var(--rosa2); }
+.fundo-rosa { background: radial-gradient(rgba(255,255,255,.7) 1.5px, transparent 2px) 0 0 / 18px 18px, linear-gradient(#ffd6ea, #ff9ccb); }
+.fundo-oncinha { background: url("/oncinha-rosa.webp") center / 260px; }
+.fundo-glitter { background: radial-gradient(rgba(255,255,255,.75) 1px, transparent 1.6px) 0 0 / 13px 13px, radial-gradient(rgba(255,220,120,.7) 1px, transparent 1.6px) 6px 7px / 17px 17px, linear-gradient(#3a0a2a, #c2185b); }
+.fundo-praia { background: url("/h2o/praia-coqueiros.webp") center / cover; }
+.fundo-passarela { background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.1) 40%, transparent 50%), linear-gradient(75deg, transparent 50%, rgba(255,255,255,.1) 60%, transparent 70%), linear-gradient(#1a1020, #4a2a5a); }
+.bq-acoes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.bq-acoes button, .bq-sub button, .bq-baixar { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 2px solid #fff; border-radius: 999px; padding: 9px 12px; font: 800 13px/1 "DM Sans", sans-serif; color: var(--rosa2); background: linear-gradient(#fff, #ffe3f0); cursor: pointer; box-shadow: 0 3px 0 #f3a6c9; }
+.bq-acoes button:active, .bq-sub button:active { transform: translateY(2px); box-shadow: none; }
+.bq-baixar { color: #fff !important; background: linear-gradient(#ff8cc3, #ff2d95 50%, #d81b72 52%, #ff5fa8) !important; box-shadow: 0 3px 0 var(--rosa2) !important; }
+
+.bq-closet { border-radius: 28px; overflow: hidden; background: rgba(255,255,255,.94); box-shadow: 0 16px 34px rgba(120,10,60,.3); border: 6px solid transparent; background-clip: padding-box; outline: 6px solid #fff; outline-offset: -6px; }
+.bq-abas { display: flex; flex-wrap: wrap; gap: 4px; padding: 10px 10px 0; background: url("/oncinha-rosa.webp") center / 220px; }
+.bq-abas button { display: inline-flex; align-items: center; gap: 6px; padding: 10px 14px; border: 0; border-radius: 16px 16px 0 0; font: 800 13px/1 "DM Sans", sans-serif; color: #fff; background: rgba(120,10,60,.72); cursor: pointer; }
+.bq-abas button.on { background: #fff; color: var(--rosa2); }
+.bq-gaveta { padding: 18px; min-height: 520px; max-height: 640px; overflow-y: auto; }
+.bq-tit { margin: 14px 0 8px; font: 900 italic 15px/1 "Rubik", sans-serif; color: var(--rosa2); text-transform: lowercase; }
+.bq-tit:first-child { margin-top: 0; }
+.bq-sub { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.bq-sub button.on { color: #fff; background: linear-gradient(#ff8cc3, #ff2d95 50%, #d81b72 52%, #ff5fa8); box-shadow: 0 3px 0 var(--rosa2); }
+.bq-grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+.bq-grade button { aspect-ratio: 1; display: grid; place-items: center; padding: 8px; border-radius: 18px; border: 3px solid #ffd1e6; background: radial-gradient(circle at 50% 35%, #fff, #fff0f7); cursor: pointer; transition: transform .1s; }
+.bq-grade button:hover { transform: scale(1.05); border-color: #ff8cc3; }
+.bq-grade button.on { border-color: var(--rosa); box-shadow: 0 0 0 3px #ffc0dc, 0 6px 14px rgba(255,45,149,.3); background: radial-gradient(circle at 50% 35%, #fff, #ffd6ea); }
+.bq-grade img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.bq-cores { display: flex; flex-wrap: wrap; gap: 10px; }
+.bq-cores button { width: 40px; height: 40px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px #ffc0dc, inset 0 -6px 8px rgba(0,0,0,.18), inset 0 4px 6px rgba(255,255,255,.5); cursor: pointer; font: 700 20px/1 "DM Sans", sans-serif; color: #c48aa8; }
+.bq-cores button.nada { background: #fff; }
+.bq-cores button.on { box-shadow: 0 0 0 3px var(--rosa), inset 0 -6px 8px rgba(0,0,0,.18); transform: scale(1.1); }
+.bq-manicure { display: grid; grid-template-columns: minmax(200px, 300px) 1fr; gap: 20px; align-items: start; }
+.bq-mao { position: relative; border-radius: 20px; background: radial-gradient(circle at 50% 30%, #fff, #ffe3f0); padding: 0; overflow: hidden; }
+.bq-mao canvas { display: block; width: 100%; height: auto; }
+.bq-unha { position: absolute; border: 0; padding: 0; background: transparent; border-radius: 50%; cursor: pointer; }
+.bq-unha:hover { box-shadow: 0 0 0 3px rgba(255,45,149,.6); }
+.bq-esmaltes .bq-sub { margin-top: 12px; }
+.bq-fundos { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+.bq-fundos button { aspect-ratio: 3 / 4; border-radius: 18px; border: 4px solid #fff; box-shadow: 0 0 0 2px #ffc0dc; cursor: pointer; display: grid; align-items: end; padding: 8px; }
+.bq-fundos button.on { box-shadow: 0 0 0 4px var(--rosa); }
+.bq-fundos span { background: #fff; border-radius: 10px; padding: 4px 8px; font: 800 12px/1 "DM Sans", sans-serif; color: var(--rosa2); }
+
+@media (max-width: 860px) {
+  .bq-mesa { grid-template-columns: 1fr; }
+  .bq-palco { height: 520px; }
+  .bq-topo h1 { font-size: 36px; }
+  .bq-gaveta { min-height: 0; max-height: none; }
+  .bq-abas button span { display: none; }
+  .bq-abas button { padding: 12px 14px; }
+  .bq-manicure { grid-template-columns: 1fr; }
+  .bq-grade { grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); }
+}
+.bq-palco { display: block; }
+.bq-palco canvas { position: absolute; left: 50%; top: 2%; height: 96%; width: auto; transform: translateX(-50%); }
+.bq-carregando { left: 0; right: 0; top: 48%; text-align: center; }

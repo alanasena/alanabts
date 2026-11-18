@@ -77,6 +77,8 @@ function preencher(mascara: HTMLImageElement, cor: string) {
 
 async function desenharBoneca(ctx: CanvasRenderingContext2D, l: Look, aj: Ajustes, marcar: string | null = null) {
   ctx.clearRect(0, 0, W, H);
+  // pedacinho do cabelo que fica atrás do corpo (tapa a frestinha entre o braço e o cabelo)
+  if (l.cabelo) ctx.drawImage(await carregar(`${P}/cabelos/${l.cabelo}-atras.webp`), 0, 0);
   ctx.drawImage(await carregar(`${P}/base.webp`), 0, 0);
   // com sapato, esconde os dedos da boneca que ficariam aparecendo por trás
   if (l.sapato) { ctx.save(); ctx.globalCompositeOperation = "destination-out"; ctx.fillRect(0, 975, W, H - 975); ctx.restore(); }

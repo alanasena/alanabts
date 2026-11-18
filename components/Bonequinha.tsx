@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Download, Footprints, Gem, Image as ImageIcon, Palette, RotateCcw, Scissors, Shirt, Shuffle, Sparkles, Star } from "lucide-react";
 import {
-  ACESSORIOS, BATONS, BLUSAS, CABELOS, CORES_CABELO, ESMALTES, FUNDOS, PARTE_DE_BAIXO, PELES, SAPATOS, SOMBRAS, UNHAS, VESTIDOS, type Peca,
+  ACESSORIOS, BATONS, BLUSAS, CABELOS, ESMALTES, FUNDOS, PARTE_DE_BAIXO, SAPATOS, SOMBRAS, UNHAS, VESTIDOS, type Peca,
 } from "@/config/bonequinha";
 
 const P = "/bonequinha";
@@ -39,16 +39,6 @@ function novoCanvas(w = W, h = H) {
   c.width = w; c.height = h;
   return c;
 }
-// pinta uma imagem com uma cor (multiplicar), mantendo o formato dela
-function tingir(im: HTMLImageElement, cor: string) {
-  const c = novoCanvas(im.width, im.height), x = c.getContext("2d")!;
-  x.drawImage(im, 0, 0);
-  x.globalCompositeOperation = "multiply";
-  x.fillStyle = cor; x.fillRect(0, 0, c.width, c.height);
-  x.globalCompositeOperation = "destination-in";
-  x.drawImage(im, 0, 0);
-  return c;
-}
 // preenche o formato de uma máscara com uma cor
 function preencher(mascara: HTMLImageElement, cor: string) {
   const c = novoCanvas(mascara.width, mascara.height), x = c.getContext("2d")!;
@@ -60,15 +50,9 @@ function preencher(mascara: HTMLImageElement, cor: string) {
 
 async function desenharBoneca(ctx: CanvasRenderingContext2D, l: Look) {
   ctx.clearRect(0, 0, W, H);
-  const pele = PELES.find((p) => p.id === l.pele);
-  const base = await carregar(`${P}/base.webp`);
-  ctx.drawImage(pele?.multiplica ? tingir(base, pele.multiplica) : base, 0, 0);
-  if (pele?.clarear) {
-    const c = novoCanvas(), x = c.getContext("2d")!;
-    x.fillStyle = `rgba(255,240,230,${pele.clarear})`; x.fillRect(0, 0, W, H);
-    x.globalCompositeOperation = "destination-in"; x.drawImage(base, 0, 0);
-    ctx.drawImage(c, 0, 0);
-  }
+  ctx.drawImage(await carregar(`${P}/base.webp`), 0, 0);
+  // com sapato, esconde os dedos da boneca que ficariam aparecendo por trás
+  if (l.sapato) { ctx.save(); ctx.globalCompositeOperation = "destination-out"; ctx.fillRect(0, 975, W, H - 975); ctx.restore(); }
 
   // maquiagem
   if (l.sombra) {
@@ -96,11 +80,7 @@ async function desenharBoneca(ctx: CanvasRenderingContext2D, l: Look) {
   }
 
   // cabelo
-  if (l.cabelo) {
-    const cor = CORES_CABELO.find((c) => c.id === l.corCabelo)?.cor;
-    if (cor) ctx.drawImage(tingir(await carregar(`${P}/cabelos/${l.cabelo}-claro.webp`), cor), 0, 0);
-    else ctx.drawImage(await carregar(`${P}/cabelos/${l.cabelo}.webp`), 0, 0);
-  }
+  if (l.cabelo) ctx.drawImage(await carregar(`${P}/cabelos/${l.cabelo}.webp`), 0, 0);
   // roupas
   const camadas: string[] = [];
   // sapato primeiro, pra calça ficar por cima dele
@@ -183,7 +163,7 @@ const ABAS = [
   { id: "roupas", nome: "roupas", icone: Shirt },
   { id: "sapatos", nome: "sapatos", icone: Footprints },
   { id: "acessorios", nome: "acessórios", icone: Gem },
-  { id: "make", nome: "make & pele", icone: Palette },
+  { id: "make", nome: "maquiagem", icone: Palette },
   { id: "unhas", nome: "unhas", icone: Sparkles },
   { id: "fundo", nome: "fundo", icone: ImageIcon },
 ] as const;
@@ -233,7 +213,7 @@ export default function Bonequinha() {
     const vestido = Math.random() < 0.3;
     setLook((l) => ({
       ...l,
-      cabelo: sorteia(CABELOS).id, corCabelo: Math.random() < 0.5 ? "natural" : sorteia(CORES_CABELO).id,
+      cabelo: sorteia(CABELOS).id,
       vestido: vestido ? sorteia(VESTIDOS).id : null, cima: vestido ? null : sorteia(BLUSAS).id, baixo: vestido ? null : sorteia(PARTE_DE_BAIXO).id,
       sapato: sorteia(SAPATOS).id, acessorios: ACESSORIOS.filter(() => Math.random() < 0.35).map((a) => a.id),
       batom: sorteia(BATONS), sombra: sorteia(SOMBRAS), blush: Math.random() < 0.5,
@@ -283,7 +263,7 @@ export default function Bonequinha() {
           <div className="bq-acoes">
             <button onClick={() => setLook(LOOK_ALANA)}><Star size={15} /> look da Alana</button>
             <button onClick={aleatorio}><Shuffle size={15} /> sortear</button>
-            <button onClick={() => setLook((l) => ({ ...VAZIO, pele: l.pele, fundo: l.fundo }))}><RotateCcw size={15} /> tirar tudo</button>
+            <button onClick={() => setLook((l) => ({ ...VAZIO, fundo: l.fundo }))}><RotateCcw size={15} /> tirar tudo</button>
             <button className="bq-baixar" onClick={baixarBoneca}><Download size={15} /> baixar foto</button>
           </div>
         </div>
@@ -298,12 +278,6 @@ export default function Bonequinha() {
           <div className="bq-gaveta">
             {aba === "cabelo" && (
               <>
-                <p className="bq-tit">cor</p>
-                <div className="bq-cores">
-                  {CORES_CABELO.map((c) => (
-                    <button key={c.id} className={look.corCabelo === c.id ? "on" : ""} style={{ background: c.cor || "#1a1210" }} onClick={() => set({ corCabelo: c.id })} title={c.nome} />
-                  ))}
-                </div>
                 <p className="bq-tit">penteado</p>
                 <Grade itens={CABELOS} ativo={(id) => look.cabelo === id} aoClicar={(id) => set({ cabelo: look.cabelo === id ? null : id })} />
               </>
@@ -337,23 +311,25 @@ export default function Bonequinha() {
                 <Bolinhas cores={SOMBRAS} ativo={look.sombra} aoClicar={(c) => set({ sombra: c })} nenhum="sem sombra" />
                 <p className="bq-tit">blush</p>
                 <div className="bq-sub"><button className={look.blush ? "on" : ""} onClick={() => set({ blush: !look.blush })}>{look.blush ? "com blush" : "sem blush"}</button></div>
-                <p className="bq-tit">tom de pele</p>
-                <div className="bq-sub">
-                  {PELES.map((p) => <button key={p.id} className={look.pele === p.id ? "on" : ""} onClick={() => set({ pele: p.id })}>{p.nome}</button>)}
-                </div>
               </>
             )}
             {aba === "unhas" && (
               <div className="bq-manicure">
                 <div className="bq-mao">
-                  <canvas ref={telaMao} width={543} height={724} />
+                  <canvas ref={telaMao} width={543} height={724} onClick={(e) => {
+                    const r = e.currentTarget.getBoundingClientRect();
+                    const x = ((e.clientX - r.left) / r.width) * 543, y = ((e.clientY - r.top) / r.height) * 724;
+                    let perto = 0, menor = Infinity;
+                    UNHAS.forEach(([ux, uy, uw, uh], i) => { const d = Math.hypot(x - (ux + uw / 2), y - (uy + uh / 2)); if (d < menor) { menor = d; perto = i; } });
+                    if (menor < 140) setUnhas((u) => u.map((v, k) => (k === perto ? { ...esmalte } : v)));
+                  }} />
                   {UNHAS.map(([x, y, w, h], i) => (
                     <button key={i} className="bq-unha" style={{ left: `${(x / 543) * 100}%`, top: `${(y / 724) * 100}%`, width: `${(w / 543) * 100}%`, height: `${(h / 724) * 100}%` }}
                       onClick={() => setUnhas((u) => u.map((v, k) => (k === i ? { ...esmalte } : v)))} aria-label={`pintar unha ${i + 1}`} />
                   ))}
                 </div>
                 <div className="bq-esmaltes">
-                  <p className="bq-tit">escolhe o esmalte e clica na unha</p>
+                  <p className="bq-tit">1. escolhe a cor · 2. clica na unha (ou em pintar todas)</p>
                   <div className="bq-cores">
                     {ESMALTES.map((c) => <button key={c} className={esmalte.cor === c ? "on" : ""} style={{ background: c }} onClick={() => setEsmalte((e) => ({ ...e, cor: c }))} />)}
                   </div>

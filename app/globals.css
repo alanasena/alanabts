@@ -2513,3 +2513,5 @@ body:has(.pagina-bq) .fundo { display: none; }
 .bq-palco { display: block; }
 .bq-palco canvas { position: absolute; left: 50%; top: 2%; height: 96%; width: auto; transform: translateX(-50%); }
 .bq-carregando { left: 0; right: 0; top: 48%; text-align: center; }
+.bq-mao canvas { cursor: pointer; }
+.bq-unha { margin: -18px 0 0 -18px; padding: 18px; box-sizing: content-box; }

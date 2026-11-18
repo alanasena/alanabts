@@ -7,8 +7,7 @@ import {
 } from "@/config/bonequinha";
 
 const P = "/bonequinha";
-const OX = 40, OY = 40; // folga em volta da boneca (mão e coques)
-const W = 384 + OX * 2, H = 1024 + OY;
+const W = 384, H = 1024;
 
 type Look = {
   cabelo: string | null; corCabelo: string; pele: string;
@@ -51,49 +50,48 @@ function preencher(mascara: HTMLImageElement, cor: string) {
 
 async function desenharBoneca(ctx: CanvasRenderingContext2D, l: Look) {
   ctx.clearRect(0, 0, W, H);
-  const img = (n: string) => carregar(`${P}/${n}.webp`);
-  const pos = (im: CanvasImageSource) => ctx.drawImage(im, OX, OY);
-  if (l.cabelo) ctx.drawImage(await img(`cabelos/${l.cabelo}`), OX, OY - 40); // parte de trás do cabelo, atrás do corpo
-  pos(await img("base"));
-  ctx.drawImage(await img("mao-extra"), OX - 40, OY);
+  ctx.drawImage(await carregar(`${P}/base.webp`), 0, 0);
   // com sapato, esconde os dedos da boneca que ficariam aparecendo por trás
-  if (l.sapato) { ctx.save(); ctx.globalCompositeOperation = "destination-out"; ctx.fillRect(0, OY + 975, W, 60); ctx.restore(); }
+  if (l.sapato) { ctx.save(); ctx.globalCompositeOperation = "destination-out"; ctx.fillRect(0, 975, W, H - 975); ctx.restore(); }
 
   // maquiagem
   if (l.sombra) {
     ctx.save(); ctx.globalCompositeOperation = "multiply"; ctx.globalAlpha = 0.5;
     for (const ex of [134, 210]) {
-      const g = ctx.createRadialGradient(OX + ex, OY + 150, 2, OX + ex, OY + 150, 30);
+      const g = ctx.createRadialGradient(ex, 150, 2, ex, 150, 30);
       g.addColorStop(0, l.sombra); g.addColorStop(1, "rgba(255,255,255,0)");
-      ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(OX + ex, OY + 150, 30, 15, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(ex, 150, 30, 15, 0, 0, Math.PI * 2); ctx.fill();
     }
     ctx.restore();
   }
   if (l.blush) {
     ctx.save(); ctx.globalAlpha = 0.32;
     for (const bx of [116, 228]) {
-      const g = ctx.createRadialGradient(OX + bx, OY + 203, 1, OX + bx, OY + 203, 22);
+      const g = ctx.createRadialGradient(bx, 203, 1, bx, 203, 22);
       g.addColorStop(0, "#ff5f8f"); g.addColorStop(1, "rgba(255,95,143,0)");
-      ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(OX + bx, OY + 203, 22, 14, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(bx, 203, 22, 14, 0, 0, Math.PI * 2); ctx.fill();
     }
     ctx.restore();
   }
   if (l.batom) {
-    ctx.save(); ctx.globalCompositeOperation = "multiply"; ctx.globalAlpha = 0.8;
-    pos(preencher(await img("labios"), l.batom)); ctx.restore();
+    const lab = await carregar(`${P}/labios.webp`);
+    ctx.save(); ctx.globalCompositeOperation = "multiply"; ctx.globalAlpha = 0.75;
+    ctx.drawImage(preencher(lab, l.batom), 0, 0); ctx.restore();
   }
 
-  // roupas: sapato primeiro, pra calça ficar por cima dele
+  // cabelo
+  if (l.cabelo) ctx.drawImage(await carregar(`${P}/cabelos/${l.cabelo}.webp`), 0, 0);
+  // roupas
   const camadas: string[] = [];
+  // sapato primeiro, pra calça ficar por cima dele
   if (l.sapato) camadas.push(`sapatos/${l.sapato}`);
   if (l.vestido) camadas.push(`roupas/${l.vestido}`);
   else {
     if (l.baixo) camadas.push(`roupas/${l.baixo}`);
     if (l.cima) camadas.push(`roupas/${l.cima}`);
   }
-  for (const c of camadas) pos(await img(c));
-  if (l.cabelo) ctx.drawImage(await img(`cabelos/${l.cabelo}-frente`), OX, OY - 40); // franja e mechas da frente
-  for (const a of l.acessorios) pos(await img(`acessorios/${a}`));
+  for (const a of l.acessorios) camadas.push(`acessorios/${a}`);
+  for (const c of camadas) ctx.drawImage(await carregar(`${P}/${c}.webp`), 0, 0);
 }
 
 async function desenharFundo(ctx: CanvasRenderingContext2D, fundo: string, w: number, h: number) {
@@ -144,12 +142,7 @@ async function desenharMao(ctx: CanvasRenderingContext2D, unhas: Unha[]) {
       }
     }
     x.globalCompositeOperation = "destination-in"; x.drawImage(mk, 0, 0);
-    ctx.drawImage(c, 0, 0); // cor viva por cima
-    // sombrinha da unha por cima, pra não ficar chapado
-    ctx.save(); ctx.globalCompositeOperation = "multiply"; ctx.globalAlpha = 0.35;
-    const sombra = novoCanvas(mao.width, mao.height), xs = sombra.getContext("2d")!;
-    xs.drawImage(mao, 0, 0); xs.globalCompositeOperation = "destination-in"; xs.drawImage(mk, 0, 0);
-    ctx.drawImage(sombra, 0, 0); ctx.restore();
+    ctx.save(); ctx.globalCompositeOperation = "multiply"; ctx.drawImage(c, 0, 0); ctx.restore();
     // brilho por cima pra parecer esmalte
     ctx.save(); ctx.globalAlpha = 0.55; ctx.globalCompositeOperation = "screen";
     const g2 = ctx.createLinearGradient(ux, uy, ux + uw, uy + uh);

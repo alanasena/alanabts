@@ -15,7 +15,7 @@ type Look = {
   batom: string; sombra: string; blush: boolean; fundo: string;
 };
 const LOOK_ALANA: Look = {
-  cabelo: "h2_1", corCabelo: "natural", pele: "natural", cima: "r1_0c", baixo: "r1_0b", vestido: null, sapato: "s2_1",
+  cabelo: "h2_1", corCabelo: "natural", pele: "natural", cima: "c01", baixo: "b01", vestido: null, sapato: "s2_1",
   acessorios: ["a1_3"], batom: "", sombra: "", blush: false, fundo: "rosa",
 };
 const VAZIO: Look = { ...LOOK_ALANA, cabelo: null, cima: null, baixo: null, vestido: null, sapato: null, acessorios: [], batom: "", sombra: "", blush: false };

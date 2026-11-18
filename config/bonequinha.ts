@@ -70,202 +70,194 @@ export const CABELOS: Peca[] = [
 
 export const BLUSAS: Peca[] = [
   {
-    "id": "r1_0c",
-    "nome": "Cropped borboleta"
+    "id": "c01",
+    "nome": "Cropped borboleta rosa"
   },
   {
-    "id": "r1_3c",
+    "id": "c02",
     "nome": "Tomara que caia rosa"
   },
   {
-    "id": "r2_0c",
+    "id": "c03",
     "nome": "Top de paetê rosa"
   },
   {
-    "id": "r2_1c",
+    "id": "c04",
     "nome": "Regata camuflada"
   },
   {
-    "id": "r2_2c",
+    "id": "c05",
     "nome": "Biquíni de oncinha rosa"
   },
   {
-    "id": "r2_3c",
-    "nome": "Corpete jeans"
+    "id": "c06",
+    "nome": "Top faixa de oncinha"
   },
   {
-    "id": "r3_0c",
-    "nome": "Regata borboleta"
-  },
-  {
-    "id": "r3_2c",
-    "nome": "Regata Angel"
-  },
-  {
-    "id": "r3_3c",
-    "nome": "Camiseta 23"
-  },
-  {
-    "id": "r4_0c",
-    "nome": "Blusa estrela"
-  },
-  {
-    "id": "r4_1c",
-    "nome": "Cropped lilás"
-  },
-  {
-    "id": "r4_2c",
-    "nome": "Corpete vermelho"
-  },
-  {
-    "id": "r5_0c",
+    "id": "c07",
     "nome": "Camiseta I love NY"
   },
   {
-    "id": "r5_1c",
-    "nome": "Top de oncinha"
+    "id": "c08",
+    "nome": "Corpete vermelho"
   },
   {
-    "id": "r5_3c",
-    "nome": "Blusa ombro a ombro"
+    "id": "c09",
+    "nome": "Cropped lilás"
   },
   {
-    "id": "r6_1c",
-    "nome": "Corpete de renda"
+    "id": "c10",
+    "nome": "Blusa estrela"
   },
   {
-    "id": "r6_2c",
-    "nome": "Cropped coração"
+    "id": "c11",
+    "nome": "Camiseta 23"
   },
   {
-    "id": "r7_0c",
-    "nome": "Top dragão"
+    "id": "c12",
+    "nome": "Regata borboleta"
   },
   {
-    "id": "r7_1c",
+    "id": "c13",
+    "nome": "Corpete rosa"
+  },
+  {
+    "id": "c14",
     "nome": "Colete jeans"
   },
   {
-    "id": "r7_2c",
-    "nome": "Corpete rosa"
+    "id": "c15",
+    "nome": "Top dragão"
+  },
+  {
+    "id": "c16",
+    "nome": "Cropped coração"
+  },
+  {
+    "id": "c17",
+    "nome": "Corpete de renda"
+  },
+  {
+    "id": "c18",
+    "nome": "Blusa ombro a ombro"
   }
 ];
 
 export const PARTE_DE_BAIXO: Peca[] = [
   {
-    "id": "r1_0b",
+    "id": "b01",
     "nome": "Calça flare jeans"
   },
   {
-    "id": "r1_3b",
-    "nome": "Minissaia rosa com cinto"
-  },
-  {
-    "id": "r2_0b",
+    "id": "b02",
     "nome": "Calça flare rosa"
   },
   {
-    "id": "r2_1b",
+    "id": "b03",
     "nome": "Short jeans desfiado"
   },
   {
-    "id": "r2_2b",
-    "nome": "Calça flare de oncinha"
+    "id": "b04",
+    "nome": "Biquíni (parte de baixo)"
   },
   {
-    "id": "r2_3b",
-    "nome": "Calça flare jeans escura"
-  },
-  {
-    "id": "r3_0b",
-    "nome": "Saia de babado branca"
-  },
-  {
-    "id": "r3_2b",
-    "nome": "Short jeans"
-  },
-  {
-    "id": "r3_3b",
-    "nome": "Calça cargo branca"
-  },
-  {
-    "id": "r4_0b",
-    "nome": "Short preto"
-  },
-  {
-    "id": "r4_1b",
-    "nome": "Minissaia lilás"
-  },
-  {
-    "id": "r4_2b",
-    "nome": "Minissaia de couro"
-  },
-  {
-    "id": "r5_0b",
-    "nome": "Minissaia jeans"
-  },
-  {
-    "id": "r5_1b",
+    "id": "b05",
     "nome": "Minissaia de oncinha"
   },
   {
-    "id": "r5_3b",
-    "nome": "Calça jeans"
+    "id": "b06",
+    "nome": "Minissaia jeans"
   },
   {
-    "id": "r6_1b",
-    "nome": "Minissaia preta"
+    "id": "b07",
+    "nome": "Minissaia de couro"
   },
   {
-    "id": "r6_2b",
-    "nome": "Calça capri"
+    "id": "b08",
+    "nome": "Minissaia lilás"
   },
   {
-    "id": "r7_0b",
+    "id": "b09",
+    "nome": "Short preto"
+  },
+  {
+    "id": "b10",
+    "nome": "Calça cargo branca"
+  },
+  {
+    "id": "b11",
+    "nome": "Short jeans dobrado"
+  },
+  {
+    "id": "b12",
+    "nome": "Saia de babado branca"
+  },
+  {
+    "id": "b13",
+    "nome": "Calça flare jeans escura"
+  },
+  {
+    "id": "b14",
+    "nome": "Calça flare de oncinha"
+  },
+  {
+    "id": "b15",
+    "nome": "Short jeans com tachas"
+  },
+  {
+    "id": "b16",
+    "nome": "Minissaia cargo branca"
+  },
+  {
+    "id": "b17",
     "nome": "Calça cargo preta"
   },
   {
-    "id": "r7_1b",
-    "nome": "Minissaia branca"
+    "id": "b18",
+    "nome": "Calça capri"
   },
   {
-    "id": "r7_2b",
-    "nome": "Short jeans claro"
+    "id": "b19",
+    "nome": "Minissaia preta com cinto"
+  },
+  {
+    "id": "b20",
+    "nome": "Calça flare jeans clara"
   }
 ];
 
 export const VESTIDOS: Peca[] = [
   {
-    "id": "r1_1",
+    "id": "v01",
     "nome": "Vestido de paetê rosa"
   },
   {
-    "id": "r1_2",
+    "id": "v02",
     "nome": "Vestido de oncinha"
   },
   {
-    "id": "r3_1",
-    "nome": "Vestido rosa assimétrico"
-  },
-  {
-    "id": "r4_3",
-    "nome": "Vestido de oncinha rosa"
-  },
-  {
-    "id": "r5_2",
+    "id": "v03",
     "nome": "Vestido de vinil preto"
   },
   {
-    "id": "r6_0",
-    "nome": "Vestido vermelho vazado"
+    "id": "v04",
+    "nome": "Vestido de oncinha rosa"
   },
   {
-    "id": "r6_3",
+    "id": "v05",
+    "nome": "Vestido rosa assimétrico"
+  },
+  {
+    "id": "v06",
+    "nome": "Vestido branco borboleta"
+  },
+  {
+    "id": "v07",
     "nome": "Vestido prata de paetê"
   },
   {
-    "id": "r7_3",
-    "nome": "Vestido branco borboleta"
+    "id": "v08",
+    "nome": "Vestido vermelho vazado"
   }
 ];
 

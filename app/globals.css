@@ -2527,3 +2527,16 @@ body:has(.pagina-bq) .fundo { display: none; }
 .bq-ajuste-linhas button:active, .bq-setas button:active { transform: scale(.94); background: #ffd6ea; }
 .bq-setas { display: flex; gap: 6px; }
 .bq-aviso { display: flex; align-items: center; gap: 4px; font-weight: 700; color: #c2185b; }
+
+/* closet: painel de ajuste do lado da boneca */
+.bq-mesa.ajustando { grid-template-columns: 380px 270px 1fr; }
+.bq-mesa.ajustando .bq-palco-moldura, .bq-mesa.ajustando .bq-ajuste { position: sticky; top: 100px; }
+.bq-mesa.ajustando .bq-ajuste { margin-top: 0; }
+@media (max-width: 1100px) {
+  .bq-mesa.ajustando { grid-template-columns: 340px 1fr; }
+  .bq-mesa.ajustando .bq-closet { grid-column: 1 / -1; }
+}
+@media (max-width: 760px) {
+  .bq-mesa.ajustando { grid-template-columns: 1fr; }
+  .bq-mesa.ajustando .bq-palco-moldura, .bq-mesa.ajustando .bq-ajuste { position: static; }
+}

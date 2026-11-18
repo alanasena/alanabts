@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Check, Download, Footprints, Gem, Image as ImageIcon, Move, Palette, RotateCcw, Save, Scissors, Shirt, Shuffle, Sparkles, Star, Undo2 } from "lucide-react";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Check, RotateCw, Download, Footprints, Gem, Image as ImageIcon, Move, Palette, RotateCcw, Save, Scissors, Shirt, Shuffle, Sparkles, Star, Undo2 } from "lucide-react";
 import { useSessao } from "@/components/Sessao";
 import { supabase } from "@/lib/supabase";
-import { POSICOES, type Pos } from "@/config/bonequinha-posicoes";
+import { NOME_PARTE, PARTES, PESCOCO, POSICOES, type Pos } from "@/config/bonequinha-posicoes";
 import {
   ACESSORIOS, BATONS, BLUSAS, CABELOS, ESMALTES, FUNDOS, PARTE_DE_BAIXO, SAPATOS, SOMBRAS, UNHAS, VESTIDOS, type Peca,
 } from "@/config/bonequinha";
@@ -12,6 +12,17 @@ import {
 const P = "/bonequinha";
 const W = 384, H = 1024;
 type Ajustes = Record<string, Pos>;
+const partesDe = (id: string) => PARTES[id] ?? [id];
+// desenha a peça no lugar dela, girando em volta do centro
+function desenharPeca(ctx: CanvasRenderingContext2D, img: CanvasImageSource, [x, y, w, h, r = 0]: Pos) {
+  ctx.save(); ctx.translate(x + w / 2, y + h / 2); ctx.rotate((r * Math.PI) / 180);
+  ctx.drawImage(img, -w / 2, -h / 2, w, h); ctx.restore();
+}
+// cantos da peça já girados: [sup-esq, sup-dir, inf-dir, inf-esq]
+function cantos([x, y, w, h, r = 0]: Pos) {
+  const cx = x + w / 2, cy = y + h / 2, c = Math.cos((r * Math.PI) / 180), s = Math.sin((r * Math.PI) / 180);
+  return ([[-w / 2, -h / 2], [w / 2, -h / 2], [w / 2, h / 2], [-w / 2, h / 2]] as const).map(([dx, dy]) => [cx + dx * c - dy * s, cy + dx * s + dy * c]);
+}
 
 type Look = {
   cabelo: string | null; corCabelo: string; pele: string;
@@ -89,16 +100,18 @@ async function desenharBoneca(ctx: CanvasRenderingContext2D, l: Look, aj: Ajuste
   // sapato primeiro, pra calça ficar por cima dele
   if (l.sapato) ctx.drawImage(await carregar(`${P}/sapatos/${l.sapato}.webp`), 0, 0);
   const roupas = l.vestido ? [l.vestido] : [l.baixo, l.cima].filter((r): r is string => !!r);
-  for (const r of roupas) {
-    const [x, y, w, h] = aj[r] ?? POSICOES[r];
-    ctx.drawImage(await carregar(`${P}/pecas/${r}.webp`), x, y, w, h);
-  }
+  for (const r of roupas) for (const p of partesDe(r)) desenharPeca(ctx, await carregar(`${P}/pecas/${p}.webp`), aj[p] ?? POSICOES[p]);
+  // alças que amarram no pescoço passam por trás dele
+  if (roupas.some((r) => PESCOCO.includes(r))) ctx.drawImage(await carregar(`${P}/pescoco.webp`), 0, 0);
   for (const a of l.acessorios) ctx.drawImage(await carregar(`${P}/acessorios/${a}.webp`), 0, 0);
   // no modo ajustar, contorna a peça que está sendo mexida
-  if (marcar && roupas.includes(marcar)) {
-    const [x, y, w, h] = aj[marcar] ?? POSICOES[marcar];
+  if (marcar && roupas.some((r) => partesDe(r).includes(marcar))) {
+    const k = cantos(aj[marcar] ?? POSICOES[marcar]);
     ctx.save(); ctx.setLineDash([8, 6]); ctx.lineWidth = 2.5; ctx.strokeStyle = "#ff2d95";
-    ctx.strokeRect(x, y, w, h); ctx.restore();
+    ctx.beginPath(); k.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.closePath(); ctx.stroke();
+    ctx.setLineDash([]); ctx.fillStyle = "#fff"; ctx.lineWidth = 3;
+    for (const [x, y] of k) { ctx.beginPath(); ctx.arc(x, y, 9, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
+    ctx.restore();
   }
 }
 
@@ -192,14 +205,14 @@ export default function Bonequinha() {
   const [ajustando, setAjustando] = useState(false);
   const [editando, setEditando] = useState<string | null>(null);
   const [aviso, setAviso] = useState("");
-  const arrasto = useRef<{ px: number; py: number; x: number; y: number } | null>(null);
+  const arrasto = useRef<{ px: number; py: number; ini: Pos; canto: number } | null>(null);
 
   // posições salvas pela Alana
   useEffect(() => {
-    supabase().from("bonequinha_ajustes").select("id,x,y,w,h").then(({ data }) => {
+    supabase().from("bonequinha_ajustes").select("id,x,y,w,h,r").then(({ data }) => {
       if (!data) return;
       const a: Ajustes = {};
-      for (const r of data) a[r.id] = [r.x, r.y, r.w, r.h];
+      for (const r of data) a[r.id] = [r.x, r.y, r.w, r.h, r.r ?? 0];
       setAjustes(a);
     });
   }, []);
@@ -252,7 +265,7 @@ export default function Bonequinha() {
   };
 
   /* ---------- modo ajustar (só pra Alana logada) ---------- */
-  const vestidas = look.vestido ? [look.vestido] : [look.cima, look.baixo].filter((r): r is string => !!r);
+  const vestidas = (look.vestido ? [look.vestido] : [look.cima, look.baixo].filter((r): r is string => !!r)).flatMap((r) => [...partesDe(r)].reverse());
   const alvo = editando && vestidas.includes(editando) ? editando : vestidas[0] ?? null;
   const posDe = (id: string): Pos => ajustes[id] ?? POSICOES[id];
   const mexer = (f: (p: Pos) => Pos) => {
@@ -261,13 +274,19 @@ export default function Bonequinha() {
     setAviso("");
   };
   // muda o tamanho mantendo o centro no lugar
-  const escala = (fw: number, fh: number) => mexer(([x, y, w, h]) => [x + (w - w * fw) / 2, y + (h - h * fh) / 2, w * fw, h * fh]);
-  const andar = (dx: number, dy: number) => mexer(([x, y, w, h]) => [x + dx, y + dy, w, h]);
+  const escala = (fw: number, fh: number) => mexer(([x, y, w, h, r]) => [x + (w - w * fw) / 2, y + (h - h * fh) / 2, w * fw, h * fh, r]);
+  const andar = (dx: number, dy: number) => mexer(([x, y, w, h, r]) => [x + dx, y + dy, w, h, r]);
+  const girar = (g: number) => mexer(([x, y, w, h, r = 0]) => [x, y, w, h, r + g]);
   const salvar = async () => {
     if (!alvo) return;
-    const [x, y, w, h] = posDe(alvo);
+    // salva a peça inteira (corpo e mangas juntos)
+    const dono = Object.keys(PARTES).find((k) => PARTES[k].includes(alvo));
+    const ids = dono ? PARTES[dono] : [alvo];
     setAviso("salvando...");
-    const { error } = await supabase().from("bonequinha_ajustes").upsert({ id: alvo, x, y, w, h, atualizado_em: new Date().toISOString() });
+    const { error } = await supabase().from("bonequinha_ajustes").upsert(ids.map((id) => {
+      const [x, y, w, h, r = 0] = posDe(id);
+      return { id, x, y, w, h, r, atualizado_em: new Date().toISOString() };
+    }));
     setAviso(error ? "não consegui salvar 😢 tenta de novo" : "salvo! ✨");
   };
   const voltarPadrao = () => { if (alvo) { setAjustes((a) => ({ ...a, [alvo]: POSICOES[alvo] })); setAviso("voltou pro padrão (aperta salvar pra guardar)"); } };
@@ -275,7 +294,7 @@ export default function Bonequinha() {
     const r = e.currentTarget.getBoundingClientRect();
     return { px: ((e.clientX - r.left) / r.width) * W, py: ((e.clientY - r.top) / r.height) * H };
   };
-  const nomeDe = (id: string) => [...BLUSAS, ...PARTE_DE_BAIXO, ...VESTIDOS].find((p) => p.id === id)?.nome ?? id;
+  const nomeDe = (id: string) => NOME_PARTE[id] ?? (PARTES[id] ? "corpo" : [...BLUSAS, ...PARTE_DE_BAIXO, ...VESTIDOS].find((p) => p.id === id)?.nome ?? id);
 
   const Grade = ({ itens, ativo, aoClicar, pasta = "mini" }: { itens: Peca[]; ativo: (id: string) => boolean; aoClicar: (id: string) => void; pasta?: string }) => (
     <div className="bq-grade">
@@ -304,7 +323,7 @@ export default function Bonequinha() {
         <p>vista a bonequinha do jeito que quiser e baixe a foto no final</p>
       </header>
 
-      <div className="bq-mesa">
+      <div className={`bq-mesa ${usuaria && ajustando ? "ajustando" : ""}`}>
         {/* palco */}
         <div className="bq-palco-moldura">
           <div className={`bq-palco fundo-${look.fundo}`}>
@@ -312,13 +331,25 @@ export default function Bonequinha() {
               onPointerDown={(e) => {
                 if (!ajustando || !alvo) return;
                 e.currentTarget.setPointerCapture(e.pointerId);
-                const { px, py } = ponto(e); const [x, y] = posDe(alvo);
-                arrasto.current = { px, py, x, y };
+                const { px, py } = ponto(e); const ini = posDe(alvo);
+                // pegou numa bolinha do canto? então é pra mudar o tamanho
+                const canto = cantos(ini).findIndex(([x, y]) => Math.hypot(px - x, py - y) < 22);
+                arrasto.current = { px, py, ini, canto };
               }}
               onPointerMove={(e) => {
                 const a = arrasto.current; if (!a || !alvo) return;
                 const { px, py } = ponto(e);
-                mexer(([, , w, h]) => [a.x + px - a.px, a.y + py - a.py, w, h]);
+                const [x, y, w, h, r = 0] = a.ini;
+                if (a.canto < 0) { mexer(() => [x + px - a.px, y + py - a.py, w, h, r]); return; }
+                // o canto oposto fica parado; conta tudo "desgirado"
+                const k = cantos(a.ini), op = k[(a.canto + 2) % 4];
+                const c = Math.cos((r * Math.PI) / 180), s = Math.sin((r * Math.PI) / 180);
+                const dx = px - op[0], dy = py - op[1];
+                const lx = dx * c + dy * s, ly = -dx * s + dy * c;
+                const nw = Math.max(12, Math.abs(lx)), nh = Math.max(12, Math.abs(ly));
+                const mx = ((Math.sign(lx) || 1) * nw) / 2, my = ((Math.sign(ly) || 1) * nh) / 2;
+                const cx = op[0] + mx * c - my * s, cy = op[1] + mx * s + my * c;
+                mexer(() => [cx - nw / 2, cy - nh / 2, nw, nh, r]);
               }}
               onPointerUp={() => { arrasto.current = null; }}
               onPointerCancel={() => { arrasto.current = null; }}
@@ -336,39 +367,42 @@ export default function Bonequinha() {
               </button>
             )}
           </div>
-          {usuaria && ajustando && (
-            <div className="bq-ajuste">
-              {!alvo ? (
-                <p>veste uma roupa pra ajustar 👗</p>
-              ) : (
-                <>
-                  {vestidas.length > 1 && (
-                    <div className="bq-sub">
-                      {vestidas.map((v) => <button key={v} className={alvo === v ? "on" : ""} onClick={() => setEditando(v)}>{nomeDe(v)}</button>)}
-                    </div>
-                  )}
-                  <p><b>{nomeDe(alvo)}</b> · arrasta a roupa na boneca</p>
-                  <div className="bq-ajuste-linhas">
-                    <span>tamanho</span><button onClick={() => escala(0.98, 0.98)}>−</button><button onClick={() => escala(1.02, 1.02)}>+</button>
-                    <span>largura</span><button onClick={() => escala(0.98, 1)}>−</button><button onClick={() => escala(1.02, 1)}>+</button>
-                    <span>comprimento</span><button onClick={() => escala(1, 0.98)}>−</button><button onClick={() => escala(1, 1.02)}>+</button>
-                  </div>
-                  <div className="bq-setas">
-                    <button onClick={() => andar(-1, 0)} aria-label="esquerda"><ArrowLeft size={15} /></button>
-                    <button onClick={() => andar(0, -1)} aria-label="cima"><ArrowUp size={15} /></button>
-                    <button onClick={() => andar(0, 1)} aria-label="baixo"><ArrowDown size={15} /></button>
-                    <button onClick={() => andar(1, 0)} aria-label="direita"><ArrowRight size={15} /></button>
-                  </div>
-                  <div className="bq-sub">
-                    <button className="bq-baixar" onClick={salvar}><Save size={14} /> salvar</button>
-                    <button onClick={voltarPadrao}><Undo2 size={14} /> voltar ao padrão</button>
-                  </div>
-                  {aviso && <p className="bq-aviso">{aviso.startsWith("salvo") && <Check size={14} />} {aviso}</p>}
-                </>
-              )}
-            </div>
-          )}
         </div>
+
+        {usuaria && ajustando && (
+          <aside className="bq-ajuste">
+            {!alvo ? (
+              <p>veste uma roupa pra ajustar 👗</p>
+            ) : (
+              <>
+                {vestidas.length > 1 && (
+                  <div className="bq-sub">
+                    {vestidas.map((v) => <button key={v} className={alvo === v ? "on" : ""} onClick={() => setEditando(v)}>{nomeDe(v)}</button>)}
+                  </div>
+                )}
+                <p><b>{nomeDe(alvo)}</b> · arrasta a roupa na boneca ou puxa as bolinhas dos cantos</p>
+                <div className="bq-ajuste-linhas">
+                  <span>tamanho</span><button onClick={() => escala(0.98, 0.98)}>−</button><button onClick={() => escala(1.02, 1.02)}>+</button>
+                  <span>largura</span><button onClick={() => escala(0.98, 1)}>−</button><button onClick={() => escala(1.02, 1)}>+</button>
+                  <span>comprimento</span><button onClick={() => escala(1, 0.98)}>−</button><button onClick={() => escala(1, 1.02)}>+</button>
+                </div>
+                <div className="bq-setas">
+                  <button onClick={() => girar(-2)} aria-label="girar pra esquerda"><RotateCcw size={15} /></button>
+                  <button onClick={() => girar(2)} aria-label="girar pra direita"><RotateCw size={15} /></button>
+                  <button onClick={() => andar(-1, 0)} aria-label="esquerda"><ArrowLeft size={15} /></button>
+                  <button onClick={() => andar(0, -1)} aria-label="cima"><ArrowUp size={15} /></button>
+                  <button onClick={() => andar(0, 1)} aria-label="baixo"><ArrowDown size={15} /></button>
+                  <button onClick={() => andar(1, 0)} aria-label="direita"><ArrowRight size={15} /></button>
+                </div>
+                <div className="bq-sub">
+                  <button className="bq-baixar" onClick={salvar}><Save size={14} /> salvar</button>
+                  <button onClick={voltarPadrao}><Undo2 size={14} /> voltar ao padrão</button>
+                </div>
+                {aviso && <p className="bq-aviso">{aviso.startsWith("salvo") && <Check size={14} />} {aviso}</p>}
+              </>
+            )}
+          </aside>
+        )}
 
         {/* closet */}
         <section className="bq-closet">

@@ -3,6 +3,23 @@
 // no modo "ajustar roupas" ficam no Supabase e passam por cima destes.
 export type Pos = [number, number, number, number, number?];
 export const POSICOES: Record<string, Pos> = {
+  // cabelos
+  h1_0: [56.9, 43.2, 233.7, 535.7],
+  h1_1: [-1.4, 41.4, 350.8, 548.8],
+  h1_2: [62.2, 17.1, 227.1, 337.4],
+  h1_3: [62.2, 45.6, 223.0, 266.4],
+  h2_0: [46.8, 39.0, 249.7, 585.1],
+  h2_1: [4.5, 26.5, 338.9, 587.5],
+  h2_2: [57.5, 5.1, 233.7, 610.7],
+  h2_3: [30.1, 20.0, 284.2, 614.8],
+  h3_0: [52.1, 3.4, 245.0, 613.6],
+  h3_1: [17.6, 11.1, 311.6, 343.1],
+  h3_2: [58.6, 46.2, 232.5, 550.6],
+  h3_3: [27.1, 43.2, 293.1, 556.5],
+  h4_0: [39.6, 37.2, 266.4, 277.1],
+  h4_1: [74.1, 40.8, 211.1, 177.2],
+  h4_2: [81.2, 41.4, 185.5, 278.3],
+  h4_3: [27.7, 26.5, 294.9, 261.0],
   c01: [112.0, 300.5, 118.2, 135.7],
   c02: [112.0, 344.4, 118.2, 117.8],
   c03: [112.0, 342.1, 118.2, 115.1],
@@ -67,3 +84,6 @@ export const EIXO: Record<string, [number, number]> = {
 
 // peças que amarram no pescoço: o pescoço da boneca fica na frente das alças
 export const PESCOCO = ["c04", "c05", "c14", "c15"];
+
+// cabelos compridos: o corpo fica na frente deles (o cabelo cai por trás dos ombros e braços)
+export const CABELO_ATRAS = ["h1_0", "h1_1", "h2_0", "h2_1", "h2_2", "h2_3", "h3_0", "h3_2", "h3_3", "h4_2"];

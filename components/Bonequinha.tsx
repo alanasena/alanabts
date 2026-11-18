@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Check, RotateCw, Download, Footprints, Gem, Image as ImageIcon, Move, Palette, RotateCcw, Save, Scissors, Shirt, Shuffle, Sparkles, Star, Undo2 } from "lucide-react";
 import { useSessao } from "@/components/Sessao";
 import { supabase } from "@/lib/supabase";
-import { EIXO, NOME_PARTE, PARTES, PESCOCO, POSICOES, type Pos } from "@/config/bonequinha-posicoes";
+import { CABELO_ATRAS, EIXO, NOME_PARTE, PARTES, PESCOCO, POSICOES, type Pos } from "@/config/bonequinha-posicoes";
 import {
   ACESSORIOS, BATONS, BLUSAS, CABELOS, ESMALTES, FUNDOS, PARTE_DE_BAIXO, SAPATOS, SOMBRAS, UNHAS, VESTIDOS, type Peca,
 } from "@/config/bonequinha";
@@ -77,8 +77,6 @@ function preencher(mascara: HTMLImageElement, cor: string) {
 
 async function desenharBoneca(ctx: CanvasRenderingContext2D, l: Look, aj: Ajustes, marcar: string | null = null) {
   ctx.clearRect(0, 0, W, H);
-  // pedacinho do cabelo que fica atrás do corpo (tapa a frestinha entre o braço e o cabelo)
-  if (l.cabelo) ctx.drawImage(await carregar(`${P}/cabelos/${l.cabelo}-atras.webp`), 0, 0);
   ctx.drawImage(await carregar(`${P}/base.webp`), 0, 0);
   // com sapato, esconde os dedos da boneca que ficariam aparecendo por trás
   if (l.sapato) { ctx.save(); ctx.globalCompositeOperation = "destination-out"; ctx.fillRect(0, 975, W, H - 975); ctx.restore(); }
@@ -109,7 +107,11 @@ async function desenharBoneca(ctx: CanvasRenderingContext2D, l: Look, aj: Ajuste
   }
 
   // cabelo
-  if (l.cabelo) ctx.drawImage(await carregar(`${P}/cabelos/${l.cabelo}.webp`), 0, 0);
+  if (l.cabelo) {
+    desenharPeca(ctx, await carregar(`${P}/cabelos/${l.cabelo}.webp`), aj[l.cabelo] ?? POSICOES[l.cabelo]);
+    // cabelo comprido passa por trás dos ombros, braços e tronco
+    if (CABELO_ATRAS.includes(l.cabelo)) ctx.drawImage(await carregar(`${P}/corpo-frente.webp`), 0, 0);
+  }
   // roupas
   // sapato primeiro, pra calça ficar por cima dele
   if (l.sapato) ctx.drawImage(await carregar(`${P}/sapatos/${l.sapato}.webp`), 0, 0);
@@ -119,7 +121,7 @@ async function desenharBoneca(ctx: CanvasRenderingContext2D, l: Look, aj: Ajuste
   if (roupas.some((r) => PESCOCO.includes(r))) ctx.drawImage(await carregar(`${P}/pescoco.webp`), 0, 0);
   for (const a of l.acessorios) ctx.drawImage(await carregar(`${P}/acessorios/${a}.webp`), 0, 0);
   // no modo ajustar, contorna a peça que está sendo mexida
-  if (marcar && roupas.some((r) => partesDe(r).includes(marcar))) {
+  if (marcar && (marcar === l.cabelo || roupas.some((r) => partesDe(r).includes(marcar)))) {
     const pos = aj[marcar] ?? POSICOES[marcar], k = cantos(pos);
     ctx.save(); ctx.setLineDash([8, 6]); ctx.lineWidth = 2.5; ctx.strokeStyle = "#ff2d95";
     ctx.beginPath(); k.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.closePath(); ctx.stroke();
@@ -284,7 +286,7 @@ export default function Bonequinha() {
   };
 
   /* ---------- modo ajustar (só pra Alana logada) ---------- */
-  const vestidas = (look.vestido ? [look.vestido] : [look.cima, look.baixo].filter((r): r is string => !!r)).flatMap((r) => [...partesDe(r)].reverse());
+  const vestidas = (look.vestido ? [look.vestido] : [look.cima, look.baixo].filter((r): r is string => !!r)).flatMap((r) => [...partesDe(r)].reverse()).concat(look.cabelo ? [look.cabelo] : []);
   const alvo = editando && vestidas.includes(editando) ? editando : vestidas[0] ?? null;
   const posDe = (id: string): Pos => ajustes[id] ?? POSICOES[id];
   const mexer = (f: (p: Pos) => Pos) => {
@@ -319,7 +321,7 @@ export default function Bonequinha() {
     const r = e.currentTarget.getBoundingClientRect();
     return { px: ((e.clientX - r.left) / r.width) * W, py: ((e.clientY - r.top) / r.height) * H };
   };
-  const nomeDe = (id: string) => NOME_PARTE[id] ?? (PARTES[id] ? "corpo" : [...BLUSAS, ...PARTE_DE_BAIXO, ...VESTIDOS].find((p) => p.id === id)?.nome ?? id);
+  const nomeDe = (id: string) => NOME_PARTE[id] ?? (PARTES[id] ? "corpo" : [...BLUSAS, ...PARTE_DE_BAIXO, ...VESTIDOS, ...CABELOS].find((p) => p.id === id)?.nome ?? id);
 
   const Grade = ({ itens, ativo, aoClicar, pasta = "mini" }: { itens: Peca[]; ativo: (id: string) => boolean; aoClicar: (id: string) => void; pasta?: string }) => (
     <div className="bq-grade">
@@ -406,7 +408,7 @@ export default function Bonequinha() {
         {usuaria && ajustando && (
           <aside className="bq-ajuste">
             {!alvo ? (
-              <p>veste uma roupa pra ajustar 👗</p>
+              <p>veste uma roupa ou escolhe um cabelo pra ajustar 👗</p>
             ) : (
               <>
                 {vestidas.length > 1 && (
@@ -449,7 +451,7 @@ export default function Bonequinha() {
             {aba === "cabelo" && (
               <>
                 <p className="bq-tit">penteado</p>
-                <Grade itens={CABELOS} ativo={(id) => look.cabelo === id} aoClicar={(id) => set({ cabelo: look.cabelo === id ? null : id })} />
+                <Grade itens={CABELOS} ativo={(id) => look.cabelo === id} aoClicar={(id) => { set({ cabelo: look.cabelo === id ? null : id }); setEditando(id); }} />
               </>
             )}
             {aba === "roupas" && (

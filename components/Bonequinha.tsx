@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Check, RotateCw, Download, Footprints, Gem, Image as ImageIcon, Move, Palette, RotateCcw, Save, Scissors, Shirt, Shuffle, Sparkles, Star, Undo2 } from "lucide-react";
 import { useSessao } from "@/components/Sessao";
 import { supabase } from "@/lib/supabase";
-import { NOME_PARTE, PARTES, PESCOCO, POSICOES, type Pos } from "@/config/bonequinha-posicoes";
+import { EIXO, NOME_PARTE, PARTES, PESCOCO, POSICOES, type Pos } from "@/config/bonequinha-posicoes";
 import {
   ACESSORIOS, BATONS, BLUSAS, CABELOS, ESMALTES, FUNDOS, PARTE_DE_BAIXO, SAPATOS, SOMBRAS, UNHAS, VESTIDOS, type Peca,
 } from "@/config/bonequinha";
@@ -17,6 +17,18 @@ const partesDe = (id: string) => PARTES[id] ?? [id];
 function desenharPeca(ctx: CanvasRenderingContext2D, img: CanvasImageSource, [x, y, w, h, r = 0]: Pos) {
   ctx.save(); ctx.translate(x + w / 2, y + h / 2); ctx.rotate((r * Math.PI) / 180);
   ctx.drawImage(img, -w / 2, -h / 2, w, h); ctx.restore();
+}
+// mangas: ponto do ombro e do pulso na boneca
+function pontosEixo(id: string, [x, y, w, h, r = 0]: Pos) {
+  const [v1, v2] = EIXO[id], cx = x + w / 2, cy = y + h / 2, s = Math.sin((r * Math.PI) / 180), c = Math.cos((r * Math.PI) / 180);
+  return [v1, v2].map((v) => [cx - s * (v - 0.5) * h, cy + c * (v - 0.5) * h]);
+}
+// monta a manga a partir do ombro (A) e do pulso (B), mantendo a largura
+function mangaEntre(id: string, w: number, A: number[], B: number[]): Pos {
+  const [v1, v2] = EIXO[id], dx = B[0] - A[0], dy = B[1] - A[1];
+  const h = Math.max(20, Math.hypot(dx, dy) / (v2 - v1)), r = Math.atan2(-dx, dy);
+  const cx = A[0] + Math.sin(r) * (v1 - 0.5) * h, cy = A[1] - Math.cos(r) * (v1 - 0.5) * h;
+  return [cx - w / 2, cy - h / 2, w, h, (r * 180) / Math.PI];
 }
 // cantos da peça já girados: [sup-esq, sup-dir, inf-dir, inf-esq]
 function cantos([x, y, w, h, r = 0]: Pos) {
@@ -106,11 +118,16 @@ async function desenharBoneca(ctx: CanvasRenderingContext2D, l: Look, aj: Ajuste
   for (const a of l.acessorios) ctx.drawImage(await carregar(`${P}/acessorios/${a}.webp`), 0, 0);
   // no modo ajustar, contorna a peça que está sendo mexida
   if (marcar && roupas.some((r) => partesDe(r).includes(marcar))) {
-    const k = cantos(aj[marcar] ?? POSICOES[marcar]);
+    const pos = aj[marcar] ?? POSICOES[marcar], k = cantos(pos);
     ctx.save(); ctx.setLineDash([8, 6]); ctx.lineWidth = 2.5; ctx.strokeStyle = "#ff2d95";
     ctx.beginPath(); k.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.closePath(); ctx.stroke();
     ctx.setLineDash([]); ctx.fillStyle = "#fff"; ctx.lineWidth = 3;
-    for (const [x, y] of k) { ctx.beginPath(); ctx.arc(x, y, 9, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
+    if (EIXO[marcar]) {
+      // manga: uma bolinha no ombro e outra no pulso, ligadas por uma linha
+      const [A, B] = pontosEixo(marcar, pos);
+      ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke();
+      for (const [x, y] of [A, B]) { ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
+    } else for (const [x, y] of k) { ctx.beginPath(); ctx.arc(x, y, 9, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
     ctx.restore();
   }
 }
@@ -276,7 +293,13 @@ export default function Bonequinha() {
   // muda o tamanho mantendo o centro no lugar
   const escala = (fw: number, fh: number) => mexer(([x, y, w, h, r]) => [x + (w - w * fw) / 2, y + (h - h * fh) / 2, w * fw, h * fh, r]);
   const andar = (dx: number, dy: number) => mexer(([x, y, w, h, r]) => [x + dx, y + dy, w, h, r]);
-  const girar = (g: number) => mexer(([x, y, w, h, r = 0]) => [x, y, w, h, r + g]);
+  // manga gira em volta do ombro; o resto gira em volta do meio
+  const girar = (g: number) => mexer((p) => {
+    const [x, y, w, h, r = 0] = p;
+    if (!alvo || !EIXO[alvo]) return [x, y, w, h, r + g];
+    const [A, B] = pontosEixo(alvo, p), t = (g * Math.PI) / 180, dx = B[0] - A[0], dy = B[1] - A[1];
+    return mangaEntre(alvo, w, A, [A[0] + dx * Math.cos(t) - dy * Math.sin(t), A[1] + dx * Math.sin(t) + dy * Math.cos(t)]);
+  });
   const salvar = async () => {
     if (!alvo) return;
     // salva a peça inteira (corpo e mangas juntos)
@@ -333,7 +356,10 @@ export default function Bonequinha() {
                 e.currentTarget.setPointerCapture(e.pointerId);
                 const { px, py } = ponto(e); const ini = posDe(alvo);
                 // pegou numa bolinha do canto? então é pra mudar o tamanho
-                const canto = cantos(ini).findIndex(([x, y]) => Math.hypot(px - x, py - y) < 22);
+                // nas mangas: 4 = ombro, 5 = pulso
+                const canto = EIXO[alvo]
+                  ? (() => { const i = pontosEixo(alvo, ini).findIndex(([x, y]) => Math.hypot(px - x, py - y) < 24); return i < 0 ? -1 : 4 + i; })()
+                  : cantos(ini).findIndex(([x, y]) => Math.hypot(px - x, py - y) < 22);
                 arrasto.current = { px, py, ini, canto };
               }}
               onPointerMove={(e) => {
@@ -341,6 +367,12 @@ export default function Bonequinha() {
                 const { px, py } = ponto(e);
                 const [x, y, w, h, r = 0] = a.ini;
                 if (a.canto < 0) { mexer(() => [x + px - a.px, y + py - a.py, w, h, r]); return; }
+                if (a.canto >= 4) {
+                  // a ponta que você não está puxando fica presa
+                  const [A, B] = pontosEixo(alvo, a.ini), P2 = [px, py];
+                  mexer(() => (a.canto === 5 ? mangaEntre(alvo, w, A, P2) : mangaEntre(alvo, w, P2, B)));
+                  return;
+                }
                 // o canto oposto fica parado; conta tudo "desgirado"
                 const k = cantos(a.ini), op = k[(a.canto + 2) % 4];
                 const c = Math.cos((r * Math.PI) / 180), s = Math.sin((r * Math.PI) / 180);
@@ -380,7 +412,7 @@ export default function Bonequinha() {
                     {vestidas.map((v) => <button key={v} className={alvo === v ? "on" : ""} onClick={() => setEditando(v)}>{nomeDe(v)}</button>)}
                   </div>
                 )}
-                <p><b>{nomeDe(alvo)}</b> · arrasta a roupa na boneca ou puxa as bolinhas dos cantos</p>
+                <p><b>{nomeDe(alvo)}</b> · {EIXO[alvo] ? "puxa a bolinha do ombro e a do pulso; a outra ponta fica presa" : "arrasta a roupa na boneca ou puxa as bolinhas dos cantos"}</p>
                 <div className="bq-ajuste-linhas">
                   <span>tamanho</span><button onClick={() => escala(0.98, 0.98)}>−</button><button onClick={() => escala(1.02, 1.02)}>+</button>
                   <span>largura</span><button onClick={() => escala(0.98, 1)}>−</button><button onClick={() => escala(1.02, 1)}>+</button>

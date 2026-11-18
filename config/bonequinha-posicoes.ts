@@ -49,15 +49,21 @@ export const POSICOES: Record<string, Pos> = {
   v06: [86.2, 336.9, 170.0, 303.4],
   v07: [87.5, 266.3, 167.1, 374.1],
   v08: [84.2, 242.1, 173.0, 398.3],
-  c10_me: [13.3, 337.3, 99.3, 228.7],
-  c10_md: [230.1, 338.0, 98.9, 228.0],
+  c10_e: [19.5, 334.2, 74.4, 233.6, 14.8],
+  c10_d: [247.8, 334.9, 75.1, 232.9, -14.8],
 };
 
 // peças que são montadas em partes (a ordem é a ordem de desenhar)
 export const PARTES: Record<string, string[]> = {
-  c10: ["c10_me", "c10_md", "c10"],
+  c10: ["c10_e", "c10_d", "c10"],
 };
-export const NOME_PARTE: Record<string, string> = { c10_me: "manga esquerda", c10_md: "manga direita" };
+export const NOME_PARTE: Record<string, string> = { c10_e: "manga esquerda", c10_d: "manga direita" };
+
+// mangas: onde ficam o ombro e o pulso (fração da altura da imagem, no meio da largura)
+export const EIXO: Record<string, [number, number]> = {
+  c10_e: [0.036, 0.9708],
+  c10_d: [0.0346, 0.9712],
+};
 
 // peças que amarram no pescoço: o pescoço da boneca fica na frente das alças
 export const PESCOCO = ["c04", "c05", "c14", "c15"];

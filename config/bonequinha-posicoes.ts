@@ -118,7 +118,7 @@ export const EIXO: Record<string, [number, number]> = {
 };
 
 // peças que amarram no pescoço: o pescoço da boneca fica na frente das alças
-export const PESCOCO = ["c04", "c05", "c14", "c15", "v02", "v04"];
+export const PESCOCO = ["c04", "c05", "c14", "c15"];
 
 // cabelos compridos: o corpo fica na frente deles (o cabelo cai por trás dos ombros e braços)
 export const CABELO_ATRAS = ["h1_0", "h1_1", "h2_0", "h2_1", "h2_2", "h2_3", "h3_0", "h3_2", "h3_3", "h4_2"];

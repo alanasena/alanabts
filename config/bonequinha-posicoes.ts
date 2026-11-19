@@ -5,7 +5,7 @@ export type Pos = [number, number, number, number, number?];
 export const POSICOES: Record<string, Pos> = {
   // acessórios
   a1_0: [78.5, 276.0, 93.6, 223.6],
-  a1_1: [91.0, 126.1, 175.2, 48.9],
+  a1_1: [89.4, 125.6, 178.4, 48.4],
   a1_2: [147.7, 264.5, 64.0, 23.4],
   a1_3_e: [95.2, 195.9, 35.4, 64.5],
   a1_3_d: [227.2, 195.9, 35.4, 64.5],

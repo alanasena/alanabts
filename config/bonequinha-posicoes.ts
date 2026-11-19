@@ -3,6 +3,12 @@
 // no modo "ajustar roupas" ficam no Supabase e passam por cima destes.
 export type Pos = [number, number, number, number, number?];
 export const POSICOES: Record<string, Pos> = {
+  // acessórios
+  a1_0: [78.5, 276.0, 93.6, 223.6],
+  a1_1: [91.0, 126.1, 175.2, 48.9],
+  a1_2: [147.7, 264.5, 64.0, 23.4],
+  a1_3_e: [95.2, 195.9, 35.4, 64.5],
+  a1_3_d: [227.2, 195.9, 35.4, 64.5],
   // sapatos (esquerdo e direito separados)
   s1_0_e: [96.2, 738.1, 66.4, 187.9],
   s1_0_d: [247.5, 752.4, 60.9, 173.6],
@@ -89,6 +95,7 @@ export const POSICOES: Record<string, Pos> = {
 
 // peças que são montadas em partes (a ordem é a ordem de desenhar)
 export const PARTES: Record<string, string[]> = {
+  a1_3: ["a1_3_e", "a1_3_d"],
   s1_0: ["s1_0_e", "s1_0_d"],
   s1_1: ["s1_1_e", "s1_1_d"],
   s1_2: ["s1_2_e", "s1_2_d"],
@@ -100,6 +107,7 @@ export const PARTES: Record<string, string[]> = {
   c10: ["c10_e", "c10_d", "c10"],
 };
 export const NOME_PARTE: Record<string, string> = {
+  a1_3_e: "brinco esquerdo", a1_3_d: "brinco direito",
   c10_e: "manga esquerda", c10_d: "manga direita",
   s1_0_e: "sapato esquerdo", s1_0_d: "sapato direito",
   s1_1_e: "sapato esquerdo", s1_1_d: "sapato direito",

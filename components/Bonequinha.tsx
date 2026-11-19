@@ -11,6 +11,8 @@ import {
 
 const P = "/bonequinha";
 const W = 384, H = 1024;
+// folga em volta da boneca na tela (pra dar pra pegar as bolinhas dos cantos)
+const MX = 70, MY = 40, TW = W + MX * 2, TH = H + MY * 2;
 // cada peça: [x, y, largura, altura, giro] ou, depois de puxar um canto sozinho,
 // os 4 cantos soltos [x0,y0, x1,y1, x2,y2, x3,y3] (sup-esq, sup-dir, inf-dir, inf-esq)
 type Geo = number[] | Pos;
@@ -114,8 +116,6 @@ function preencher(mascara: HTMLImageElement, cor: string) {
 async function desenharBoneca(ctx: CanvasRenderingContext2D, l: Look, aj: Ajustes, marcar: string | null = null) {
   ctx.clearRect(0, 0, W, H);
   ctx.drawImage(await carregar(`${P}/base.webp`), 0, 0);
-  // com sapato, esconde os dedos da boneca que ficariam aparecendo por trás
-  if (l.sapato) { ctx.save(); ctx.globalCompositeOperation = "destination-out"; ctx.fillRect(0, 975, W, H - 975); ctx.restore(); }
 
   // maquiagem
   if (l.sombra) {
@@ -150,14 +150,14 @@ async function desenharBoneca(ctx: CanvasRenderingContext2D, l: Look, aj: Ajuste
   }
   // roupas
   // sapato primeiro, pra calça ficar por cima dele
-  if (l.sapato) ctx.drawImage(await carregar(`${P}/sapatos/${l.sapato}.webp`), 0, 0);
+  if (l.sapato) for (const p of partesDe(l.sapato)) desenharPeca(ctx, await carregar(`${P}/sapatos/${p}.webp`), aj[p] ?? POSICOES[p]);
   const roupas = l.vestido ? [l.vestido] : [l.baixo, l.cima].filter((r): r is string => !!r);
   for (const r of roupas) for (const p of partesDe(r)) desenharPeca(ctx, await carregar(`${P}/pecas/${p}.webp`), aj[p] ?? POSICOES[p]);
   // alças que amarram no pescoço passam por trás dele
   if (roupas.some((r) => PESCOCO.includes(r))) ctx.drawImage(await carregar(`${P}/pescoco.webp`), 0, 0);
   for (const a of l.acessorios) ctx.drawImage(await carregar(`${P}/acessorios/${a}.webp`), 0, 0);
   // no modo ajustar, contorna a peça que está sendo mexida
-  if (marcar && (marcar === l.cabelo || roupas.some((r) => partesDe(r).includes(marcar)))) {
+  if (marcar && (marcar === l.cabelo || (l.sapato && partesDe(l.sapato).includes(marcar)) || roupas.some((r) => partesDe(r).includes(marcar)))) {
     const pos = aj[marcar] ?? POSICOES[marcar], k = quadDe(pos);
     ctx.save(); ctx.setLineDash([8, 6]); ctx.lineWidth = 2.5; ctx.strokeStyle = "#ff2d95";
     ctx.beginPath(); k.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.closePath(); ctx.stroke();
@@ -278,11 +278,11 @@ export default function Bonequinha() {
 
   useEffect(() => {
     const n = ++vez.current;
-    const off = novoCanvas(), x = off.getContext("2d")!;
+    const off = novoCanvas(TW, TH), x = off.getContext("2d")!; x.translate(MX, MY);
     desenharBoneca(x, look, ajustes, ajustando ? editando : null).then(() => {
       if (n !== vez.current || !tela.current) return;
       const c = tela.current.getContext("2d")!;
-      c.clearRect(0, 0, W, H); c.drawImage(off, 0, 0);
+      c.clearRect(0, 0, TW, TH); c.drawImage(off, 0, 0);
       setCarregando(false);
     });
   }, [look, ajustes, ajustando, editando]);
@@ -322,7 +322,7 @@ export default function Bonequinha() {
   };
 
   /* ---------- modo ajustar (só pra Alana logada) ---------- */
-  const vestidas = (look.vestido ? [look.vestido] : [look.cima, look.baixo].filter((r): r is string => !!r)).flatMap((r) => [...partesDe(r)].reverse()).concat(look.cabelo ? [look.cabelo] : []);
+  const vestidas = (look.vestido ? [look.vestido] : [look.cima, look.baixo].filter((r): r is string => !!r)).flatMap((r) => [...partesDe(r)].reverse()).concat(look.cabelo ? [look.cabelo] : [], look.sapato ? partesDe(look.sapato) : []);
   const alvo = editando && vestidas.includes(editando) ? editando : vestidas[0] ?? null;
   const posDe = (id: string): Geo => ajustes[id] ?? POSICOES[id];
   const mexer = (f: (p: Geo) => Geo) => {
@@ -369,7 +369,7 @@ export default function Bonequinha() {
   const voltarPadrao = () => { if (alvo) { setAjustes((a) => ({ ...a, [alvo]: POSICOES[alvo] })); setAviso("voltou pro padrão (aperta salvar pra guardar)"); } };
   const ponto = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
-    return { px: ((e.clientX - r.left) / r.width) * W, py: ((e.clientY - r.top) / r.height) * H };
+    return { px: ((e.clientX - r.left) / r.width) * TW - MX, py: ((e.clientY - r.top) / r.height) * TH - MY };
   };
   const nomeDe = (id: string) => NOME_PARTE[id] ?? (PARTES[id] ? "corpo" : [...BLUSAS, ...PARTE_DE_BAIXO, ...VESTIDOS, ...CABELOS].find((p) => p.id === id)?.nome ?? id);
 
@@ -404,7 +404,7 @@ export default function Bonequinha() {
         {/* palco */}
         <div className="bq-palco-moldura">
           <div className={`bq-palco fundo-${look.fundo}`}>
-            <canvas ref={tela} width={W} height={H} className={`${carregando ? "carregando" : ""} ${ajustando && alvo ? "arrastavel" : ""}`}
+            <canvas ref={tela} width={TW} height={TH} className={`${carregando ? "carregando" : ""} ${ajustando && alvo ? "arrastavel" : ""}`}
               onPointerDown={(e) => {
                 if (!ajustando || !alvo) return;
                 e.currentTarget.setPointerCapture(e.pointerId);
@@ -517,7 +517,7 @@ export default function Bonequinha() {
                 />
               </>
             )}
-            {aba === "sapatos" && <Grade itens={SAPATOS} ativo={(id) => look.sapato === id} aoClicar={(id) => set({ sapato: look.sapato === id ? null : id })} />}
+            {aba === "sapatos" && <Grade itens={SAPATOS} ativo={(id) => look.sapato === id} aoClicar={(id) => { set({ sapato: look.sapato === id ? null : id }); setEditando(`${id}_e`); }} />}
             {aba === "acessorios" && (
               <>
                 <p className="bq-tit">pode escolher vários</p>

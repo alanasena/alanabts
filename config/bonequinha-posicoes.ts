@@ -3,6 +3,23 @@
 // no modo "ajustar roupas" ficam no Supabase e passam por cima destes.
 export type Pos = [number, number, number, number, number?];
 export const POSICOES: Record<string, Pos> = {
+  // sapatos (esquerdo e direito separados)
+  s1_0_e: [96.2, 738.1, 66.4, 187.9],
+  s1_0_d: [247.5, 752.4, 60.9, 173.6],
+  s1_1_e: [102.5, 793.1, 58.4, 132.9],
+  s1_1_d: [248.6, 802.7, 54.7, 123.3],
+  s1_2_e: [102.5, 804.2, 58.4, 121.8],
+  s1_2_d: [249.0, 813.1, 54.4, 112.9],
+  s1_3_e: [102.5, 827.6, 58.4, 98.4],
+  s1_3_d: [248.7, 834.0, 54.6, 92.0],
+  s2_0_e: [102.2, 843.8, 59.0, 82.2],
+  s2_0_d: [249.0, 849.9, 54.6, 76.1],
+  s2_1_e: [101.6, 836.9, 59.1, 89.1],
+  s2_1_d: [248.8, 842.5, 55.0, 83.5],
+  s2_2_e: [102.5, 715.3, 61.3, 210.7],
+  s2_2_d: [245.7, 728.9, 57.6, 197.1],
+  s2_3_e: [102.5, 810.5, 58.7, 115.5],
+  s2_3_d: [248.7, 818.6, 54.6, 107.4],
   // cabelos
   h1_0: [56.9, 43.2, 233.7, 585.7],
   h1_1: [-14.5, 39.0, 376.8, 570.8],
@@ -72,9 +89,27 @@ export const POSICOES: Record<string, Pos> = {
 
 // peças que são montadas em partes (a ordem é a ordem de desenhar)
 export const PARTES: Record<string, string[]> = {
+  s1_0: ["s1_0_e", "s1_0_d"],
+  s1_1: ["s1_1_e", "s1_1_d"],
+  s1_2: ["s1_2_e", "s1_2_d"],
+  s1_3: ["s1_3_e", "s1_3_d"],
+  s2_0: ["s2_0_e", "s2_0_d"],
+  s2_1: ["s2_1_e", "s2_1_d"],
+  s2_2: ["s2_2_e", "s2_2_d"],
+  s2_3: ["s2_3_e", "s2_3_d"],
   c10: ["c10_e", "c10_d", "c10"],
 };
-export const NOME_PARTE: Record<string, string> = { c10_e: "manga esquerda", c10_d: "manga direita" };
+export const NOME_PARTE: Record<string, string> = {
+  c10_e: "manga esquerda", c10_d: "manga direita",
+  s1_0_e: "sapato esquerdo", s1_0_d: "sapato direito",
+  s1_1_e: "sapato esquerdo", s1_1_d: "sapato direito",
+  s1_2_e: "sapato esquerdo", s1_2_d: "sapato direito",
+  s1_3_e: "sapato esquerdo", s1_3_d: "sapato direito",
+  s2_0_e: "sapato esquerdo", s2_0_d: "sapato direito",
+  s2_1_e: "sapato esquerdo", s2_1_d: "sapato direito",
+  s2_2_e: "sapato esquerdo", s2_2_d: "sapato direito",
+  s2_3_e: "sapato esquerdo", s2_3_d: "sapato direito",
+};
 
 // mangas: onde ficam o ombro e o pulso (fração da altura da imagem, no meio da largura)
 export const EIXO: Record<string, [number, number]> = {
@@ -83,7 +118,7 @@ export const EIXO: Record<string, [number, number]> = {
 };
 
 // peças que amarram no pescoço: o pescoço da boneca fica na frente das alças
-export const PESCOCO = ["c04", "c05", "c14", "c15"];
+export const PESCOCO = ["c04", "c05", "c14", "c15", "v02", "v04"];
 
 // cabelos compridos: o corpo fica na frente deles (o cabelo cai por trás dos ombros e braços)
 export const CABELO_ATRAS = ["h1_0", "h1_1", "h2_0", "h2_1", "h2_2", "h2_3", "h3_0", "h3_2", "h3_3", "h4_2"];

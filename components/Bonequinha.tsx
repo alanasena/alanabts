@@ -56,7 +56,7 @@ function desenharQuad(ctx: CanvasRenderingContext2D, img: HTMLImageElement, q: n
     // aumenta um tiquinho o triângulo pra não aparecer risquinho entre os pedaços
     d.forEach(([u, v], i) => { const k = Math.hypot(u - cx, v - cy) || 1, px = u + ((u - cx) / k) * 0.7, py = v + ((v - cy) / k) * 0.7; if (i) ctx.lineTo(px, py); else ctx.moveTo(px, py); });
     ctx.closePath(); ctx.clip();
-    ctx.setTransform(a, b, c, e, u0 - a * x0 - c * y0, v0 - b * x0 - e * y0);
+    ctx.transform(a, b, c, e, u0 - a * x0 - c * y0, v0 - b * x0 - e * y0);
     ctx.drawImage(img, 0, 0); ctx.restore();
   };
   const N = 8;

@@ -11,10 +11,16 @@ import {
 
 const P = "/bonequinha";
 const W = 384, H = 1024;
-type Ajustes = Record<string, Pos>;
+// cada peça: [x, y, largura, altura, giro] ou, depois de puxar um canto sozinho,
+// os 4 cantos soltos [x0,y0, x1,y1, x2,y2, x3,y3] (sup-esq, sup-dir, inf-dir, inf-esq)
+type Geo = number[] | Pos;
+type Ajustes = Record<string, Geo>;
+const ehQuad = (g: Geo) => g.length === 8;
 const partesDe = (id: string) => PARTES[id] ?? [id];
 // desenha a peça no lugar dela, girando em volta do centro
-function desenharPeca(ctx: CanvasRenderingContext2D, img: CanvasImageSource, [x, y, w, h, r = 0]: Pos) {
+function desenharPeca(ctx: CanvasRenderingContext2D, img: HTMLImageElement, g: Geo) {
+  if (ehQuad(g)) return desenharQuad(ctx, img, quadDe(g));
+  const [x, y, w, h, r = 0] = g;
   ctx.save(); ctx.translate(x + w / 2, y + h / 2); ctx.rotate((r * Math.PI) / 180);
   ctx.drawImage(img, -w / 2, -h / 2, w, h); ctx.restore();
 }
@@ -30,6 +36,36 @@ function mangaEntre(id: string, w: number, A: number[], B: number[]): Pos {
   const cx = A[0] + Math.sin(r) * (v1 - 0.5) * h, cy = A[1] - Math.cos(r) * (v1 - 0.5) * h;
   return [cx - w / 2, cy - h / 2, w, h, (r * 180) / Math.PI];
 }
+// desenha a imagem esticada nos 4 cantos (em pedacinhos, pra entortar sem quebrar)
+function desenharQuad(ctx: CanvasRenderingContext2D, img: HTMLImageElement, q: number[][]) {
+  const iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
+  const [p0, p1, p2, p3] = q;
+  const ponto = (u: number, v: number) => [
+    p0[0] * (1 - u) * (1 - v) + p1[0] * u * (1 - v) + p2[0] * u * v + p3[0] * (1 - u) * v,
+    p0[1] * (1 - u) * (1 - v) + p1[1] * u * (1 - v) + p2[1] * u * v + p3[1] * (1 - u) * v,
+  ];
+  const tri = (s: number[][], d: number[][]) => {
+    const [[x0, y0], [x1, y1], [x2, y2]] = s, [[u0, v0], [u1, v1], [u2, v2]] = d;
+    const det = (x1 - x0) * (y2 - y0) - (x2 - x0) * (y1 - y0); if (!det) return;
+    const a = ((u1 - u0) * (y2 - y0) - (u2 - u0) * (y1 - y0)) / det, b = ((v1 - v0) * (y2 - y0) - (v2 - v0) * (y1 - y0)) / det;
+    const c = ((u2 - u0) * (x1 - x0) - (u1 - u0) * (x2 - x0)) / det, e = ((v2 - v0) * (x1 - x0) - (v1 - v0) * (x2 - x0)) / det;
+    const cx = (u0 + u1 + u2) / 3, cy = (v0 + v1 + v2) / 3;
+    ctx.save(); ctx.beginPath();
+    // aumenta um tiquinho o triângulo pra não aparecer risquinho entre os pedaços
+    d.forEach(([u, v], i) => { const k = Math.hypot(u - cx, v - cy) || 1, px = u + ((u - cx) / k) * 0.7, py = v + ((v - cy) / k) * 0.7; if (i) ctx.lineTo(px, py); else ctx.moveTo(px, py); });
+    ctx.closePath(); ctx.clip();
+    ctx.setTransform(a, b, c, e, u0 - a * x0 - c * y0, v0 - b * x0 - e * y0);
+    ctx.drawImage(img, 0, 0); ctx.restore();
+  };
+  const N = 8;
+  for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) {
+    const u0 = i / N, u1 = (i + 1) / N, v0 = j / N, v1 = (j + 1) / N;
+    const s00 = [u0 * iw, v0 * ih], s10 = [u1 * iw, v0 * ih], s11 = [u1 * iw, v1 * ih], s01 = [u0 * iw, v1 * ih];
+    const d00 = ponto(u0, v0), d10 = ponto(u1, v0), d11 = ponto(u1, v1), d01 = ponto(u0, v1);
+    tri([s00, s10, s11], [d00, d10, d11]); tri([s00, s11, s01], [d00, d11, d01]);
+  }
+}
+const quadDe = (g: Geo): number[][] => (ehQuad(g) ? [0, 2, 4, 6].map((i) => [g[i] as number, g[i + 1] as number]) : cantos(g as Pos));
 // cantos da peça já girados: [sup-esq, sup-dir, inf-dir, inf-esq]
 function cantos([x, y, w, h, r = 0]: Pos) {
   const cx = x + w / 2, cy = y + h / 2, c = Math.cos((r * Math.PI) / 180), s = Math.sin((r * Math.PI) / 180);
@@ -122,13 +158,13 @@ async function desenharBoneca(ctx: CanvasRenderingContext2D, l: Look, aj: Ajuste
   for (const a of l.acessorios) ctx.drawImage(await carregar(`${P}/acessorios/${a}.webp`), 0, 0);
   // no modo ajustar, contorna a peça que está sendo mexida
   if (marcar && (marcar === l.cabelo || roupas.some((r) => partesDe(r).includes(marcar)))) {
-    const pos = aj[marcar] ?? POSICOES[marcar], k = cantos(pos);
+    const pos = aj[marcar] ?? POSICOES[marcar], k = quadDe(pos);
     ctx.save(); ctx.setLineDash([8, 6]); ctx.lineWidth = 2.5; ctx.strokeStyle = "#ff2d95";
     ctx.beginPath(); k.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y))); ctx.closePath(); ctx.stroke();
     ctx.setLineDash([]); ctx.fillStyle = "#fff"; ctx.lineWidth = 3;
     if (EIXO[marcar]) {
       // manga: uma bolinha no ombro e outra no pulso, ligadas por uma linha
-      const [A, B] = pontosEixo(marcar, pos);
+      const [A, B] = pontosEixo(marcar, pos as Pos);
       ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke();
       for (const [x, y] of [A, B]) { ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
     } else for (const [x, y] of k) { ctx.beginPath(); ctx.arc(x, y, 9, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
@@ -226,14 +262,14 @@ export default function Bonequinha() {
   const [ajustando, setAjustando] = useState(false);
   const [editando, setEditando] = useState<string | null>(null);
   const [aviso, setAviso] = useState("");
-  const arrasto = useRef<{ px: number; py: number; ini: Pos; canto: number } | null>(null);
+  const arrasto = useRef<{ px: number; py: number; ini: Geo; canto: number } | null>(null);
 
   // posições salvas pela Alana
   useEffect(() => {
-    supabase().from("bonequinha_ajustes").select("id,x,y,w,h,r").then(({ data }) => {
+    supabase().from("bonequinha_ajustes").select("id,x,y,w,h,r,q").then(({ data }) => {
       if (!data) return;
       const a: Ajustes = {};
-      for (const r of data) a[r.id] = [r.x, r.y, r.w, r.h, r.r ?? 0];
+      for (const r of data) a[r.id] = r.q?.length === 8 ? r.q : [r.x, r.y, r.w, r.h, r.r ?? 0];
       setAjustes(a);
     });
   }, []);
@@ -288,20 +324,32 @@ export default function Bonequinha() {
   /* ---------- modo ajustar (só pra Alana logada) ---------- */
   const vestidas = (look.vestido ? [look.vestido] : [look.cima, look.baixo].filter((r): r is string => !!r)).flatMap((r) => [...partesDe(r)].reverse()).concat(look.cabelo ? [look.cabelo] : []);
   const alvo = editando && vestidas.includes(editando) ? editando : vestidas[0] ?? null;
-  const posDe = (id: string): Pos => ajustes[id] ?? POSICOES[id];
-  const mexer = (f: (p: Pos) => Pos) => {
+  const posDe = (id: string): Geo => ajustes[id] ?? POSICOES[id];
+  const mexer = (f: (p: Geo) => Geo) => {
     if (!alvo) return;
     setAjustes((a) => ({ ...a, [alvo]: f(a[alvo] ?? POSICOES[alvo]) }));
     setAviso("");
   };
   // muda o tamanho mantendo o centro no lugar
-  const escala = (fw: number, fh: number) => mexer(([x, y, w, h, r]) => [x + (w - w * fw) / 2, y + (h - h * fh) / 2, w * fw, h * fh, r]);
-  const andar = (dx: number, dy: number) => mexer(([x, y, w, h, r]) => [x + dx, y + dy, w, h, r]);
+  // com os 4 cantos soltos: mexe nos 4 pontos em volta do meio deles
+  const noQuad = (g: Geo, f: (x: number, y: number, cx: number, cy: number) => number[]) => {
+    const q = quadDe(g), cx = q.reduce((t, p) => t + p[0], 0) / 4, cy = q.reduce((t, p) => t + p[1], 0) / 4;
+    return q.flatMap(([x, y]) => f(x, y, cx, cy));
+  };
+  const escala = (fw: number, fh: number) => mexer((g) => {
+    if (ehQuad(g)) return noQuad(g, (x, y, cx, cy) => [cx + (x - cx) * fw, cy + (y - cy) * fh]);
+    const [x, y, w, h, r] = g; return [x + (w - w * fw) / 2, y + (h - h * fh) / 2, w * fw, h * fh, r ?? 0];
+  });
+  const andar = (dx: number, dy: number) => mexer((g) => {
+    if (ehQuad(g)) return g.map((v, i) => (v ?? 0) + (i % 2 ? dy : dx));
+    const [x, y, w, h, r] = g; return [x + dx, y + dy, w, h, r ?? 0];
+  });
   // manga gira em volta do ombro; o resto gira em volta do meio
   const girar = (g: number) => mexer((p) => {
+    if (ehQuad(p)) { const t = (g * Math.PI) / 180, c = Math.cos(t), s = Math.sin(t); return noQuad(p, (x, y, cx, cy) => [cx + (x - cx) * c - (y - cy) * s, cy + (x - cx) * s + (y - cy) * c]); }
     const [x, y, w, h, r = 0] = p;
     if (!alvo || !EIXO[alvo]) return [x, y, w, h, r + g];
-    const [A, B] = pontosEixo(alvo, p), t = (g * Math.PI) / 180, dx = B[0] - A[0], dy = B[1] - A[1];
+    const [A, B] = pontosEixo(alvo, p as Pos), t = (g * Math.PI) / 180, dx = B[0] - A[0], dy = B[1] - A[1];
     return mangaEntre(alvo, w, A, [A[0] + dx * Math.cos(t) - dy * Math.sin(t), A[1] + dx * Math.sin(t) + dy * Math.cos(t)]);
   });
   const salvar = async () => {
@@ -311,8 +359,10 @@ export default function Bonequinha() {
     const ids = dono ? PARTES[dono] : [alvo];
     setAviso("salvando...");
     const { error } = await supabase().from("bonequinha_ajustes").upsert(ids.map((id) => {
-      const [x, y, w, h, r = 0] = posDe(id);
-      return { id, x, y, w, h, r, atualizado_em: new Date().toISOString() };
+      const g = posDe(id), q = quadDe(g), xs = q.map((p) => p[0]), ys = q.map((p) => p[1]);
+      if (ehQuad(g)) return { id, x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys), r: 0, q: g, atualizado_em: new Date().toISOString() };
+      const [x, y, w, h, r = 0] = g;
+      return { id, x, y, w, h, r, q: null, atualizado_em: new Date().toISOString() };
     }));
     setAviso(error ? "não consegui salvar 😢 tenta de novo" : "salvo! ✨");
   };
@@ -362,30 +412,29 @@ export default function Bonequinha() {
                 // pegou numa bolinha do canto? então é pra mudar o tamanho
                 // nas mangas: 4 = ombro, 5 = pulso
                 const canto = EIXO[alvo]
-                  ? (() => { const i = pontosEixo(alvo, ini).findIndex(([x, y]) => Math.hypot(px - x, py - y) < 24); return i < 0 ? -1 : 4 + i; })()
-                  : cantos(ini).findIndex(([x, y]) => Math.hypot(px - x, py - y) < 22);
+                  ? (() => { const i = pontosEixo(alvo, ini as Pos).findIndex(([x, y]) => Math.hypot(px - x, py - y) < 24); return i < 0 ? -1 : 4 + i; })()
+                  : quadDe(ini).findIndex(([x, y]) => Math.hypot(px - x, py - y) < 22);
                 arrasto.current = { px, py, ini, canto };
               }}
               onPointerMove={(e) => {
                 const a = arrasto.current; if (!a || !alvo) return;
                 const { px, py } = ponto(e);
-                const [x, y, w, h, r = 0] = a.ini;
-                if (a.canto < 0) { mexer(() => [x + px - a.px, y + py - a.py, w, h, r]); return; }
+                if (a.canto < 0) {
+                  const dx = px - a.px, dy = py - a.py;
+                  mexer(() => (ehQuad(a.ini) ? a.ini.map((v, i) => (v ?? 0) + (i % 2 ? dy : dx)) : [a.ini[0] + dx, a.ini[1] + dy, a.ini[2], a.ini[3], a.ini[4] ?? 0]));
+                  return;
+                }
+                const [, , w] = a.ini;
                 if (a.canto >= 4) {
                   // a ponta que você não está puxando fica presa
-                  const [A, B] = pontosEixo(alvo, a.ini), P2 = [px, py];
+                  const [A, B] = pontosEixo(alvo, a.ini as Pos), P2 = [px, py];
                   mexer(() => (a.canto === 5 ? mangaEntre(alvo, w, A, P2) : mangaEntre(alvo, w, P2, B)));
                   return;
                 }
-                // o canto oposto fica parado; conta tudo "desgirado"
-                const k = cantos(a.ini), op = k[(a.canto + 2) % 4];
-                const c = Math.cos((r * Math.PI) / 180), s = Math.sin((r * Math.PI) / 180);
-                const dx = px - op[0], dy = py - op[1];
-                const lx = dx * c + dy * s, ly = -dx * s + dy * c;
-                const nw = Math.max(12, Math.abs(lx)), nh = Math.max(12, Math.abs(ly));
-                const mx = ((Math.sign(lx) || 1) * nw) / 2, my = ((Math.sign(ly) || 1) * nh) / 2;
-                const cx = op[0] + mx * c - my * s, cy = op[1] + mx * s + my * c;
-                mexer(() => [cx - nw / 2, cy - nh / 2, nw, nh, r]);
+                // só o canto que você está puxando se mexe; os outros 3 ficam presos
+                const q = quadDe(a.ini).flat(), k = a.canto * 2;
+                q[k] += px - a.px; q[k + 1] += py - a.py;
+                mexer(() => q);
               }}
               onPointerUp={() => { arrasto.current = null; }}
               onPointerCancel={() => { arrasto.current = null; }}
@@ -416,7 +465,7 @@ export default function Bonequinha() {
                     {vestidas.map((v) => <button key={v} className={alvo === v ? "on" : ""} onClick={() => setEditando(v)}>{nomeDe(v)}</button>)}
                   </div>
                 )}
-                <p><b>{nomeDe(alvo)}</b> · {EIXO[alvo] ? "puxa a bolinha do ombro e a do pulso; a outra ponta fica presa" : "arrasta a roupa na boneca ou puxa as bolinhas dos cantos"}</p>
+                <p><b>{nomeDe(alvo)}</b> · {EIXO[alvo] ? "puxa a bolinha do ombro e a do pulso; a outra ponta fica presa" : "arrasta a peça pra mudar de lugar ou puxa cada bolinha do canto sozinha"}</p>
                 <div className="bq-ajuste-linhas">
                   <span>tamanho</span><button onClick={() => escala(0.98, 0.98)}>−</button><button onClick={() => escala(1.02, 1.02)}>+</button>
                   <span>largura</span><button onClick={() => escala(0.98, 1)}>−</button><button onClick={() => escala(1.02, 1)}>+</button>
